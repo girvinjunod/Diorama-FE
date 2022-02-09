@@ -13,7 +13,7 @@ class _TripFeedState extends State<TripFeed> {
     return ListView.builder(
       shrinkWrap: true,
       itemCount: 5,
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
       itemBuilder: (context, i) {
         // final index = i ~/ 2;
         // print("$i $index");
@@ -27,23 +27,46 @@ class _TripFeedState extends State<TripFeed> {
 
   Widget _buildRow() {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(0, 15, 0, 15),
+      padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
       child: Column(
         children: <Widget>[
-          SizedBox(
-            width: double.infinity,
-            child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              child: const Text(
-                "Profile Name + PP",
-                textAlign: TextAlign.left,
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+            child: SizedBox(
+              width: double.infinity,
+              child: Container(
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                child: const Text(
+                  "Profile Name + PP",
+                  textAlign: TextAlign.left,
+                ),
               ),
             ),
           ),
-          FittedBox(
-            fit: BoxFit.contain,
-            child: Image.asset("images/car.png"),
+          // Image.asset("images/car.png")
+          SizedBox(
+            height: 350,
+            width: double.infinity,
+            child: FittedBox(
+              clipBehavior: Clip.hardEdge,
+              fit: BoxFit.cover,
+              child: Image.asset("images/car.png"),
+            ),
           ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(10, 10, 0, 0),
+            child: Align(
+                alignment: Alignment.centerLeft,
+                child: TextButton(
+                  style: ButtonStyle(
+                      foregroundColor:
+                          MaterialStateProperty.all<Color>(Colors.white),
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                          Colors.cyan.shade900)),
+                  onPressed: () {},
+                  child: const Text('Comment'),
+                )),
+          )
         ],
       ),
     );

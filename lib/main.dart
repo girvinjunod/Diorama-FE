@@ -19,9 +19,9 @@ class MyApp extends StatelessWidget {
       home: const NavBar(),
       theme: ThemeData(
         appBarTheme: AppBarTheme(
-          backgroundColor: Colors.cyan.shade700,
-          foregroundColor: Colors.white,
-        ),
+            backgroundColor: Colors.cyan.shade700,
+            foregroundColor: Colors.white,
+            elevation: 0),
       ),
     );
   }
