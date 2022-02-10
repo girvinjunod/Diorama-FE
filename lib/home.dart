@@ -31,19 +31,28 @@ class _TripFeedState extends State<TripFeed> {
       child: Column(
         children: <Widget>[
           Container(
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
             child: SizedBox(
-              width: double.infinity,
-              child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                child: const Text(
-                  "Profile Name + PP",
-                  textAlign: TextAlign.left,
+                width: double.infinity,
+                child: Row(
+                  children: const <Widget>[
+                    CircleAvatar(
+                      radius: 20, // Image radius
+                      backgroundImage: AssetImage('images/pp-temp.jpg'),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 10),
+                      child: Text("username"),
+                    )
+                  ],
+                )
+                // child: const Text(
+                //   "Profile Name + PP",
+                //   textAlign: TextAlign.left,
+                // ),
+
                 ),
-              ),
-            ),
           ),
-          // Image.asset("images/car.png")
           SizedBox(
             height: 350,
             width: double.infinity,
@@ -54,7 +63,7 @@ class _TripFeedState extends State<TripFeed> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(10, 10, 0, 0),
+            padding: const EdgeInsets.fromLTRB(5, 10, 0, 0),
             child: Align(
                 alignment: Alignment.centerLeft,
                 child: TextButton(

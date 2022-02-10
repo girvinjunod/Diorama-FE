@@ -47,7 +47,8 @@ class _NavBarState extends State<NavBar> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Diorama'),
+        title: const Text('Diorama',
+            style: TextStyle(fontFamily: 'Condiment', fontSize: 35)),
       ),
       body: const TripFeed(),
       bottomNavigationBar: BottomNavigationBar(
