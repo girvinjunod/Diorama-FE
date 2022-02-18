@@ -4,6 +4,7 @@
 
 import 'package:flutter/material.dart';
 import 'home.dart';
+import 'profile.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Diorama',
-      home: const NavBar(),
+      home: const ProfilePage(),
       theme: ThemeData(
         appBarTheme: AppBarTheme(
             backgroundColor: Colors.cyan.shade700,
