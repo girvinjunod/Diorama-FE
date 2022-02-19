@@ -3,7 +3,9 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
-import 'home.dart';
+// import 'home.dart';
+import 'edit_profile.dart';
+import 'edit_password.dart';
 
 void main() {
   runApp(const MyApp());
@@ -46,11 +48,31 @@ class _NavBarState extends State<NavBar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Diorama',
-            style: TextStyle(fontFamily: 'Condiment', fontSize: 35)),
-      ),
-      body: const TripFeed(),
+      // appBar: AppBar(
+      //   actions: <Widget>[
+      //     TextButton(
+      //       style: TextButton.styleFrom(
+      //         padding: const EdgeInsets.only(left: 30.0, right: 30.0),
+      //         primary: Color.fromARGB(255, 148, 3, 3),
+      //       ),
+      //       onPressed: () {
+      //         // balik ke halaman profile
+      //       },
+      //       child: Text('Cancel'),
+      //     ),
+      //     TextButton(
+      //       style: TextButton.styleFrom(
+      //         padding: const EdgeInsets.only(left: 30.0, right: 30.0),
+      //         primary: Colors.white,
+      //       ),
+      //       onPressed: () {
+      //         // balik ke halaman profile
+      //       },
+      //       child: Text('Done'),
+      //     ),
+      //   ],
+      // ),
+      body: const EditProfilePage(),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
