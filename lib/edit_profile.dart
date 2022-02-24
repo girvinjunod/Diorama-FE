@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'edit_password.dart';
+import 'package:http/http.dart';
+import 'dart:convert';
 
 class EditProfilePage extends StatefulWidget {
   const EditProfilePage({Key? key}) : super(key: key);
@@ -9,12 +11,24 @@ class EditProfilePage extends StatefulWidget {
 }
 
 class EditProfilePageState extends State<EditProfilePage> {
+  // String data = "";
+  // Future<Null> _fetchDataUser() async {
+  //   String url = "http://127.0.0.1:3000/getUserByID/1";
+  //   final response = await get(url as Uri);
+
+  //   data = response.body.toString();
+  // }
+
+  String? Uname = null;
+  String? Name = null;
+  String? Email = null;
+
   @override
   Widget build(BuildContext context) {
     // Build a Form widget using the _formKey created above.
     final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
     TextEditingController msgController = TextEditingController();
-    String msg = "aaa";
+    //String msg = "aaaa";
 
     return Scaffold(
         backgroundColor: Color.fromARGB(255, 255, 255, 255),
@@ -37,7 +51,18 @@ class EditProfilePageState extends State<EditProfilePage> {
               ),
               onPressed: () {
                 // save form
-                msg = "save";
+                if (_formKey.currentState!.validate()) {
+                  _formKey.currentState!.save();
+
+                  final message = "Profile Changed Successfully";
+                  final snackBar = SnackBar(
+                    content: Text(
+                      message,
+                      style: TextStyle(fontSize: 20),
+                    ),
+                  );
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                }
               },
               child: Text('Done'),
             ),
@@ -47,7 +72,7 @@ class EditProfilePageState extends State<EditProfilePage> {
           child: ListView(shrinkWrap: true, children: <Widget>[
             CircleAvatar(
               radius: 40, // Image radius
-              backgroundImage: AssetImage('images/pp-temp.jpg'),
+              backgroundImage: AssetImage('images/blank_profile.png'),
             ),
             TextButton(
               style: TextButton.styleFrom(
@@ -81,6 +106,9 @@ class EditProfilePageState extends State<EditProfilePage> {
                         }
                         return null;
                       },
+                      onSaved: (value) => setState(() {
+                        Name = value;
+                      }),
                     ),
                     TextFormField(
                       decoration: const InputDecoration(
@@ -90,15 +118,20 @@ class EditProfilePageState extends State<EditProfilePage> {
                           labelText: 'Username',
                           floatingLabelBehavior: FloatingLabelBehavior.always),
                       validator: (String? value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter some text';
+                        if (value == null ||
+                            value.isEmpty ||
+                            value.length < 7) {
+                          return 'Please enter minimum 7 words';
                         }
                         return null;
                       },
+                      onSaved: (value) => setState(() {
+                        Uname = value;
+                      }),
                     ),
                     TextFormField(
                       decoration: const InputDecoration(
-                          hintText: 'old email',
+                          hintText: 'old username',
                           hintStyle:
                               TextStyle(height: 2, fontWeight: FontWeight.bold),
                           labelText: 'Email',
@@ -109,16 +142,19 @@ class EditProfilePageState extends State<EditProfilePage> {
                         }
                         return null;
                       },
+                      onSaved: (value) => setState(() {
+                        Email = value;
+                      }),
                     ),
                   ],
                 ),
               ),
             ),
-            Container(
-              margin: EdgeInsets.fromLTRB(50, 10, 50, 10),
-              child: Text(msg),
-              alignment: Alignment.centerRight,
-            ),
+            // Container(
+            //   margin: EdgeInsets.fromLTRB(50, 10, 50, 10),
+            //   child: Text(msg),
+            //   alignment: Alignment.centerRight,
+            // ),
             TextButton(
               style: TextButton.styleFrom(
                   padding: const EdgeInsets.fromLTRB(50, 20, 0, 20),

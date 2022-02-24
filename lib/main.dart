@@ -3,7 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
-// import 'home.dart';
+import 'home.dart';
 import 'edit_profile.dart';
 import 'edit_password.dart';
 

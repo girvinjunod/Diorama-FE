@@ -15,7 +15,10 @@ class EditPasswordPageState extends State<EditPasswordPage> {
     final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
     bool _hidePassword = true;
     TextEditingController msgController = TextEditingController();
-    String msg = "aaaa";
+    //String msg = "aaaa";
+    String oldPassword = "old";
+    String newPassword = "new";
+    String valPassword = "val";
 
     return Scaffold(
         backgroundColor: Color.fromARGB(255, 255, 255, 255),
@@ -54,11 +57,16 @@ class EditPasswordPageState extends State<EditPasswordPage> {
                           floatingLabelBehavior: FloatingLabelBehavior.always),
                       obscureText: _hidePassword,
                       validator: (String? value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter some text';
+                        if (value == null ||
+                            value.isEmpty ||
+                            value.length < 7) {
+                          return 'Please enter minimum 7 words';
                         }
                         return null;
                       },
+                      onSaved: (value) => setState(() {
+                        oldPassword = value!;
+                      }),
                     ),
                     TextFormField(
                       decoration: const InputDecoration(
@@ -69,11 +77,16 @@ class EditPasswordPageState extends State<EditPasswordPage> {
                           floatingLabelBehavior: FloatingLabelBehavior.always),
                       obscureText: _hidePassword,
                       validator: (String? value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter some text';
+                        if (value == null ||
+                            value.isEmpty ||
+                            value.length < 7) {
+                          return 'Please enter minimum 7 words';
                         }
                         return null;
                       },
+                      onSaved: (value) => setState(() {
+                        newPassword = value!;
+                      }),
                     ),
                     TextFormField(
                       decoration: const InputDecoration(
@@ -84,27 +97,41 @@ class EditPasswordPageState extends State<EditPasswordPage> {
                           floatingLabelBehavior: FloatingLabelBehavior.always),
                       obscureText: _hidePassword,
                       validator: (String? value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter some text';
+                        if (value == null ||
+                            value.isEmpty ||
+                            value.length < 7) {
+                          return 'Please enter minimum 7 words';
                         }
                         return null;
                       },
+                      onSaved: (value) => setState(() {
+                        valPassword = value!;
+                      }),
                     ),
-                    Container(
-                      margin: EdgeInsets.fromLTRB(0, 20, 0, 20),
-                      child: Text(msg),
-                      alignment: Alignment.centerRight,
-                    ),
+                    // Container(
+                    //   margin: EdgeInsets.fromLTRB(0, 20, 0, 20),
+                    //   child: Text(msg),
+                    //   alignment: Alignment.centerRight,
+                    // ),
                     SizedBox(height: 40),
                     ElevatedButton(
                       onPressed: () {
-                        // Validate returns true if the form is valid, or false otherwise.
                         if (_formKey.currentState!.validate()) {
-                          // If the form is valid, display a snackbar. In the real world,
-                          // you'd often call a server or save the information in a database.
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Loading...')),
+                          _formKey.currentState!.save();
+                          String message = "";
+                          if (newPassword == valPassword) {
+                            message = "Password Changed Successfully";
+                          } else {
+                            message = "Confirm Password False";
+                          }
+
+                          final snackBar = SnackBar(
+                            content: Text(
+                              message,
+                              style: TextStyle(fontSize: 20),
+                            ),
                           );
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
                         }
                       },
                       child: const Text('Save'),
