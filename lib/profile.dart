@@ -160,7 +160,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     height: 150,
                     width: double.infinity,
                     child: Image.network(
-                      'https://blue.kumparan.com/image/upload/fl_progressive,fl_lossy,c_fill,q_auto:best,w_640/v1492749646/u3nk8kx6abdfhgd8xfjc.jpg',
+                      'https://drive.google.com/uc?export=view&id=1DMtJUYp6U2F2FXDkGCdfJOno0k_0RcG6',
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -181,42 +181,62 @@ class _ProfilePageState extends State<ProfilePage> {
                   Container(
                     height: 150,
                     width: double.infinity,
-                    alignment: Alignment.bottomLeft,
-                    padding: EdgeInsets.all(10.0),
-                    child: RichText(
-                      text: TextSpan(
-                        text:
-                            'jalan-jalan di planet bumi sebagai manusia biasa blah blah blah\n',
-                        style: TextStyle(color: Colors.white, fontSize: 22.0),
-                        children: const <TextSpan>[
-                          TextSpan(
-                              text: '16 Feb 2022 - 21 Feb 2022\n',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12.0,
-                                  height: 1.5)),
-                          TextSpan(
-                              text:
-                                  'Tokyo, Japan, Asia, Planet Bumi, Galaksi Milky Way',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12.0,
-                                  height: 1.5)),
-                        ],
-                      ),
-                    ),
+                    child: SizedBox(
+                        width: double.infinity,
+                        height: double.infinity, // <-- match_parent
+                        child: TextButton(
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                                  (Set<MaterialState> states) {
+                                if (states.contains(MaterialState.pressed) ||
+                                    states.contains(MaterialState.hovered))
+                                  return const Color(0x70000000);
+                                return Colors
+                                    .transparent; // Use the component's default.
+                              },
+                            ),
+                          ),
+                          onPressed: () {},
+                          child: Container(
+                            height: 150,
+                            width: double.infinity,
+                            alignment: Alignment.bottomLeft,
+                            padding: EdgeInsets.fromLTRB(4, 8, 4, 8),
+                            child: RichText(
+                              text: TextSpan(
+                                text:
+                                'jalan-jalan di planet bumi sebagai manusia biasa\n',
+                                style: TextStyle(color: Colors.white, fontSize: 22.0),
+                                children: const <TextSpan>[
+                                  TextSpan(
+                                      text: '16 Feb 2022 - 21 Feb 2022\n',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 12.0,
+                                          height: 1.5)),
+                                  TextSpan(
+                                      text:
+                                      'Tokyo, Japan, Asia, Planet Bumi, Galaksi Milky Way',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 12.0,
+                                          height: 1.5)),
+                                ],
+                              ),
+                            ),
+                          ),
+                        )),
                   ),
                 ]),
                 visible: !_noTrips,
               ),
-
               Visibility(
                 child: Stack(children: <Widget>[
                   Container(
                     height: 150,
                     width: double.infinity,
                     child: Image.network(
-                      'https://static.wikia.nocookie.net/legendofheroes/images/1/1e/Reeves_Plaza_CS3.jpg/revision/latest/scale-to-width-down/1000?cb=20170413080534',
+                      'https://drive.google.com/uc?export=view&id=1EnkLO8V868NWgzcbmy-6OTGtkHXMPINF',
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -236,91 +256,127 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   Container(
                     height: 150,
+                    child: SizedBox(
+                        width: double.infinity,
+                        height: double.infinity, // <-- match_parent
+                        child: TextButton(
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                                  (Set<MaterialState> states) {
+                                if (states.contains(MaterialState.pressed) ||
+                                    states.contains(MaterialState.hovered))
+                                  return const Color(0x70000000);
+                                return Colors
+                                    .transparent; // Use the component's default.
+                              },
+                            ),
+                          ),
+                          onPressed: () {},
+                          child: Container(
+                            height: 150,
+                            width: double.infinity,
+                            alignment: Alignment.bottomLeft,
+                            padding: EdgeInsets.fromLTRB(4, 8, 4, 8),
+                            child: RichText(
+                              text: TextSpan(
+                                text:
+                                'sekolah rantau di negara sebelah, taunya malah kiamat (real)\n',
+                                style: TextStyle(color: Colors.white, fontSize: 22.0),
+                                children: const <TextSpan>[
+                                  TextSpan(
+                                      text: '10 May S.1206 - 26 Aug S.1206\n',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 12.0,
+                                          height: 1.5)),
+                                  TextSpan(
+                                      text: 'Leeves, Erebonia, Zemuria',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 12.0,
+                                          height: 1.5)),
+                                ],
+                              ),
+                            ),
+                          ),
+                        )),
+                  )
+                ]),
+                visible: !_noTrips,
+              ),
+              Visibility(
+                child: Stack(children: <Widget>[
+                  Container(
+                    height: 150,
                     width: double.infinity,
-                    alignment: Alignment.bottomLeft,
-                    padding: EdgeInsets.all(10.0),
-                    child: RichText(
-                      text: TextSpan(
-                        text:
-                            'sekolah rantau di negara sebelah, taunya malah kiamat (real)\n',
-                        style: TextStyle(color: Colors.white, fontSize: 22.0),
-                        children: const <TextSpan>[
-                          TextSpan(
-                              text: '10 May S.1206 - 26 Aug S.1206\n',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12.0,
-                                  height: 1.5)),
-                          TextSpan(
-                              text:
-                                  'Leeves, Erebonia, Zemuria',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12.0,
-                                  height: 1.5)),
+                    child: Image.network(
+                      'https://drive.google.com/uc?export=view&id=1dcKb4FWicycUGU50RHdfqOe-68hRhxQP',
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  Container(
+                    height: 150,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          const Color(0x02000000),
+                          const Color(0x90000000),
                         ],
                       ),
                     ),
                   ),
+                  Container(
+                    height: 150,
+                    child: SizedBox(
+                        width: double.infinity,
+                        height: double.infinity, // <-- match_parent
+                        child: TextButton(
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                                  (Set<MaterialState> states) {
+                                if (states.contains(MaterialState.pressed) ||
+                                    states.contains(MaterialState.hovered))
+                                  return const Color(0x70000000);
+                                return Colors
+                                    .transparent; // Use the component's default.
+                              },
+                            ),
+                          ),
+                          onPressed: () {},
+                          child: Container(
+                            height: 150,
+                            width: double.infinity,
+                            alignment: Alignment.bottomLeft,
+                            padding: EdgeInsets.fromLTRB(4, 8, 4, 8),
+                            child: RichText(
+                              text: TextSpan(
+                                text: '2 jam di rumah ga ngapa-ngapain\n',
+                                style: TextStyle(color: Colors.white, fontSize: 22.0),
+                                children: const <TextSpan>[
+                                  TextSpan(
+                                      text: '14 Feb 2022 - 14 Feb 2022\n',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 12.0,
+                                          height: 1.5)),
+                                  TextSpan(
+                                      text: 'Depan Laptop',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 12.0,
+                                          height: 1.5)),
+                                ],
+                              ),
+                            ),
+                          ),
+                        )),
+                  )
                 ]),
                 visible: !_noTrips,
               ),
-
-                  Visibility(
-                    child: Stack(children: <Widget>[
-                      Container(
-                        height: 150,
-                        width: double.infinity,
-                        child: Image.network(
-                          'https://www.analogouscolors.com/image/1080x1920/ffffff.gif',
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      Container(
-                        height: 150,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                              const Color(0x02000000),
-                              const Color(0x90000000),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Container(
-                        height: 150,
-                        width: double.infinity,
-                        alignment: Alignment.bottomLeft,
-                        padding: EdgeInsets.all(10.0),
-                        child: RichText(
-                          text: TextSpan(
-                            text:
-                            '2 jam di rumah ga ngapa-ngapain\n',
-                            style: TextStyle(color: Colors.white, fontSize: 22.0),
-                            children: const <TextSpan>[
-                              TextSpan(
-                                  text: '14 Feb 2022 - 14 Feb 2022\n',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 12.0,
-                                      height: 1.5)),
-                              TextSpan(
-                                  text:
-                                  'Depan Laptop',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 12.0,
-                                      height: 1.5)),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ]),
-                    visible: !_noTrips,
-                  ),
             ]))
       ]),
     );
