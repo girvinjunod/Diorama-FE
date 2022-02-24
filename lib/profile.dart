@@ -1,3 +1,4 @@
+import 'package:diorama_id/main.dart';
 import 'package:flutter/material.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -8,9 +9,16 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  // Apakah username berbeda dari name user?
   bool _isUsernameVisible = true;
+
+  // Apakah profile milik sendiri?
   bool _isSelfProfile = false;
+
+  // Apakah user mem-follow user ini?
   bool _isFollowed = false;
+
+  // Apakah trips user kosong?
   bool _noTrips = false;
 
   @override

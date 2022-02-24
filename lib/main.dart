@@ -2,9 +2,12 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'package:diorama_id/login.dart';
 import 'package:flutter/material.dart';
 import 'home.dart';
 import 'profile.dart';
+import 'login.dart';
+import 'register.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,7 +20,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Diorama',
-      home: const ProfilePage(),
+      home: const LoginPage(),
       theme: ThemeData(
         appBarTheme: AppBarTheme(
             backgroundColor: Colors.cyan.shade700,
@@ -38,6 +41,12 @@ class NavBar extends StatefulWidget {
 class _NavBarState extends State<NavBar> {
   int _selectedIndex = 0;
 
+  final _pages = [
+    TripFeed(),
+    TripFeed(),
+    ProfilePage()
+  ];
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -51,7 +60,7 @@ class _NavBarState extends State<NavBar> {
         title: const Text('Diorama',
             style: TextStyle(fontFamily: 'Condiment', fontSize: 35)),
       ),
-      body: const TripFeed(),
+      body: _pages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
