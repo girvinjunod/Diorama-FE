@@ -8,6 +8,7 @@ import 'home.dart';
 import 'profile.dart';
 import 'login.dart';
 import 'register.dart';
+import 'add_trip.dart';
 
 void main() {
   runApp(const MyApp());
@@ -43,7 +44,7 @@ class _NavBarState extends State<NavBar> {
 
   final _pages = [
     TripFeed(),
-    TripFeed(),
+    AddTripPage(),
     ProfilePage()
   ];
 
