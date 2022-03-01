@@ -1,5 +1,7 @@
-import 'package:flutter/material.dart';import 'package:flutter/gestures.dart';
-
+import 'package:diorama_id/register.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/gestures.dart';
+import 'main.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -16,7 +18,7 @@ class LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     // Build a Form widget using the _formKey created above.
     return Scaffold(
-        backgroundColor: const Color(0xFF75E6DA),
+        backgroundColor: const Color(0xFF9DE2E2),
         body: Center(
           child: ListView(shrinkWrap: true, children: <Widget>[
             Form(
@@ -77,6 +79,10 @@ class LoginPageState extends State<LoginPage> {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(content: Text('Loading...')),
                           );
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const NavBar()),
+                          );
                         }
                       },
                       child: const Text('Login'),
@@ -88,20 +94,27 @@ class LoginPageState extends State<LoginPage> {
                     ),
                     SizedBox(height: 10),
                     RichText(
-                      text: TextSpan(children: <TextSpan>[
+                      text: TextSpan(children: [
                         TextSpan(
                             text: 'Do not have an account? ',
                             style: TextStyle(color: Colors.black)),
-                        TextSpan(
-                            text: 'Register',
+                        WidgetSpan(
+                            child: GestureDetector(
+                          child: Text(
+                            'Register',
                             style: TextStyle(
                               decoration: TextDecoration.underline,
                               color: Colors.black,
                             ),
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () {
-                                print('toRegister');
-                              })
+                          ),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => RegisterPage()),
+                            );
+                          },
+                        ))
                       ]),
                     ),
                   ],
@@ -112,5 +125,3 @@ class LoginPageState extends State<LoginPage> {
         ));
   }
 }
-
-
