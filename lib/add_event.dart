@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class AddTripPage extends StatefulWidget {
-  const AddTripPage({Key? key}) : super(key: key);
+class AddEventPage extends StatefulWidget {
+  const AddEventPage({Key? key}) : super(key: key);
 
   @override
-  _AddTripPageState createState() => _AddTripPageState();
+  _AddEventPageState createState() => _AddEventPageState();
 }
 
-class _AddTripPageState extends State<AddTripPage> {
+class _AddEventPageState extends State<AddEventPage> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController _startDate = TextEditingController();
   TextEditingController _endDate = TextEditingController();
+  String _tripName = "Trip: Tes Nama Trip";
+  String _dateRange = "(DD-MM-YYYY - DD-MM-YYYY)";
 
   @override
   void initState() {
     _startDate.text = "";
-    _endDate.text = "";
     super.initState();
   }
 
@@ -38,33 +39,46 @@ class _AddTripPageState extends State<AddTripPage> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        'Add New Trip',
+                        'Add New Event',
                         style: TextStyle(
                             fontSize: 26, color: const Color(0xFF05445E)),
                       ),
+                      SizedBox(height: 20),
+                      Text(
+                        _tripName,
+                        style: TextStyle(
+                            fontSize: 16, color: const Color(0xFF000000)),
+                      ),
+                      Text(
+                        _dateRange,
+                        style: TextStyle(
+                            fontSize: 14, color: const Color(0xFF189AB4)),
+                      ),
+                      SizedBox(height: 40),
+                      ElevatedButton(
+                        onPressed: () {
+                          // Buka file manager
+                        },
+                        child: const Text('+ Add Photo',
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: const Color(0xFF189AB4),
+                                fontWeight: FontWeight.w400)),
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: Size.fromHeight(40),
+                          primary: const Color(0xffffffff),
+                          padding: EdgeInsets.all(15),
+                          shape: new RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(10.0),
+                              side: BorderSide(color: const Color(0xFF189AB4), width: 2)
+                          ),
+                        ),
+                      ),
                       SizedBox(height: 40),
                       TextFormField(
-                        maxLength: 50,
                         decoration: InputDecoration(
                           errorMaxLines: 3,
-                          labelText: 'Trip Name',
-                          icon: Icon(Icons.airplane_ticket_rounded),
-                          border: OutlineInputBorder(),
-                          fillColor: Colors.white,
-                          filled: true,
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter a trip name';
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(height: 20),
-                      TextFormField(
-                        decoration: InputDecoration(
-                          errorMaxLines: 3,
-                          labelText: 'Start Date',
+                          labelText: 'Event Date',
                           icon: Icon(Icons.calendar_today),
                           border: OutlineInputBorder(),
                           fillColor: Colors.white,
@@ -88,66 +102,24 @@ class _AddTripPageState extends State<AddTripPage> {
                         },
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter a start date';
+                            return 'Please enter a date';
                           }
                           return null;
                         },
                       ),
                       SizedBox(height: 20),
                       TextFormField(
+                        maxLength: 1000,
+                        minLines: 3,
+                        maxLines: 5,
                         decoration: InputDecoration(
                           errorMaxLines: 3,
-                          labelText: 'End Date',
-                          icon: Icon(Icons.calendar_today_outlined),
+                          labelText: 'Caption',
+                          icon: Icon(Icons.book),
                           border: OutlineInputBorder(),
                           fillColor: Colors.white,
                           filled: true,
                         ),
-                        controller: _endDate,
-                        readOnly: true,
-                        onTap: () async {
-                          DateTime? pickedDate = await showDatePicker(
-                              context: context,
-                              initialDate: DateTime.now(),
-                              firstDate: DateTime(1800),
-                              lastDate: DateTime(2101));
-                          if (pickedDate != null) {
-                            String formattedDate =
-                                DateFormat('dd-MM-yyyy').format(pickedDate);
-                            setState(() {
-                              _endDate.text = formattedDate;
-                            });
-                          }
-                        },
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter an end date';
-                          }
-                          DateTime sd = new DateFormat("dd-MM-yyyy").parse(_startDate.text);
-                          DateTime ed = new DateFormat("dd-MM-yyyy").parse(value);
-                          if (ed.isBefore(sd)) {
-                            return "End date earlier than start date";
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(height: 20),
-                      TextFormField(
-                        maxLength: 50,
-                        decoration: InputDecoration(
-                          errorMaxLines: 3,
-                          labelText: 'Location',
-                          icon: Icon(Icons.edit_location),
-                          border: OutlineInputBorder(),
-                          fillColor: Colors.white,
-                          filled: true,
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter a location';
-                          }
-                          return null;
-                        },
                       ),
                       SizedBox(height: 40),
                       ElevatedButton(
@@ -158,7 +130,7 @@ class _AddTripPageState extends State<AddTripPage> {
                             );
                           }
                         },
-                        child: const Text('Create Trip',
+                        child: const Text('Create Event',
                             style: TextStyle(
                                 fontSize: 22,
                                 color: const Color(0xFFFFFFFF),
