@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'model/trip.dart';
 
 class AddTripPage extends StatefulWidget {
   const AddTripPage({Key? key}) : super(key: key);
@@ -10,8 +11,10 @@ class AddTripPage extends StatefulWidget {
 
 class _AddTripPageState extends State<AddTripPage> {
   final _formKey = GlobalKey<FormState>();
+  TextEditingController _tripName = TextEditingController();
   TextEditingController _startDate = TextEditingController();
   TextEditingController _endDate = TextEditingController();
+  TextEditingController _locationName = TextEditingController();
 
   @override
   void initState() {
@@ -53,6 +56,7 @@ class _AddTripPageState extends State<AddTripPage> {
                           fillColor: Colors.white,
                           filled: true,
                         ),
+                        controller: _tripName,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter a trip name';
@@ -80,7 +84,7 @@ class _AddTripPageState extends State<AddTripPage> {
                               lastDate: DateTime(2101));
                           if (pickedDate != null) {
                             String formattedDate =
-                                DateFormat('dd-MM-yyyy').format(pickedDate);
+                                DateFormat('yyyy-MM-dd').format(pickedDate);
                             setState(() {
                               _startDate.text = formattedDate;
                             });
@@ -113,7 +117,7 @@ class _AddTripPageState extends State<AddTripPage> {
                               lastDate: DateTime(2101));
                           if (pickedDate != null) {
                             String formattedDate =
-                                DateFormat('dd-MM-yyyy').format(pickedDate);
+                                DateFormat('yyyy-MM-dd').format(pickedDate);
                             setState(() {
                               _endDate.text = formattedDate;
                             });
@@ -123,8 +127,8 @@ class _AddTripPageState extends State<AddTripPage> {
                           if (value == null || value.isEmpty) {
                             return 'Please enter an end date';
                           }
-                          DateTime sd = new DateFormat("dd-MM-yyyy").parse(_startDate.text);
-                          DateTime ed = new DateFormat("dd-MM-yyyy").parse(value);
+                          DateTime sd = new DateFormat("yyyy-MM-dd").parse(_startDate.text);
+                          DateTime ed = new DateFormat("yyyy-MM-dd").parse(value);
                           if (ed.isBefore(sd)) {
                             return "End date earlier than start date";
                           }
@@ -142,6 +146,7 @@ class _AddTripPageState extends State<AddTripPage> {
                           fillColor: Colors.white,
                           filled: true,
                         ),
+                        controller: _locationName,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter a location';
@@ -153,9 +158,21 @@ class _AddTripPageState extends State<AddTripPage> {
                       ElevatedButton(
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Success')),
-                            );
+                            // User id temporarily hardcoded as 1
+                            addTrip(1, _startDate.text, _endDate.text, _tripName.text, _locationName.text).then((status){
+                              if(status == "SUCCESS"){
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(content: Text('Trip successfully added')),
+                                );
+                              }
+                              else
+                              {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(content: Text('Error adding trip')),
+                                );
+                              }
+                            });
+                            
                           }
                         },
                         child: const Text('Create Trip',

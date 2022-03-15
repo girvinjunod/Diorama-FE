@@ -94,7 +94,7 @@ class _AddEventPageState extends State<AddEventPage> {
                               lastDate: DateTime(2101));
                           if (pickedDate != null) {
                             String formattedDate =
-                                DateFormat('dd-MM-yyyy').format(pickedDate);
+                                DateFormat('yyyy-MM-dd').format(pickedDate);
                             setState(() {
                               _startDate.text = formattedDate;
                             });
