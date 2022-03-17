@@ -8,6 +8,7 @@ import 'home.dart';
 import 'profile.dart';
 import 'login.dart';
 import 'register.dart';
+import 'detail_event.dart';
 
 void main() {
   runApp(const MyApp());
@@ -41,11 +42,7 @@ class NavBar extends StatefulWidget {
 class _NavBarState extends State<NavBar> {
   int _selectedIndex = 0;
 
-  final _pages = [
-    TripFeed(),
-    TripFeed(),
-    ProfilePage()
-  ];
+  final _pages = [TripFeed(), DetailEventPage(), ProfilePage()];
 
   void _onItemTapped(int index) {
     setState(() {

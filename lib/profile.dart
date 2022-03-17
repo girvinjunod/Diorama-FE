@@ -13,7 +13,7 @@ class _ProfilePageState extends State<ProfilePage> {
   bool _isUsernameVisible = true;
 
   // Apakah profile milik sendiri?
-  bool _isSelfProfile = false;
+  bool _isSelfProfile = true;
 
   // Apakah user mem-follow user ini?
   bool _isFollowed = false;
@@ -194,8 +194,9 @@ class _ProfilePageState extends State<ProfilePage> {
                         height: double.infinity, // <-- match_parent
                         child: TextButton(
                           style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                                  (Set<MaterialState> states) {
+                            backgroundColor:
+                                MaterialStateProperty.resolveWith<Color>(
+                              (Set<MaterialState> states) {
                                 if (states.contains(MaterialState.pressed) ||
                                     states.contains(MaterialState.hovered))
                                   return const Color(0x70000000);
@@ -213,8 +214,9 @@ class _ProfilePageState extends State<ProfilePage> {
                             child: RichText(
                               text: TextSpan(
                                 text:
-                                'jalan-jalan di planet bumi sebagai manusia biasa\n',
-                                style: TextStyle(color: Colors.white, fontSize: 22.0),
+                                    'jalan-jalan di planet bumi sebagai manusia biasa\n',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 22.0),
                                 children: const <TextSpan>[
                                   TextSpan(
                                       text: '16 Feb 2022 - 21 Feb 2022\n',
@@ -224,7 +226,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                           height: 1.5)),
                                   TextSpan(
                                       text:
-                                      'Tokyo, Japan, Asia, Planet Bumi, Galaksi Milky Way',
+                                          'Tokyo, Japan, Asia, Planet Bumi, Galaksi Milky Way',
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontSize: 12.0,
@@ -269,8 +271,9 @@ class _ProfilePageState extends State<ProfilePage> {
                         height: double.infinity, // <-- match_parent
                         child: TextButton(
                           style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                                  (Set<MaterialState> states) {
+                            backgroundColor:
+                                MaterialStateProperty.resolveWith<Color>(
+                              (Set<MaterialState> states) {
                                 if (states.contains(MaterialState.pressed) ||
                                     states.contains(MaterialState.hovered))
                                   return const Color(0x70000000);
@@ -288,8 +291,9 @@ class _ProfilePageState extends State<ProfilePage> {
                             child: RichText(
                               text: TextSpan(
                                 text:
-                                'sekolah rantau di negara sebelah, taunya malah kiamat (real)\n',
-                                style: TextStyle(color: Colors.white, fontSize: 22.0),
+                                    'sekolah rantau di negara sebelah, taunya malah kiamat (real)\n',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 22.0),
                                 children: const <TextSpan>[
                                   TextSpan(
                                       text: '10 May S.1206 - 26 Aug S.1206\n',
@@ -343,8 +347,9 @@ class _ProfilePageState extends State<ProfilePage> {
                         height: double.infinity, // <-- match_parent
                         child: TextButton(
                           style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                                  (Set<MaterialState> states) {
+                            backgroundColor:
+                                MaterialStateProperty.resolveWith<Color>(
+                              (Set<MaterialState> states) {
                                 if (states.contains(MaterialState.pressed) ||
                                     states.contains(MaterialState.hovered))
                                   return const Color(0x70000000);
@@ -362,7 +367,8 @@ class _ProfilePageState extends State<ProfilePage> {
                             child: RichText(
                               text: TextSpan(
                                 text: '2 jam di rumah ga ngapa-ngapain\n',
-                                style: TextStyle(color: Colors.white, fontSize: 22.0),
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 22.0),
                                 children: const <TextSpan>[
                                   TextSpan(
                                       text: '14 Feb 2022 - 14 Feb 2022\n',
