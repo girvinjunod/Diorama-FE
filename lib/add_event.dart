@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class AddEventPage extends StatefulWidget {
   const AddEventPage({Key? key}) : super(key: key);
@@ -14,6 +17,8 @@ class _AddEventPageState extends State<AddEventPage> {
   TextEditingController _endDate = TextEditingController();
   String _tripName = "Trip: Tes Nama Trip";
   String _dateRange = "(DD-MM-YYYY - DD-MM-YYYY)";
+  var _imageFile;
+  bool _isNotPicked = true;
 
   @override
   void initState() {
@@ -55,24 +60,62 @@ class _AddEventPageState extends State<AddEventPage> {
                             fontSize: 14, color: const Color(0xFF189AB4)),
                       ),
                       SizedBox(height: 40),
-                      ElevatedButton(
-                        onPressed: () {
-                          // Buka file manager
-                        },
-                        child: const Text('+ Add Photo',
-                            style: TextStyle(
-                                fontSize: 16,
-                                color: const Color(0xFF189AB4),
-                                fontWeight: FontWeight.w400)),
-                        style: ElevatedButton.styleFrom(
-                          minimumSize: Size.fromHeight(40),
-                          primary: const Color(0xffffffff),
-                          padding: EdgeInsets.all(15),
-                          shape: new RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(10.0),
-                              side: BorderSide(color: const Color(0xFF189AB4), width: 2)
+                      Visibility(
+                        child: ElevatedButton(
+                          onPressed: () {
+                            _getFromGallery();
+                            _isNotPicked = false;
+                          },
+                          child: const Text('+ Add Photo',
+                              style: TextStyle(
+                                  fontSize: 24,
+                                  color: const Color(0xFF189AB4),
+                                  fontWeight: FontWeight.w400)),
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: Size.fromHeight(200),
+                            primary: const Color(0xffD4F1F4),
+                            padding: EdgeInsets.all(15),
+                            shape: new RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(10.0),
+                                side: BorderSide(color: const Color(0xFF189AB4), width: 2)
+                            ),
                           ),
                         ),
+                        visible: _isNotPicked,
+                      ),
+                      Visibility(
+                        child: _imageFile != null
+                        ? (kIsWeb)
+                          ? Image.memory(_imageFile)
+                          : Image.file(_imageFile)
+                        : SizedBox(height: 0),
+                        visible: _imageFile != null,
+                      ),
+                      Visibility(
+                        child: SizedBox(height: 40),
+                        visible: _isNotPicked==false,
+                      ),
+                      Visibility(
+                        child: ElevatedButton(
+                          onPressed: () {
+                            _getFromGallery();
+                          },
+                          child: const Text('Change Photo',
+                              style: TextStyle(
+                                  fontSize: 24,
+                                  color: const Color(0xFF189AB4),
+                                  fontWeight: FontWeight.w400)),
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: Size.fromHeight(40),
+                            primary: const Color(0xffD4F1F4),
+                            padding: EdgeInsets.all(15),
+                            shape: new RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(10.0),
+                                side: BorderSide(color: const Color(0xFF189AB4), width: 2)
+                            ),
+                          ),
+                        ),
+                        visible: _isNotPicked==false,
                       ),
                       SizedBox(height: 40),
                       TextFormField(
@@ -151,4 +194,22 @@ class _AddEventPageState extends State<AddEventPage> {
           ]),
         ));
   }
+
+  _getFromGallery() async {
+    ImagePicker picker = ImagePicker();
+    XFile? pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      if(kIsWeb){
+        var f = await pickedFile.readAsBytes();
+        setState(() {
+          _imageFile = f;
+        });
+      } else {
+        setState(() {
+          _imageFile = File(pickedFile.path);
+        });
+      }
+    }
+  }
 }
+

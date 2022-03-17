@@ -46,7 +46,7 @@ class _NavBarState extends State<NavBar> {
 
   final _pages = [
     TripFeed(),
-    AddTripPage(),
+    AddEventPage(),
     ProfilePage()
   ];
 
