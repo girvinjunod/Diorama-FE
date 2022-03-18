@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:flutter/foundation.dart' show kIsWeb;
-
+import 'model/event.dart';
 class AddEventPage extends StatefulWidget {
   const AddEventPage({Key? key}) : super(key: key);
 
@@ -14,10 +14,11 @@ class AddEventPage extends StatefulWidget {
 class _AddEventPageState extends State<AddEventPage> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController _startDate = TextEditingController();
-  TextEditingController _endDate = TextEditingController();
+  TextEditingController _caption = TextEditingController();
   String _tripName = "Trip: Tes Nama Trip";
   String _dateRange = "(DD-MM-YYYY - DD-MM-YYYY)";
   var _imageFile;
+  var _imagePath;
   bool _isNotPicked = true;
 
   @override
@@ -163,15 +164,38 @@ class _AddEventPageState extends State<AddEventPage> {
                           fillColor: Colors.white,
                           filled: true,
                         ),
+                        controller: _caption,
                       ),
                       SizedBox(height: 40),
                       ElevatedButton(
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Success')),
-                            );
-                          }
+                            if (_isNotPicked)
+                            {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text('Please upload an image')),
+                              );
+                            }
+                            else
+                            {
+                              // Success, send event
+                              DateTime now = DateTime.now();
+                              String postTime = DateFormat('yyyy-MM-dd kk:mm:ss').format(now);
+                              addEvent("1", "1", _caption.text, _startDate.text, postTime, _imageFile).then((status){
+                                if(status == "SUCCESS"){
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(content: Text('Trip successfully added')),
+                                  );
+                                }
+                                else
+                                {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(content: Text('Error adding trip')),
+                                  );
+                                }
+                              });
+                              }
+                            }
                         },
                         child: const Text('Create Event',
                             style: TextStyle(
@@ -198,6 +222,7 @@ class _AddEventPageState extends State<AddEventPage> {
   _getFromGallery() async {
     ImagePicker picker = ImagePicker();
     XFile? pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    _imagePath = pickedFile;
     if (pickedFile != null) {
       if(kIsWeb){
         var f = await pickedFile.readAsBytes();
@@ -211,5 +236,6 @@ class _AddEventPageState extends State<AddEventPage> {
       }
     }
   }
+
 }
 
