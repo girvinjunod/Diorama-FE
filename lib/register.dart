@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:email_validator/email_validator.dart';
 import 'login.dart';
+import 'model/register.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -13,6 +14,8 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
   bool _hidePassword = true;
+  final TextEditingController _uname = TextEditingController();
+  final TextEditingController _fullname = TextEditingController();
   final TextEditingController _password = TextEditingController();
   final TextEditingController _confirm = TextEditingController();
   final TextEditingController _mail = TextEditingController();
@@ -62,12 +65,30 @@ class _RegisterPageState extends State<RegisterPage> {
                       SizedBox(height: 20),
                       TextFormField(
                         decoration: InputDecoration(
+                          labelText: 'Full Name',
+                          icon: Icon(Icons.account_circle),
+                          border: OutlineInputBorder(),
+                          fillColor: Colors.white,
+                          filled: true,
+                        ),
+                        controller: _fullname,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your full name';
+                          }
+                          return null;
+                        },
+                      ),
+                      SizedBox(height: 20),
+                      TextFormField(
+                        decoration: InputDecoration(
                           labelText: 'Username',
                           icon: Icon(Icons.account_circle),
                           border: OutlineInputBorder(),
                           fillColor: Colors.white,
                           filled: true,
                         ),
+                        controller: _uname,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter a username';
@@ -122,6 +143,20 @@ class _RegisterPageState extends State<RegisterPage> {
                         onPressed: () {
                           // Validate returns true if the form is valid, or false otherwise.
                           if (_formKey.currentState!.validate()) {
+                            register(_uname.text, _mail.text, _fullname.text, _password.text).then((status){
+                              if(status == "SUCCESS"){
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(content: Text('Account successfully registered')),
+                                );
+                              }
+                              else
+                              {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(content: Text('Error registering account')),
+                                );
+                              }
+                            });
+
                             // If the form is valid, display a snackbar. In the real world,
                             // you'd often call a server or save the information in a database.
                             ScaffoldMessenger.of(context).showSnackBar(
@@ -131,6 +166,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         },
                         child: const Text('Register'),
                         style: ElevatedButton.styleFrom(
+
                           primary: const Color(0xFF05445E),
                           padding: EdgeInsets.symmetric(
                               vertical: 20.0, horizontal: 50.0),
