@@ -38,7 +38,7 @@ Future<String> register(String Username, String Email, String Fullname, String P
     body: body,
   );
 
-  if (response.statusCode == 200) {
+  if (response.statusCode == 201) {
     return "SUCCESS";
   } else {
     // Error
