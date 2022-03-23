@@ -44,11 +44,7 @@ class NavBar extends StatefulWidget {
 class _NavBarState extends State<NavBar> {
   int _selectedIndex = 0;
 
-  final _pages = [
-    TripFeed(),
-    AddEventPage(),
-    ProfilePage()
-  ];
+  final _pages = [TripFeed(), AddEventPage(), ProfilePage()];
 
   void _onItemTapped(int index) {
     setState(() {
