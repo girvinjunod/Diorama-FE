@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'package:diorama_id/follows.dart';
 import 'package:diorama_id/login.dart';
 import 'package:flutter/material.dart';
 import 'home.dart';
@@ -43,7 +44,7 @@ class _NavBarState extends State<NavBar> {
 
   final _pages = [
     TripFeed(),
-    TripFeed(),
+    FollowPage(),
     ProfilePage()
   ];
 
