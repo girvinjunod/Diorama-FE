@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'package:diorama_id/edit_profile.dart';
 import 'package:diorama_id/login.dart';
 import 'package:flutter/material.dart';
 import 'home.dart';
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Diorama',
-      home: const LoginPage(),
+      home: const EditProfilePage(),
       theme: ThemeData(
         appBarTheme: AppBarTheme(
             backgroundColor: Colors.cyan.shade700,
