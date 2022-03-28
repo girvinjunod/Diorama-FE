@@ -34,12 +34,6 @@ class EditProfile {
 
     var res = await request.send();
 
-    print("reason: ");
-    print(res.reasonPhrase);
-    print(res.statusCode);
-    print(res.headers);
-    print(res.request?.headers);
-
     if (res.statusCode == 200) {
       return "SUCCESS";
     }
