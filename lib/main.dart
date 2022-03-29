@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'home.dart';
 import 'profile.dart';
 import 'login.dart';
-import 'register.dart';
+import 'search.dart';
 
 void main() {
   runApp(const MyApp());
@@ -59,6 +59,23 @@ class _NavBarState extends State<NavBar> {
       appBar: AppBar(
         title: const Text('Diorama',
             style: TextStyle(fontFamily: 'Condiment', fontSize: 35)),
+        actions: <Widget>[
+          Padding(
+            padding: EdgeInsets.only(right: 20.0),
+            child: GestureDetector(
+              onTap: () {
+                 Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const SearchPage()),
+                );
+              },
+              child: Icon(
+                Icons.search,
+                size: 26.0,
+              ),
+            )
+          )
+        ],
       ),
       body: _pages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
