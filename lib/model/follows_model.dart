@@ -33,7 +33,7 @@ Future<List> fetchFollowers(String UserID) async {
     }
     return [json,imglist];
   } else {
-    throw Exception('Failed to load followed users');
+    return [[],[]];
   }
 
 }
@@ -49,15 +49,6 @@ Future<List> fetchFollowing(String UserID) async {
     }
     return [json,imglist];
   } else {
-    throw Exception('Failed to load followed users');
-  }
-}
-
-Future<Uint8List> fetchPhoto(String UserID) async{
-  final response = await http.get(Uri.parse('http://127.0.0.1:3000/getPPByID/$UserID'));
-  if (response.statusCode == 200) {
-    return response.bodyBytes;
-  } else {
-    throw Exception('Failed to load followed users');
+    return [[],[]];
   }
 }

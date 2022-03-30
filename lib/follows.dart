@@ -27,8 +27,6 @@ class _FollowPageState extends State<FollowPage>
     fetchFollowers(_userID.toString()).then((list){
       _followerList = list[0];
       _followPics = list[1];
-      // print("follow list: "+_followerList.list.length.toString());
-      // print("follow pics list: " + _followPics.length.toString());
       InitFollowerList();
       setState(() {});
     });
@@ -36,8 +34,6 @@ class _FollowPageState extends State<FollowPage>
     fetchFollowing(_userID.toString()).then((list){
       _followingList = list[0];
       _followingPics = list[1];
-      // print("follow list: "+_followingList.list.length.toString());
-      // print("follow pics list: " + _followingPics.length.toString());
       InitFollowingList();
       setState(() {});
     });
@@ -45,7 +41,6 @@ class _FollowPageState extends State<FollowPage>
     getUserData(_userID.toString()).then((userdata){
       setState(() {
         _username = userdata["username"];
-        // print(_username);
       });
     });
   }
