@@ -15,13 +15,12 @@ class _SearchPageState extends State<SearchPage> {
   final _searchWidget = <Widget>[];
   var _searchPics = [];
   var _isSearched = false;
-  //String _query = "g";
   var success = false;
 
   @override
   void initState() {
     super.initState();
-    // fetchSearch(_query).then((list) {
+    // fetchSearch("g").then((list) {
     //   if (list[0].length!=0)
     //   {
     //     _noResults = false;
@@ -40,7 +39,7 @@ class _SearchPageState extends State<SearchPage> {
     _searchWidget.clear();
     _isSearched = true;
     fetchSearch(_textcontroller.text).then((list) {
-      if (list[0].length!=0)
+      if (list.length != 0)
       {
         _noResults = false;
         _searchList = list[0];

@@ -9,7 +9,7 @@ class Search {
 
   factory Search.fromJson(Map<String, dynamic> json) {
     return Search(
-      list: json['response'],
+      list: json['users'],
     );
   }
 }
@@ -21,13 +21,13 @@ Future<List> fetchSearch(String query) async {
   if (response.statusCode == 200) {
     Search json = Search.fromJson(jsonDecode(response.body));
     for (var element in json.list){
-      final img = await http.get(Uri.parse('http://127.0.0.1:3000/getPPByID/${element["userId"]}'));
+      final img = await http.get(Uri.parse('http://127.0.0.1:3000/getPPByID/${element["id"]}'));
       imglist.add(img.bodyBytes);
     }
     return [json,imglist];
   } else {
     // No users found
-    return [[],[]];
+    return [];
   }
 
 }
