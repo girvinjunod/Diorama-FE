@@ -1,3 +1,4 @@
+import 'package:diorama_id/Utils/edit_profile_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 
@@ -19,6 +20,7 @@ class EditPasswordPageState extends State<EditPasswordPage> {
     String oldPassword = "old";
     String newPassword = "new";
     String valPassword = "val";
+    int userID = 1;
 
     return Scaffold(
         backgroundColor: Color.fromARGB(255, 255, 255, 255),
@@ -120,7 +122,12 @@ class EditPasswordPageState extends State<EditPasswordPage> {
                           _formKey.currentState!.save();
                           String message = "";
                           if (newPassword == valPassword) {
-                            message = "Password Changed Successfully";
+                            var response = EditProfile.ChangePassRequest(userID, oldPassword, newPassword);
+                            if (response == "SUCCESS") {
+                              message = "Password Changed Successfully";
+                            } else {
+                              message = "Error occurred. Cannot change your password.";
+                            }
                           } else {
                             message = "Confirm Password False";
                           }

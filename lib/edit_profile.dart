@@ -1,3 +1,4 @@
+import 'package:diorama_id/Utils/edit_profile_api.dart';
 import 'package:flutter/material.dart';
 import 'edit_password.dart';
 import 'package:http/http.dart';
@@ -11,24 +12,27 @@ class EditProfilePage extends StatefulWidget {
 }
 
 class EditProfilePageState extends State<EditProfilePage> {
-  // String data = "";
-  // Future<Null> _fetchDataUser() async {
-  //   String url = "http://127.0.0.1:3000/getUserByID/1";
-  //   final response = await get(url as Uri);
+  Future<Map<String, dynamic>> _fetchDataUser() async {
+    String url = "http://127.0.0.1:3000/getUserByID/1";
+    final response = await get(url as Uri);
 
-  //   data = response.body.toString();
-  // }
+    var res_body = json.decode(response.body) as Map<String, dynamic>;
+    return res_body;
+  }
+
+  late Future<Map<String, dynamic>> data;
 
   String? Uname = null;
   String? Name = null;
   String? Email = null;
+  int userID = 1;
+  String message = "";
 
   @override
   Widget build(BuildContext context) {
     // Build a Form widget using the _formKey created above.
     final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
     TextEditingController msgController = TextEditingController();
-    //String msg = "aaaa";
 
     return Scaffold(
         backgroundColor: Color.fromARGB(255, 255, 255, 255),
@@ -53,8 +57,12 @@ class EditProfilePageState extends State<EditProfilePage> {
                 // save form
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
-
-                  final message = "Profile Changed Successfully";
+                  var response = EditProfile.EditUserDetail(userID, Uname, Name, Email);
+                  if (response == "SUCCESS") {
+                    message = "Profile Changed Successfully";
+                  } else {
+                    message = "Error occurred. Cannot change your password.";
+                  }
                   final snackBar = SnackBar(
                     content: Text(
                       message,
@@ -131,7 +139,7 @@ class EditProfilePageState extends State<EditProfilePage> {
                     ),
                     TextFormField(
                       decoration: const InputDecoration(
-                          hintText: 'old username',
+                          hintText: 'old email',
                           hintStyle:
                               TextStyle(height: 2, fontWeight: FontWeight.bold),
                           labelText: 'Email',

@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 
 class EditProfile {
 
-  Future<String> ChangePassRequest(userID, old_password, new_password) async {
+  static Future<String> ChangePassRequest(userID, old_password, new_password) async {
     var data = {
       "UserId": userID,
       "OldPassword": old_password,
@@ -23,7 +23,7 @@ class EditProfile {
     return "ERROR";
   }
 
-  Future<String?> ChangePPRequest(userID, var file) async {
+  static Future<String?> ChangePPRequest(userID, var file) async {
     var request = http.MultipartRequest(
         'POST', Uri.parse('http://127.0.0.1:3000/setUserPP'));
     request.headers["Content-Type"] = 'multipart/form-data';
@@ -42,7 +42,7 @@ class EditProfile {
     }
   }
 
-  Future<String> EditUserDetail(userID, Username, Name, Email) async {
+  static Future<String> EditUserDetail(userID, Username, Name, Email) async {
     var data = {
       "UserId": userID,
       "Username": Username,
