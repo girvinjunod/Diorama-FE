@@ -46,11 +46,6 @@ class _TripFeedState extends State<TripFeed> {
                     )
                   ],
                 )
-                // child: const Text(
-                //   "Profile Name + PP",
-                //   textAlign: TextAlign.left,
-                // ),
-
                 ),
           ),
           SizedBox(
