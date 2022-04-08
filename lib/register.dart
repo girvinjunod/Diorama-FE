@@ -16,9 +16,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _password = TextEditingController();
   final TextEditingController _confirm = TextEditingController();
   final TextEditingController _mail = TextEditingController();
-  String usernameUser = "";
-  String passwordUser = "";
-  String emailUser = "";
+  static final usernameValid = RegExp(r'^[a-zA-Z0-9]+$');
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +41,9 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                       SizedBox(height: 40),
                       TextFormField(
+                        maxLength: 50,
                         decoration: InputDecoration(
+                          errorMaxLines: 3,
                           labelText: 'Email',
                           icon: Icon(Icons.mail),
                           hintText: 'example@example.com',
@@ -67,7 +67,9 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                       SizedBox(height: 20),
                       TextFormField(
+                        maxLength: 30,
                         decoration: InputDecoration(
+                          errorMaxLines: 3,
                           labelText: 'Username',
                           icon: Icon(Icons.account_circle),
                           border: OutlineInputBorder(),
@@ -78,6 +80,10 @@ class _RegisterPageState extends State<RegisterPage> {
                           if (value == null || value.isEmpty) {
                             return 'Please enter a username';
                           }
+                          if (!usernameValid.hasMatch(value))
+                          {
+                            return 'Please use only alphanumeric characters';
+                          }
                           return null;
                         },
                         onChanged: (value){
@@ -87,6 +93,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       SizedBox(height: 20),
                       TextFormField(
                         decoration: InputDecoration(
+                          errorMaxLines: 3,
                           labelText: 'Password',
                           icon: Icon(Icons.lock),
                           border: OutlineInputBorder(),
@@ -111,6 +118,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       SizedBox(height: 20),
                       TextFormField(
                         decoration: InputDecoration(
+                          errorMaxLines: 3,
                           labelText: 'Confirm Password',
                           icon: Icon(Icons.lock_outline),
                           border: OutlineInputBorder(),
