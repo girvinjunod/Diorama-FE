@@ -61,6 +61,9 @@ class _RegisterPageState extends State<RegisterPage> {
                           }
                           return null;
                         },
+                        onChanged: (value){
+                          emailUser = value.toString();
+                        },
                       ),
                       SizedBox(height: 20),
                       TextFormField(
@@ -83,6 +86,9 @@ class _RegisterPageState extends State<RegisterPage> {
                           }
                           return null;
                         },
+                        onChanged: (value){
+                          usernameUser = value.toString();
+                        },
                       ),
                       SizedBox(height: 20),
                       TextFormField(
@@ -104,6 +110,9 @@ class _RegisterPageState extends State<RegisterPage> {
                             return 'Password must be at least 6 characters long';
                           }
                           return null;
+                        },
+                        onChanged: (value){
+                          passwordUser = value.toString();
                         },
                       ),
                       SizedBox(height: 20),

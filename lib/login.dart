@@ -1,6 +1,6 @@
 import 'package:diorama_id/register.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/gestures.dart';
+import 'utils/AuthAPI.dart';
 import 'main.dart';
 
 class LoginPage extends StatefulWidget {
@@ -13,6 +13,8 @@ class LoginPage extends StatefulWidget {
 class LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   bool _hidePassword = true;
+  String usernameUser = "";
+  String passwordUser = "";
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +53,9 @@ class LoginPageState extends State<LoginPage> {
                         }
                         return null;
                       },
+                      onChanged: (value){
+                        usernameUser = value.toString();
+                      },
                     ),
                     SizedBox(height: 20),
                     TextFormField(
@@ -68,21 +73,26 @@ class LoginPageState extends State<LoginPage> {
                         }
                         return null;
                       },
+                      onChanged: (value){
+                        passwordUser = value.toString();
+                      },
                     ),
                     SizedBox(height: 40),
                     ElevatedButton(
                       onPressed: () {
-                        // Validate returns true if the form is valid, or false otherwise.
                         if (_formKey.currentState!.validate()) {
-                          // If the form is valid, display a snackbar. In the real world,
-                          // you'd often call a server or save the information in a database.
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Loading...')),
+                            const SnackBar(content: Text('Please wait...')),
                           );
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => const NavBar()),
-                          );
+                          var response = AuthApi.loginRequest(usernameUser, passwordUser);
+                          if (response == true){
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => const NavBar()),
+                            );
+                          } else{
+                            //gagal
+                          }
                         }
                       },
                       child: const Text('Login'),
