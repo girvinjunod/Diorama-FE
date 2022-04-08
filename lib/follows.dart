@@ -1,4 +1,3 @@
-import 'package:diorama_id/main.dart';
 import 'package:flutter/material.dart';
 import 'model/follows_model.dart';
 class FollowPage extends StatefulWidget {
@@ -11,7 +10,7 @@ class FollowPage extends StatefulWidget {
 class _FollowPageState extends State<FollowPage>
     with SingleTickerProviderStateMixin {
   late TabController _controller;
-  int _userID = 1; // which user's follow page
+  final int _userID = 1; // which user's follow page
   late Followers _followerList;
   late Followers _followingList;
   final followerWidget = <Widget>[];
@@ -23,18 +22,18 @@ class _FollowPageState extends State<FollowPage>
   @override
   void initState() {
     super.initState();
-    _controller = new TabController(vsync: this, length: 2);
+    _controller = TabController(vsync: this, length: 2);
     fetchFollowers(_userID.toString()).then((list){
       _followerList = list[0];
       _followPics = list[1];
-      InitFollowerList();
+      initFollowerList();
       setState(() {});
     });
 
     fetchFollowing(_userID.toString()).then((list){
       _followingList = list[0];
       _followingPics = list[1];
-      InitFollowingList();
+      initFollowingList();
       setState(() {});
     });
 
@@ -45,7 +44,7 @@ class _FollowPageState extends State<FollowPage>
     });
   }
 
-  void InitFollowerList() {
+  void initFollowerList() {
     for(var i=0;i<_followerList.list.length;i++)
     {
       followerWidget.add(
@@ -54,14 +53,14 @@ class _FollowPageState extends State<FollowPage>
             height: 100,
             width: double.infinity,
             alignment: Alignment.centerLeft,
-            padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
+            padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
             child: CircleAvatar(
               radius: 40,
               backgroundImage: MemoryImage(_followPics[i]),
               backgroundColor: Colors.transparent,
             ),
           ),
-          Container(
+          SizedBox(
             height: 100,
             width: double.infinity,
             child: SizedBox(
@@ -75,8 +74,9 @@ class _FollowPageState extends State<FollowPage>
                         if (states.contains(
                                 MaterialState.pressed) ||
                             states.contains(
-                                MaterialState.hovered))
+                                MaterialState.hovered)) {
                           return const Color(0x10000000);
+                        }
                         return Colors.transparent;
                       },
                     ),
@@ -86,11 +86,11 @@ class _FollowPageState extends State<FollowPage>
                     height: 100,
                     width: double.infinity,
                     alignment: Alignment.centerLeft,
-                    padding: EdgeInsets.fromLTRB(100, 8, 4, 8),
+                    padding: const EdgeInsets.fromLTRB(100, 8, 4, 8),
                     child: RichText(
                       text: TextSpan(
                         text: _followerList.list[i]['username'],
-                        style: TextStyle(
+                        style: const TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.w700,
                             fontSize: 16.0),
@@ -141,7 +141,7 @@ class _FollowPageState extends State<FollowPage>
     }
   }
 
-  void InitFollowingList() {
+  void initFollowingList() {
     for(var i=0;i<_followingList.list.length;i++)
     {
       followingWidget.add(
@@ -150,14 +150,14 @@ class _FollowPageState extends State<FollowPage>
             height: 100,
             width: double.infinity,
             alignment: Alignment.centerLeft,
-            padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
+            padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
             child: CircleAvatar(
               radius: 40,
               backgroundImage: MemoryImage(_followingPics[i]),
               backgroundColor: Colors.transparent,
             ),
           ),
-          Container(
+          SizedBox(
             height: 100,
             width: double.infinity,
             child: SizedBox(
@@ -171,8 +171,9 @@ class _FollowPageState extends State<FollowPage>
                         if (states.contains(
                                 MaterialState.pressed) ||
                             states.contains(
-                                MaterialState.hovered))
+                                MaterialState.hovered)) {
                           return const Color(0x10000000);
+                        }
                         return Colors.transparent;
                       },
                     ),
@@ -182,11 +183,11 @@ class _FollowPageState extends State<FollowPage>
                     height: 100,
                     width: double.infinity,
                     alignment: Alignment.centerLeft,
-                    padding: EdgeInsets.fromLTRB(100, 8, 4, 8),
+                    padding: const EdgeInsets.fromLTRB(100, 8, 4, 8),
                     child: RichText(
                       text: TextSpan(
                         text: _followingList.list[i]['username'],
-                        style: TextStyle(
+                        style: const TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.w700,
                             fontSize: 16.0),
@@ -247,10 +248,10 @@ class _FollowPageState extends State<FollowPage>
             color: const Color(0xFFFFFFFF),
             child: Column(children: [
               Padding(
-                padding: EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(16.0),
                 child: Text(
                   _username,
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
                 ),
               ),
               Container(
@@ -262,7 +263,7 @@ class _FollowPageState extends State<FollowPage>
                   controller: _controller,
                   labelColor: Colors.white,
                   unselectedLabelColor: Colors.black,
-                  tabs: [
+                  tabs: const [
                     Tab(child: Text('Following')),
                     Tab(child: Text('Followers')),
                   ],

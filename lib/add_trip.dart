@@ -11,10 +11,10 @@ class AddTripPage extends StatefulWidget {
 
 class _AddTripPageState extends State<AddTripPage> {
   final _formKey = GlobalKey<FormState>();
-  TextEditingController _tripName = TextEditingController();
-  TextEditingController _startDate = TextEditingController();
-  TextEditingController _endDate = TextEditingController();
-  TextEditingController _locationName = TextEditingController();
+  final TextEditingController _tripName = TextEditingController();
+  final TextEditingController _startDate = TextEditingController();
+  final TextEditingController _endDate = TextEditingController();
+  final TextEditingController _locationName = TextEditingController();
 
   @override
   void initState() {
@@ -40,15 +40,15 @@ class _AddTripPageState extends State<AddTripPage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(
+                      const Text(
                         'Add New Trip',
                         style: TextStyle(
-                            fontSize: 26, color: const Color(0xFF05445E)),
+                            fontSize: 26, color: Color(0xFF05445E)),
                       ),
-                      SizedBox(height: 40),
+                      const SizedBox(height: 40),
                       TextFormField(
                         maxLength: 50,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           errorMaxLines: 3,
                           labelText: 'Trip Name',
                           icon: Icon(Icons.airplane_ticket_rounded),
@@ -64,9 +64,9 @@ class _AddTripPageState extends State<AddTripPage> {
                           return null;
                         },
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       TextFormField(
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           errorMaxLines: 3,
                           labelText: 'Start Date',
                           icon: Icon(Icons.calendar_today),
@@ -97,9 +97,9 @@ class _AddTripPageState extends State<AddTripPage> {
                           return null;
                         },
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       TextFormField(
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           errorMaxLines: 3,
                           labelText: 'End Date',
                           icon: Icon(Icons.calendar_today_outlined),
@@ -127,18 +127,18 @@ class _AddTripPageState extends State<AddTripPage> {
                           if (value == null || value.isEmpty) {
                             return 'Please enter an end date';
                           }
-                          DateTime sd = new DateFormat("yyyy-MM-dd").parse(_startDate.text);
-                          DateTime ed = new DateFormat("yyyy-MM-dd").parse(value);
+                          DateTime sd = DateFormat("yyyy-MM-dd").parse(_startDate.text);
+                          DateTime ed = DateFormat("yyyy-MM-dd").parse(value);
                           if (ed.isBefore(sd)) {
                             return "End date earlier than start date";
                           }
                           return null;
                         },
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       TextFormField(
                         maxLength: 50,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           errorMaxLines: 3,
                           labelText: 'Location',
                           icon: Icon(Icons.edit_location),
@@ -154,7 +154,7 @@ class _AddTripPageState extends State<AddTripPage> {
                           return null;
                         },
                       ),
-                      SizedBox(height: 40),
+                      const SizedBox(height: 40),
                       ElevatedButton(
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
@@ -178,18 +178,18 @@ class _AddTripPageState extends State<AddTripPage> {
                         child: const Text('Create Trip',
                             style: TextStyle(
                                 fontSize: 22,
-                                color: const Color(0xFFFFFFFF),
+                                color: Color(0xFFFFFFFF),
                                 fontWeight: FontWeight.w400)),
                         style: ElevatedButton.styleFrom(
-                          minimumSize: Size.fromHeight(40),
+                          minimumSize: const Size.fromHeight(40),
                           primary: const Color(0xFF189AB4),
-                          padding: EdgeInsets.all(15),
-                          shape: new RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(10.0),
+                          padding: const EdgeInsets.all(15),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
                           ),
                         ),
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                     ]),
               ),
             ),
