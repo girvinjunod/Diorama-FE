@@ -17,7 +17,7 @@ class AuthApi {
         }
     );
     var response_body = json.decode(response.body) as Map<String, dynamic>;
-    return response_body["error"];
+    return response_body;
   }
 
   static Future<Map<String,dynamic>> RegisterRequest(username, email, name, password) async {

@@ -2,15 +2,12 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:diorama_id/edit_profile.dart';
 import 'package:diorama_id/login.dart';
 import 'package:flutter/material.dart';
-import 'add_event.dart';
 import 'home.dart';
 import 'profile.dart';
 import 'login.dart';
 import 'search.dart';
-import 'register.dart';
 import 'add_trip.dart';
 
 void main() {
@@ -45,7 +42,7 @@ class NavBar extends StatefulWidget {
 class _NavBarState extends State<NavBar> {
   int _selectedIndex = 0;
 
-  final _pages = [TripFeed(), AddTripPage(), ProfilePage()];
+  final _pages = [const TripFeed(), const AddTripPage(), const ProfilePage()];
 
   void _onItemTapped(int index) {
     setState(() {
@@ -61,7 +58,7 @@ class _NavBarState extends State<NavBar> {
             style: TextStyle(fontFamily: 'Condiment', fontSize: 35)),
         actions: <Widget>[
           Padding(
-            padding: EdgeInsets.only(right: 20.0),
+            padding: const EdgeInsets.only(right: 20.0),
             child: GestureDetector(
               onTap: () {
                  Navigator.push(
@@ -69,7 +66,7 @@ class _NavBarState extends State<NavBar> {
                   MaterialPageRoute(builder: (context) => const SearchPage()),
                 );
               },
-              child: Icon(
+              child: const Icon(
                 Icons.search,
                 size: 26.0,
               ),

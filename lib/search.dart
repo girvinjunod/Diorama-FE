@@ -10,7 +10,7 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage> {
   late Search _searchList;
-  TextEditingController _textcontroller = TextEditingController();
+  final TextEditingController _textcontroller = TextEditingController();
   var _noResults = true;
   final _searchWidget = <Widget>[];
   var _searchPics = [];
@@ -39,12 +39,12 @@ class _SearchPageState extends State<SearchPage> {
     _searchWidget.clear();
     _isSearched = true;
     fetchSearch(_textcontroller.text).then((list) {
-      if (list.length != 0)
+      if (list.isNotEmpty)
       {
         _noResults = false;
         _searchList = list[0];
         _searchPics = list[1];
-        InitSearchList();
+        initSearchList();
       }
       else{
          _noResults = true;
@@ -53,7 +53,7 @@ class _SearchPageState extends State<SearchPage> {
     });
   }
 
-  void InitSearchList() {
+  void initSearchList() {
     for (var i = 0; i < _searchList.list.length; i++) {
       _searchWidget.add(
         Stack(children: <Widget>[
@@ -61,14 +61,14 @@ class _SearchPageState extends State<SearchPage> {
             height: 100,
             width: double.infinity,
             alignment: Alignment.centerLeft,
-            padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
+            padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
             child: CircleAvatar(
               radius: 40,
               backgroundImage: MemoryImage(_searchPics[i]),
               backgroundColor: Colors.transparent,
             ),
           ),
-          Container(
+          SizedBox(
             height: 100,
             width: double.infinity,
             child: SizedBox(
@@ -79,8 +79,9 @@ class _SearchPageState extends State<SearchPage> {
                     backgroundColor: MaterialStateProperty.resolveWith<Color>(
                       (Set<MaterialState> states) {
                         if (states.contains(MaterialState.pressed) ||
-                            states.contains(MaterialState.hovered))
+                            states.contains(MaterialState.hovered)) {
                           return const Color(0x10000000);
+                        }
                         return Colors.transparent;
                       },
                     ),
@@ -90,11 +91,11 @@ class _SearchPageState extends State<SearchPage> {
                     height: 100,
                     width: double.infinity,
                     alignment: Alignment.centerLeft,
-                    padding: EdgeInsets.fromLTRB(100, 8, 4, 8),
+                    padding: const EdgeInsets.fromLTRB(100, 8, 4, 8),
                     child: RichText(
                       text: TextSpan(
                         text: _searchList.list[i]['username'],
-                        style: TextStyle(
+                        style: const TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.w700,
                             fontSize: 16.0),
@@ -113,8 +114,8 @@ class _SearchPageState extends State<SearchPage> {
     return Scaffold(
       appBar: AppBar(
         title: TextField(
-              style: TextStyle(color: Colors.white),
-              decoration: InputDecoration(
+              style: const TextStyle(color: Colors.white),
+              decoration: const InputDecoration(
                 hintText: 'Enter username',
                 border: InputBorder.none,
               ),
@@ -126,13 +127,13 @@ class _SearchPageState extends State<SearchPage> {
             ),
         actions: <Widget>[
           Padding(
-            padding: EdgeInsets.only(right: 20.0),
+            padding: const EdgeInsets.only(right: 20.0),
             child: GestureDetector(
               onTap: () {
                 // Search
                 getSearchResults();
               },
-              child: Icon(
+              child: const Icon(
                 Icons.search,
                 size: 26.0,
               ),
@@ -148,10 +149,10 @@ class _SearchPageState extends State<SearchPage> {
             child: Column(children: [
               Visibility(child: Container(
                 alignment: Alignment.centerLeft,
-                padding: EdgeInsets.all(18.0),
+                padding: const EdgeInsets.all(18.0),
                 child: Text(
                   "Search results for \"" + _textcontroller.text + "\"",
-                  style: TextStyle(fontSize: 20, color: const Color(0xFF05445E)),
+                  style: const TextStyle(fontSize: 20, color: Color(0xFF05445E)),
                 ),
               ),
               visible: _isSearched,
@@ -161,15 +162,15 @@ class _SearchPageState extends State<SearchPage> {
                       child: Stack(children: <Widget>[
                     Container(
                         alignment: Alignment.center,
-                        padding: EdgeInsets.fromLTRB(0, 100, 0, 0),
+                        padding: const EdgeInsets.fromLTRB(0, 100, 0, 0),
                         color: const Color(0xFFF1F1F1),
-                        child: Text("No results found",
+                        child: const Text("No results found",
                             style: TextStyle(
-                                color: const Color(0xFF05445E),
+                                color: Color(0xFF05445E),
                                 fontSize: 20.0))),
                     Container(
                         alignment: Alignment.center,
-                        padding: EdgeInsets.fromLTRB(0, 0, 0, 50),
+                        padding: const EdgeInsets.fromLTRB(0, 0, 0, 50),
                         child: Image.asset("images/notfound.png"))
                   ])),
                   visible: _noResults && _isSearched),

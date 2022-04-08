@@ -12,7 +12,7 @@ class LoginPage extends StatefulWidget {
 
 class LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
-  bool _hidePassword = true;
+  final bool _hidePassword = true;
   String usernameUser = "";
   String passwordUser = "";
 
@@ -32,14 +32,14 @@ class LoginPageState extends State<LoginPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Image.asset('images/logo.png'),
-                    SizedBox(height: 40),
-                    Text(
+                    const SizedBox(height: 40),
+                    const Text(
                       'Login',
                       style: TextStyle(fontSize: 32),
                     ),
-                    SizedBox(height: 40),
+                    const SizedBox(height: 40),
                     TextFormField(
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'Username',
                         icon: Icon(Icons.account_circle),
                         hintText: 'username',
@@ -57,9 +57,9 @@ class LoginPageState extends State<LoginPage> {
                         usernameUser = value.toString();
                       },
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     TextFormField(
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'Password',
                         icon: Icon(Icons.lock),
                         border: OutlineInputBorder(),
@@ -77,40 +77,43 @@ class LoginPageState extends State<LoginPage> {
                         passwordUser = value.toString();
                       },
                     ),
-                    SizedBox(height: 40),
+                    const SizedBox(height: 40),
                     ElevatedButton(
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(content: Text('Please wait...')),
                           );
-                          var response = AuthApi.loginRequest(usernameUser, passwordUser);
-                          if (response == true){
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => const NavBar()),
+                          AuthApi.loginRequest(usernameUser, passwordUser).then((response){
+                            if (response["error"] == null){
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => const NavBar()),
                             );
                           } else{
-                            //gagal
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('Login failed. Please enter a correct username and password.')),
+                            );
                           }
+                          });
                         }
                       },
                       child: const Text('Login'),
                       style: ElevatedButton.styleFrom(
                         primary: const Color(0xFF05445E),
-                        padding: EdgeInsets.symmetric(
+                        padding: const EdgeInsets.symmetric(
                             vertical: 20.0, horizontal: 50.0),
                       ),
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     RichText(
                       text: TextSpan(children: [
-                        TextSpan(
+                        const TextSpan(
                             text: 'Do not have an account? ',
                             style: TextStyle(color: Colors.black)),
                         WidgetSpan(
                             child: GestureDetector(
-                          child: Text(
+                          child: const Text(
                             'Register',
                             style: TextStyle(
                               decoration: TextDecoration.underline,
@@ -121,7 +124,7 @@ class LoginPageState extends State<LoginPage> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => RegisterPage()),
+                                  builder: (context) => const RegisterPage()),
                             );
                           },
                         ))
