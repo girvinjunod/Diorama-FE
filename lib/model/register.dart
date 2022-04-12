@@ -7,7 +7,11 @@ class NewUser {
   final String Fullname;
   final String Password;
 
-  const NewUser({required this.Username, required this.Email, required this.Fullname, required this.Password});
+  const NewUser(
+      {required this.Username,
+      required this.Email,
+      required this.Fullname,
+      required this.Password});
 
   factory NewUser.fromJson(Map<String, dynamic> json) {
     return NewUser(
@@ -19,7 +23,8 @@ class NewUser {
   }
 }
 
-Future<String> register(String Username, String Email, String Fullname, String Password) async {
+Future<String> register(
+    String Username, String Email, String Fullname, String Password) async {
   String body = jsonEncode(<String, dynamic>{
     'Username': Username,
     'Email': Email,
@@ -30,7 +35,7 @@ Future<String> register(String Username, String Email, String Fullname, String P
   //print(body);
 
   final response = await http.post(
-    Uri.parse('http://127.0.0.1:3000/register'),
+    Uri.parse('https://diorama-id.herokuapp.com/register'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       'Accept': 'application/json',

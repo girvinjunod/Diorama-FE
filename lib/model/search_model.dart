@@ -15,19 +15,20 @@ class Search {
 }
 
 Future<List> fetchSearch(String query) async {
-  final response = await http.get(Uri.parse('http://127.0.0.1:3000/searchUser/$query'));
-  
+  final response = await http
+      .get(Uri.parse('https://diorama-id.herokuapp.com/searchUser/$query'));
+
   var imglist = [];
   if (response.statusCode == 200) {
     Search json = Search.fromJson(jsonDecode(response.body));
-    for (var element in json.list){
-      final img = await http.get(Uri.parse('http://127.0.0.1:3000/getPPByID/${element["id"]}'));
+    for (var element in json.list) {
+      final img = await http.get(Uri.parse(
+          'https://diorama-id.herokuapp.com/getPPByID/${element["id"]}'));
       imglist.add(img.bodyBytes);
     }
-    return [json,imglist];
+    return [json, imglist];
   } else {
     // No users found
     return [];
   }
-
 }

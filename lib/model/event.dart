@@ -3,8 +3,10 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 
-Future<String?> addEvent(String tripID, String userID, String caption, String eventDate, String postTime, var file) async {
-  var request = http.MultipartRequest('POST', Uri.parse('http://127.0.0.1:3000/addEvent'));
+Future<String?> addEvent(String tripID, String userID, String caption,
+    String eventDate, String postTime, var file) async {
+  var request = http.MultipartRequest(
+      'POST', Uri.parse('https://diorama-id.herokuapp.com/addEvent'));
   request.headers["Content-Type"] = 'multipart/form-data';
 
   request.fields["tripID"] = tripID;
@@ -29,10 +31,9 @@ Future<String?> addEvent(String tripID, String userID, String caption, String ev
   print(res.headers);
   print(res.request?.headers);
 
-  if(res.statusCode == 200){
+  if (res.statusCode == 200) {
     return "SUCCESS";
-  }
-  else{
+  } else {
     return res.reasonPhrase;
   }
 }
