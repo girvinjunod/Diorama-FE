@@ -88,8 +88,8 @@ class LoginPageState extends State<LoginPage> {
                               .then((response) {
                             if (response["error"] == null) {
                               Holder.token = response["token"];
-                              print(Holder.token);
-                              // Holder.userID = response['user_id'];
+                              // print(Holder.token);
+                              Holder.userID = response['user_id'];
                               // print(Holder.token);
                               Navigator.push(
                                 context,
