@@ -8,26 +8,28 @@ class TripFeed extends StatefulWidget {
   _TripFeedState createState() => _TripFeedState();
 }
 
-class _TripFeedState extends State<TripFeed> 
-  with SingleTickerProviderStateMixin {
+class _TripFeedState extends State<TripFeed>
+    with SingleTickerProviderStateMixin {
   int _userID = 2;
-  late Timeline timeline;
+  Timeline timeline = Timeline(list: []);
   final timelineeWidget = <Widget>[];
-  var eventPic = [];
   String _username = "username";
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
-    getUserData(_userID.toString()).then((value) {
+    asyncInitState();
+  }
+
+  void asyncInitState() async {
+    await getUserData(_userID.toString()).then((value) {
       setState(() {
         _username = value["username"];
       });
     });
-    getTimeline(_userID.toString()).then((value) {
-      print(value[0].list);
-      timeline = value[0];
-      eventPic = value[1];
+    await getTimeline(_userID.toString()).then((value) {
+      print(value.list);
+      timeline = value;
       setState(() {});
     });
   }
@@ -62,7 +64,8 @@ class _TripFeedState extends State<TripFeed>
                   children: <Widget>[
                     CircleAvatar(
                       radius: 20, // Image radius
-                      backgroundImage: MemoryImage(eventPic[index]),
+                      backgroundImage: NetworkImage(
+                          "https://diorama-id.herokuapp.com/getPPByID/${timeline.list[index]["userID"]}"),
                     ),
                     Padding(
                       padding: EdgeInsets.only(left: 10),
@@ -84,7 +87,7 @@ class _TripFeedState extends State<TripFeed>
               clipBehavior: Clip.hardEdge,
               fit: BoxFit.cover,
               child: Image.network(
-                timeline.list[index]["eventPicture"],
+                "https://diorama-id.herokuapp.com/getEventPictureByID/${timeline.list[index]["eventID"]}",
                 fit: BoxFit.cover,
               ),
             ),

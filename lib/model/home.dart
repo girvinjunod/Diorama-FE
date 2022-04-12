@@ -13,8 +13,9 @@ class Timeline {
   }
 }
 
-Future<dynamic> getUserData(String UserID) async{
-  final response = await http.get(Uri.parse('http://127.0.0.1:3000/getUserByID/$UserID'));
+Future<dynamic> getUserData(String UserID) async {
+  final response = await http
+      .get(Uri.parse('https://diorama-id.herokuapp.com/getUserByID/$UserID'));
   if (response.statusCode == 200) {
     return jsonDecode(response.body);
   } else {
@@ -22,16 +23,13 @@ Future<dynamic> getUserData(String UserID) async{
   }
 }
 
-Future<dynamic> getTimeline(String UserID) async{
-  final response = await http.get(Uri.parse('http://127.0.0.1:3000/getTimeline/$UserID'));
+Future<dynamic> getTimeline(String UserID) async {
+  final response = await http
+      .get(Uri.parse('https://diorama-id.herokuapp.com/getTimeline/$UserID'));
   var imglist = [];
   if (response.statusCode == 200) {
     Timeline json = Timeline.fromJson(jsonDecode(response.body));
-    for (var element in json.list) {
-      final img = await http.get(Uri.parse('http://127.0.0.1:3000/getEventPictureByID/${element["eventID"]}'));
-      imglist.add(img.bodyBytes);
-    }
-    return [json, imglist];
+    return json;
   } else {
     throw Exception('Failed to load timeline data');
   }
