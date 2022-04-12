@@ -58,20 +58,19 @@ class _NavBarState extends State<NavBar> {
             style: TextStyle(fontFamily: 'Condiment', fontSize: 35)),
         actions: <Widget>[
           Padding(
-            padding: const EdgeInsets.only(right: 20.0),
-            child: GestureDetector(
-              onTap: () {
-                 Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const SearchPage()),
-                );
-              },
-              child: const Icon(
-                Icons.search,
-                size: 26.0,
-              ),
-            )
-          )
+              padding: const EdgeInsets.only(right: 20.0),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const SearchPage()),
+                  );
+                },
+                child: const Icon(
+                  Icons.search,
+                  size: 26.0,
+                ),
+              ))
         ],
       ),
       body: _pages[_selectedIndex],
@@ -97,4 +96,10 @@ class _NavBarState extends State<NavBar> {
       ),
     );
   }
+}
+
+class Holder {
+  static String token = "";
+
+  static int userID = 0;
 }

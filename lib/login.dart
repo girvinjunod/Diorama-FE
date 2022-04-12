@@ -53,7 +53,7 @@ class LoginPageState extends State<LoginPage> {
                         }
                         return null;
                       },
-                      onChanged: (value){
+                      onChanged: (value) {
                         usernameUser = value.toString();
                       },
                     ),
@@ -73,7 +73,7 @@ class LoginPageState extends State<LoginPage> {
                         }
                         return null;
                       },
-                      onChanged: (value){
+                      onChanged: (value) {
                         passwordUser = value.toString();
                       },
                     ),
@@ -84,17 +84,25 @@ class LoginPageState extends State<LoginPage> {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(content: Text('Please wait...')),
                           );
-                          AuthApi.loginRequest(usernameUser, passwordUser).then((response){
-                            if (response["error"] == null){
+                          AuthApi.loginRequest(usernameUser, passwordUser)
+                              .then((response) {
+                            if (response["error"] == null) {
+                              Holder.token = response["token"];
+                              print(Holder.token);
+                              // Holder.userID = response['user_id'];
+                              // print(Holder.token);
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => const NavBar()),
-                            );
-                          } else{
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Login failed. Please enter a correct username and password.')),
-                            );
-                          }
+                                MaterialPageRoute(
+                                    builder: (context) => const NavBar()),
+                              );
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content: Text(
+                                        'Login failed. Please enter a correct username and password.')),
+                              );
+                            }
                           });
                         }
                       },

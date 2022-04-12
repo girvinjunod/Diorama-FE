@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:diorama_id/main.dart';
 import 'package:http/http.dart' as http;
 import 'dart:typed_data';
 
@@ -15,8 +16,17 @@ class Search {
 }
 
 Future<List> fetchSearch(String query) async {
-  final response = await http
-      .get(Uri.parse('https://diorama-id.herokuapp.com/searchUser/$query'));
+  var header = {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+    'Authorization': 'Bearer ${Holder.token}',
+  };
+  // print(header);
+  // print(Holder.token);
+  final response = await http.get(
+      Uri.parse('https://diorama-id.herokuapp.com/searchUser/$query'),
+      headers: header);
+  // print(response.body);
 
   var imglist = [];
   if (response.statusCode == 200) {
