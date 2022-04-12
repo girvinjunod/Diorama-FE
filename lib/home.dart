@@ -16,7 +16,6 @@ class _TripFeedState extends State<TripFeed>
   final timelineWidget = <Widget>[];
   var eventPic = [];
   String _username = "username";
-  late Future getData;
 
   // @override
   // void initState() {

@@ -49,7 +49,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
         backgroundColor: const Color(0xFFF1F1F1),
         body: FutureBuilder(
-          future: getProfile(_userID.toString()),
+          future: getUserData(_userID.toString()),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.data == null) {
               return Container(
@@ -58,7 +58,9 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               );
             } else {
-              // print(snapshot);
+              // Profile a = snapshot.data[0];
+              // print(a);
+              // return Text(a.name);
               return profileView(context, snapshot);
             }
           },
@@ -66,7 +68,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Widget profileView(BuildContext context, AsyncSnapshot snapshot) {
-    Profile _profile = Profile.fromJson(snapshot.data[0]);
+    Profile _profile = snapshot.data[0];
     var _profilepp = snapshot.data[1];
     return ListView(
       shrinkWrap: true,
@@ -173,12 +175,49 @@ class _ProfilePageState extends State<ProfilePage> {
             ],
           ),
         ),
-        tripListView(context, snapshot),
+        Container(
+            width: double.infinity,
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(18.0),
+                  color: Colors.white,
+                  child: Text(
+                    'Trips',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                ),
+              ),
+              Visibility(
+                child: SizedBox(height: 20),
+                visible: _noTrips,
+              ),
+              Visibility(
+                child: Text(
+                  'No trips available',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: const Color(0x95000000),
+                  ),
+                ),
+                visible: _noTrips,
+              ),
+              Visibility(
+                child: SizedBox(height: 20),
+                visible: _noTrips,
+              ),
+            ])),
+        Container(
+          child: tripListView(context, snapshot),
+        ),
       ],
     );
   }
 
-  Widget tripListView(BuildContext context, AsyncSnapshot snapshot) {
+  Widget tripListView(BuildContext context, AsyncSnapshot snap) {
     return Container(
       child: FutureBuilder(
           future: getTripFromUser(_userID.toString()),
@@ -190,7 +229,8 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               );
             } else {
-              // print(snapshot);
+              // print(snap.data);
+              // print(snapshot.data);
               return tripView(context, snapshot);
             }
           }),
@@ -198,10 +238,85 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Widget tripView(BuildContext context, AsyncSnapshot snapshot) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [],
+    return ListView.builder(
+      scrollDirection: Axis.vertical,
+      shrinkWrap: true,
+      itemCount: snapshot.data[0].length,
+      itemBuilder: (context, index) {
+        return tripCard(context, snapshot, index);
+      },
     );
+  }
+
+  Widget tripCard(BuildContext context, AsyncSnapshot snapshot, int index) {
+    return Stack(
+      children: <Widget>[
+        _tripPic(context, snapshot, index),
+        _tripText(context, snapshot, index),
+      ],
+    );
+  }
+
+  Widget _tripPic(BuildContext context, AsyncSnapshot snapshot, int index) {
+    var _img = snapshot.data[1][index];
+    print(snapshot.data[1]);
+    return Container(
+        height: 150,
+        width: double.infinity,
+        child: Image.memory(
+          _img,
+          fit: BoxFit.cover,
+        ));
+  }
+
+  Widget _tripText(BuildContext context, AsyncSnapshot snapshot, int index) {
+    dynamic _tripName = snapshot.data[0][index].TripName;
+    dynamic _tripStartDate = snapshot.data[0][index].StartDate;
+    dynamic _tripEndDate = snapshot.data[0][index].EndDate;
+    dynamic _tripLocation = snapshot.data[0][index].LocationName;
+    return Container(
+        height: 150,
+        child: SizedBox(
+            width: double.infinity,
+            height: double.infinity,
+            child: TextButton(
+                style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                  (Set<MaterialState> states) {
+                    if (states.contains(MaterialState.pressed) ||
+                        states.contains(MaterialState.hovered))
+                      return const Color(0x70000000);
+                    return Colors.transparent; // Use the component's default.
+                  },
+                )),
+                onPressed: () {},
+                child: Container(
+                    height: 150,
+                    width: double.infinity,
+                    alignment: Alignment.bottomLeft,
+                    padding: EdgeInsets.fromLTRB(4, 8, 4, 8),
+                    child: RichText(
+                      text: TextSpan(
+                        text: '$_tripName\n',
+                        style: TextStyle(color: Colors.white, fontSize: 22),
+                        children: <TextSpan>[
+                          TextSpan(
+                              text: '$_tripStartDate - $_tripEndDate\n',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 12,
+                                height: 1.5,
+                              )),
+                          TextSpan(
+                              text: '$_tripLocation\n',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 12,
+                                height: 1.5,
+                              )),
+                        ],
+                      ),
+                    )))));
   }
 }
 //   ListView(shrinkWrap: true, children: <Widget>[

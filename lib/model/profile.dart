@@ -2,18 +2,23 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class Profile {
-  final String userID;
+  final int userID;
   final String username;
   final String name;
+  final String email;
 
   const Profile(
-      {required this.userID, required this.username, required this.name});
+      {required this.userID,
+      required this.username,
+      required this.name,
+      required this.email});
 
   factory Profile.fromJson(Map<String, dynamic> json) {
     return Profile(
-      userID: json['userID'],
+      userID: json['id'],
       username: json['username'],
       name: json['name'],
+      email: json['email'],
     );
   }
 }
@@ -46,11 +51,11 @@ class TripDetail {
 
   factory TripDetail.fromJson(Map<String, dynamic> json) {
     return TripDetail(
-      UserID: json['UserID'],
-      StartDate: json['StartDate'],
-      EndDate: json['EndDate'],
-      TripName: json['TripName'],
-      LocationName: json['LocationName'],
+      UserID: json['userId'],
+      StartDate: json['startDate'],
+      EndDate: json['endDate'],
+      TripName: json['tripName'],
+      LocationName: json['locationName'],
     );
   }
 }
@@ -58,8 +63,13 @@ class TripDetail {
 Future<dynamic> getUserData(String UserID) async {
   final response =
       await http.get(Uri.parse('http://127.0.0.1:3000/getUserByID/$UserID'));
-  if (response.statusCode == 200) {
-    return Profile.fromJson(jsonDecode(response.body));
+  final img =
+      await http.get(Uri.parse('http://127.0.0.1:3000/getPPByID/$UserID'));
+  if (response.statusCode == 200 && img.statusCode == 200) {
+    dynamic res = Profile.fromJson(jsonDecode(response.body));
+    print(res);
+
+    return [res, img.bodyBytes];
   } else {
     throw Exception('Failed to load user data');
   }
@@ -76,8 +86,8 @@ Future<dynamic> getUserPP(String UserID) async {
 }
 
 Future<dynamic> getProfile(String UserID) async {
-  final user = getUserData(UserID);
-  final pp = getUserPP(UserID);
+  final user = await getUserData(UserID);
+  final pp = await getUserPP(UserID);
   return [user, pp];
 }
 
