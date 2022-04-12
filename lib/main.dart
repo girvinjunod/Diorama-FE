@@ -4,24 +4,41 @@
 
 import 'package:diorama_id/login.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'home.dart';
 import 'profile.dart';
 import 'login.dart';
 import 'search.dart';
 import 'add_trip.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  const storage = FlutterSecureStorage();
+  String? value = await storage.read(key: "jwt");
+  String? id = await storage.read(key: "userID");
+  // print(value);
+  if (value != null) {
+    Holder.token = value;
+    Holder.userID = id!;
+    runApp(MyApp(
+      jwt: value,
+    ));
+  } else {
+    runApp(const MyApp());
+  }
+  // runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  final String? jwt;
+  const MyApp({Key? key, this.jwt}) : super(key: key);
 
+//if jwt is not null, build with home equals Homepage, else LoginPage
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Diorama',
-      home: const LoginPage(),
+      home: jwt == null ? const LoginPage() : const NavBar(),
       theme: ThemeData(
         appBarTheme: AppBarTheme(
             backgroundColor: Colors.cyan.shade700,
@@ -101,5 +118,5 @@ class _NavBarState extends State<NavBar> {
 class Holder {
   static String token = "";
 
-  static int userID = 0;
+  static String userID = "-1";
 }

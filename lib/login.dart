@@ -2,6 +2,7 @@ import 'package:diorama_id/register.dart';
 import 'package:flutter/material.dart';
 import 'utils/AuthAPI.dart';
 import 'main.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -89,13 +90,22 @@ class LoginPageState extends State<LoginPage> {
                             if (response["error"] == null) {
                               Holder.token = response["token"];
                               // print(Holder.token);
-                              Holder.userID = response['user_id'];
+                              Holder.userID = response['user_id'].toString();
+                              // Create storage
+                              final storage = new FlutterSecureStorage();
+
+                              // Write value
+                              storage.write(key: 'jwt', value: Holder.token);
+                              storage.write(
+                                  key: 'userID', value: Holder.userID);
+
                               // print(Holder.token);
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const NavBar()),
-                              );
+                              Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const NavBar(),
+                                  ),
+                                  (r) => false);
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
