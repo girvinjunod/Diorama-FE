@@ -1,4 +1,6 @@
+import 'package:diorama_id/home_navigator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'model/home.dart';
 import 'dart:convert';
 
@@ -55,7 +57,7 @@ class _TripFeedState extends State<TripFeed>
     const double avatarDiameter = 44;
     Feed _feed = Feed.fromJson(snapshot.data[0].list[index]);
     return GestureDetector(
-        onTap: () {},
+        onTap: () => BlocProvider.of<HomeCubit>(context).showProfile(),
         child: Row(
           children: [
             Padding(
