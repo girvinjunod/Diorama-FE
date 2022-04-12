@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:diorama_id/main.dart';
 import 'package:http/http.dart' as http;
 import 'dart:typed_data';
 
@@ -15,8 +16,14 @@ class Followers {
 }
 
 Future<dynamic> getUserData(String UserID) async {
-  final response = await http
-      .get(Uri.parse('https://diorama-id.herokuapp.com/getUserByID/$UserID'));
+  var header = {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+    'Authorization': 'Bearer ${Holder.token}',
+  };
+  final response = await http.get(
+      Uri.parse('https://diorama-id.herokuapp.com/getUserByID/$UserID'),
+      headers: header);
   if (response.statusCode == 200) {
     return jsonDecode(response.body);
   } else {
@@ -25,8 +32,14 @@ Future<dynamic> getUserData(String UserID) async {
 }
 
 Future<List> fetchFollowers(String UserID) async {
-  final response = await http
-      .get(Uri.parse('https://diorama-id.herokuapp.com/getFollowers/$UserID'));
+  var header = {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+    'Authorization': 'Bearer ${Holder.token}',
+  };
+  final response = await http.get(
+      Uri.parse('https://diorama-id.herokuapp.com/getFollowers/$UserID'),
+      headers: header);
   var imglist = [];
   if (response.statusCode == 200) {
     Followers json = Followers.fromJson(jsonDecode(response.body));
@@ -42,8 +55,14 @@ Future<List> fetchFollowers(String UserID) async {
 }
 
 Future<List> fetchFollowing(String UserID) async {
+  var header = {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+    'Authorization': 'Bearer ${Holder.token}',
+  };
   final response = await http.get(
-      Uri.parse('https://diorama-id.herokuapp.com/getFollowedUsers/$UserID'));
+      Uri.parse('https://diorama-id.herokuapp.com/getFollowedUsers/$UserID'),
+      headers: header);
   var imglist = [];
   if (response.statusCode == 200) {
     Followers json = Followers.fromJson(jsonDecode(response.body));

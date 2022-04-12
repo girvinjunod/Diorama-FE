@@ -1,14 +1,20 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:diorama_id/main.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 
 Future<String?> addEvent(String tripID, String userID, String caption,
     String eventDate, String postTime, var file) async {
+  var header = {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+    'Authorization': 'Bearer ${Holder.token}',
+  };
   var request = http.MultipartRequest(
       'POST', Uri.parse('https://diorama-id.herokuapp.com/addEvent'));
   request.headers["Content-Type"] = 'multipart/form-data';
-
+  request.headers["Authorization"] = 'Bearer ${Holder.token}';
   request.fields["tripID"] = tripID;
   request.fields["userID"] = userID;
   request.fields["caption"] = caption;

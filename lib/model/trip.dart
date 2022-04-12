@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:diorama_id/main.dart';
 import 'package:http/http.dart' as http;
 
 class Trip {
@@ -43,6 +44,7 @@ Future<String> addTrip(int UserID, String StartDate, String EndDate,
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       'Accept': 'application/json',
+      'Authorization': 'Bearer ${Holder.token}',
     },
     body: body,
   );
