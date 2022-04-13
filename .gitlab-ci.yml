@@ -13,3 +13,5 @@ flutter_build_android:
       - build/app/outputs/apk/release/app-release.apk
   tags:
     - flutter
+  rules:
+    - if: $CI_COMMIT_TAG
