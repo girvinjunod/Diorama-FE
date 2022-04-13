@@ -17,9 +17,8 @@ Future<String?> addEvent(String tripID, String userID, String caption,
   // request.fields["postTime"] = postTime;
 
   final eventImage = http.MultipartFile.fromBytes(
-    'picture',
-    await File.fromUri(Uri.parse(path)).readAsBytes(),
-  );
+      'picture', await File.fromUri(Uri.parse(path)).readAsBytes(),
+      contentType: MediaType('image', 'jpeg'));
   // final eventImage = await http.MultipartFile.fromPath('picture', file);
   request.files.add(eventImage);
 
