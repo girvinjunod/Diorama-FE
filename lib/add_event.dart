@@ -4,6 +4,7 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'model/event.dart';
+
 class AddEventPage extends StatefulWidget {
   const AddEventPage({Key? key}) : super(key: key);
 
@@ -77,24 +78,24 @@ class _AddEventPageState extends State<AddEventPage> {
                             primary: const Color(0xffD4F1F4),
                             padding: EdgeInsets.all(15),
                             shape: new RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(10.0),
-                                side: BorderSide(color: const Color(0xFF189AB4), width: 2)
-                            ),
+                                borderRadius: new BorderRadius.circular(10.0),
+                                side: BorderSide(
+                                    color: const Color(0xFF189AB4), width: 2)),
                           ),
                         ),
                         visible: _isNotPicked,
                       ),
                       Visibility(
                         child: _imageFile != null
-                        ? (kIsWeb)
-                          ? Image.memory(_imageFile)
-                          : Image.file(_imageFile)
-                        : SizedBox(height: 0),
+                            ? (kIsWeb)
+                                ? Image.memory(_imageFile)
+                                : Image.file(_imageFile)
+                            : SizedBox(height: 0),
                         visible: _imageFile != null,
                       ),
                       Visibility(
                         child: SizedBox(height: 40),
-                        visible: _isNotPicked==false,
+                        visible: _isNotPicked == false,
                       ),
                       Visibility(
                         child: ElevatedButton(
@@ -111,12 +112,12 @@ class _AddEventPageState extends State<AddEventPage> {
                             primary: const Color(0xffD4F1F4),
                             padding: EdgeInsets.all(15),
                             shape: new RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(10.0),
-                                side: BorderSide(color: const Color(0xFF189AB4), width: 2)
-                            ),
+                                borderRadius: new BorderRadius.circular(10.0),
+                                side: BorderSide(
+                                    color: const Color(0xFF189AB4), width: 2)),
                           ),
                         ),
-                        visible: _isNotPicked==false,
+                        visible: _isNotPicked == false,
                       ),
                       SizedBox(height: 40),
                       TextFormField(
@@ -170,32 +171,34 @@ class _AddEventPageState extends State<AddEventPage> {
                       ElevatedButton(
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
-                            if (_isNotPicked)
-                            {
+                            if (_isNotPicked) {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text('Please upload an image')),
+                                const SnackBar(
+                                    content: Text('Please upload an image')),
                               );
-                            }
-                            else
-                            {
+                            } else {
                               // Success, send event
                               DateTime now = DateTime.now();
-                              String postTime = DateFormat('yyyy-MM-dd kk:mm:ss').format(now);
-                              addEvent("1", "1", _caption.text, _startDate.text, postTime, _imageFile).then((status){
-                                if(status == "SUCCESS"){
+                              String postTime =
+                                  DateFormat('yyyy-MM-dd kk:mm:ss').format(now);
+                              addEvent("1", "1", _caption.text, _startDate.text,
+                                      postTime, _imageFile, _imagePath)
+                                  .then((status) {
+                                if (status == "SUCCESS") {
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(content: Text('Trip successfully added')),
+                                    const SnackBar(
+                                        content:
+                                            Text('Trip successfully added')),
                                   );
-                                }
-                                else
-                                {
+                                } else {
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(content: Text('Error adding trip')),
+                                    const SnackBar(
+                                        content: Text('Error adding trip')),
                                   );
                                 }
                               });
-                              }
                             }
+                          }
                         },
                         child: const Text('Create Event',
                             style: TextStyle(
@@ -222,20 +225,20 @@ class _AddEventPageState extends State<AddEventPage> {
   _getFromGallery() async {
     ImagePicker picker = ImagePicker();
     XFile? pickedFile = await picker.pickImage(source: ImageSource.gallery);
-    _imagePath = pickedFile;
     if (pickedFile != null) {
-      if(kIsWeb){
+      if (kIsWeb) {
         var f = await pickedFile.readAsBytes();
         setState(() {
+          _imagePath = pickedFile.path;
+          print(_imagePath);
           _imageFile = f;
         });
       } else {
         setState(() {
           _imageFile = File(pickedFile.path);
+          _imagePath = pickedFile.path;
         });
       }
     }
   }
-
 }
-

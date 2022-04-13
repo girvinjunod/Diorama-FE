@@ -10,6 +10,7 @@ import 'profile.dart';
 import 'login.dart';
 import 'search.dart';
 import 'add_trip.dart';
+import 'add_event.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -59,7 +60,7 @@ class NavBar extends StatefulWidget {
 class _NavBarState extends State<NavBar> {
   int _selectedIndex = 0;
 
-  final _pages = [const TripFeed(), const AddTripPage(), const ProfilePage()];
+  final _pages = [const TripFeed(), const AddEventPage(), const ProfilePage()];
 
   void _onItemTapped(int index) {
     setState(() {
