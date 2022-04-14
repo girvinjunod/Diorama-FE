@@ -1,7 +1,8 @@
 import 'package:diorama_id/register.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/gestures.dart';
+import 'utils/AuthAPI.dart';
 import 'main.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -12,7 +13,9 @@ class LoginPage extends StatefulWidget {
 
 class LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
-  bool _hidePassword = true;
+  final bool _hidePassword = true;
+  String usernameUser = "";
+  String passwordUser = "";
 
   @override
   Widget build(BuildContext context) {
@@ -30,14 +33,14 @@ class LoginPageState extends State<LoginPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Image.asset('images/logo.png'),
-                    SizedBox(height: 40),
-                    Text(
+                    const SizedBox(height: 40),
+                    const Text(
                       'Login',
                       style: TextStyle(fontSize: 32),
                     ),
-                    SizedBox(height: 40),
+                    const SizedBox(height: 40),
                     TextFormField(
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'Username',
                         icon: Icon(Icons.account_circle),
                         hintText: 'username',
@@ -51,10 +54,13 @@ class LoginPageState extends State<LoginPage> {
                         }
                         return null;
                       },
+                      onChanged: (value) {
+                        usernameUser = value.toString();
+                      },
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     TextFormField(
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'Password',
                         icon: Icon(Icons.lock),
                         border: OutlineInputBorder(),
@@ -68,39 +74,64 @@ class LoginPageState extends State<LoginPage> {
                         }
                         return null;
                       },
+                      onChanged: (value) {
+                        passwordUser = value.toString();
+                      },
                     ),
-                    SizedBox(height: 40),
+                    const SizedBox(height: 40),
                     ElevatedButton(
                       onPressed: () {
-                        // Validate returns true if the form is valid, or false otherwise.
                         if (_formKey.currentState!.validate()) {
-                          // If the form is valid, display a snackbar. In the real world,
-                          // you'd often call a server or save the information in a database.
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Loading...')),
+                            const SnackBar(content: Text('Please wait...')),
                           );
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => const NavBar()),
-                          );
+                          AuthApi.loginRequest(usernameUser, passwordUser)
+                              .then((response) {
+                            if (response["error"] == null) {
+                              Holder.token = response["token"];
+                              // print(Holder.token);
+                              Holder.userID = response['user_id'].toString();
+                              // Create storage
+                              final storage = new FlutterSecureStorage();
+
+                              // Write value
+                              storage.write(key: 'jwt', value: Holder.token);
+                              storage.write(
+                                  key: 'userID', value: Holder.userID);
+
+                              // print(Holder.token);
+                              Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const NavBar(),
+                                  ),
+                                  (r) => false);
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content: Text(
+                                        'Login failed. Please enter a correct username and password.')),
+                              );
+                            }
+                          });
                         }
                       },
                       child: const Text('Login'),
                       style: ElevatedButton.styleFrom(
                         primary: const Color(0xFF05445E),
-                        padding: EdgeInsets.symmetric(
+                        padding: const EdgeInsets.symmetric(
                             vertical: 20.0, horizontal: 50.0),
                       ),
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     RichText(
                       text: TextSpan(children: [
-                        TextSpan(
+                        const TextSpan(
                             text: 'Do not have an account? ',
                             style: TextStyle(color: Colors.black)),
                         WidgetSpan(
                             child: GestureDetector(
-                          child: Text(
+                          child: const Text(
                             'Register',
                             style: TextStyle(
                               decoration: TextDecoration.underline,
@@ -111,7 +142,7 @@ class LoginPageState extends State<LoginPage> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => RegisterPage()),
+                                  builder: (context) => const RegisterPage()),
                             );
                           },
                         ))

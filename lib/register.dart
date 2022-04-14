@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/gestures.dart';
 import 'package:email_validator/email_validator.dart';
 import 'login.dart';
 import 'model/register.dart';
@@ -13,7 +12,7 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
-  bool _hidePassword = true;
+  final bool _hidePassword = true;
   final TextEditingController _uname = TextEditingController();
   final TextEditingController _fullname = TextEditingController();
   final TextEditingController _password = TextEditingController();
@@ -36,14 +35,14 @@ class _RegisterPageState extends State<RegisterPage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Image.asset('images/logo.png'),
-                      SizedBox(height: 40),
-                      Text(
+                      const SizedBox(height: 40),
+                      const Text(
                         'Register',
                         style: TextStyle(fontSize: 32),
                       ),
-                      SizedBox(height: 40),
+                      const SizedBox(height: 40),
                       TextFormField(
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'Email',
                           icon: Icon(Icons.mail),
                           hintText: 'example@example.com',
@@ -62,9 +61,9 @@ class _RegisterPageState extends State<RegisterPage> {
                           return null;
                         },
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       TextFormField(
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'Full Name',
                           icon: Icon(Icons.account_circle),
                           border: OutlineInputBorder(),
@@ -79,9 +78,9 @@ class _RegisterPageState extends State<RegisterPage> {
                           return null;
                         },
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       TextFormField(
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'Username',
                           icon: Icon(Icons.account_circle),
                           border: OutlineInputBorder(),
@@ -96,9 +95,9 @@ class _RegisterPageState extends State<RegisterPage> {
                           return null;
                         },
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       TextFormField(
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'Password',
                           icon: Icon(Icons.lock),
                           border: OutlineInputBorder(),
@@ -117,9 +116,9 @@ class _RegisterPageState extends State<RegisterPage> {
                           return null;
                         },
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       TextFormField(
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'Confirm Password',
                           icon: Icon(Icons.lock_outline),
                           border: OutlineInputBorder(),
@@ -138,7 +137,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           return null;
                         },
                       ),
-                      SizedBox(height: 40),
+                      const SizedBox(height: 40),
                       ElevatedButton(
                         onPressed: () {
                           // Validate returns true if the form is valid, or false otherwise.
@@ -147,6 +146,13 @@ class _RegisterPageState extends State<RegisterPage> {
                               if(status == "SUCCESS"){
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(content: Text('Account successfully registered')),
+                                );
+                                Navigator.pushAndRemoveUntil<dynamic>(
+                                  context,
+                                  MaterialPageRoute<dynamic>(
+                                    builder: (BuildContext context) => const LoginPage(),
+                                  ),
+                                  (route) => false,
                                 );
                               }
                               else
@@ -168,19 +174,19 @@ class _RegisterPageState extends State<RegisterPage> {
                         style: ElevatedButton.styleFrom(
 
                           primary: const Color(0xFF05445E),
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                               vertical: 20.0, horizontal: 50.0),
                         ),
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       RichText(
                         text: TextSpan(children: [
-                          TextSpan(
+                          const TextSpan(
                               text: 'Already have an account? ',
                               style: TextStyle(color: Colors.black)),
                           WidgetSpan(
                               child: GestureDetector(
-                            child: Text(
+                            child: const Text(
                               'Login',
                               style: TextStyle(
                                 decoration: TextDecoration.underline,
@@ -188,11 +194,13 @@ class _RegisterPageState extends State<RegisterPage> {
                               ),
                             ),
                             onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => LoginPage()),
-                              );
+                              Navigator.pushAndRemoveUntil<dynamic>(
+                              context,
+                              MaterialPageRoute<dynamic>(
+                                builder: (BuildContext context) => const LoginPage(),
+                              ),
+                              (route) => false,
+                            );
                             },
                           )),
                         ]),
