@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'main.dart';
 import 'model/trip.dart';
 
 class AddTripPage extends StatefulWidget {
@@ -158,8 +159,7 @@ class _AddTripPageState extends State<AddTripPage> {
                       ElevatedButton(
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
-                            // User id temporarily hardcoded as 1
-                            addTrip(1, _startDate.text, _endDate.text, _tripName.text, _locationName.text).then((status){
+                            addTrip(int.parse(Holder.userID), _startDate.text, _endDate.text, _tripName.text, _locationName.text).then((status){
                               if(status == "SUCCESS"){
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(content: Text('Trip successfully added')),
