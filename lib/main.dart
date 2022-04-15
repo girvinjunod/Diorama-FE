@@ -8,7 +8,7 @@ import 'home.dart';
 import 'profile.dart';
 import 'login.dart';
 import 'register.dart';
-import 'detail_trip.dart';
+import 'detail_event.dart';
 
 void main() {
   runApp(const MyApp());
