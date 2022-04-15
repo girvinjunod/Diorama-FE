@@ -60,14 +60,14 @@ class TripDetail {
   }
 }
 
-Future<dynamic> getUserData(String UserID) async {
+Future<dynamic> getUser(String UserID) async {
   final response =
       await http.get(Uri.parse('http://127.0.0.1:3000/getUserByID/$UserID'));
   final img =
       await http.get(Uri.parse('http://127.0.0.1:3000/getPPByID/$UserID'));
   if (response.statusCode == 200 && img.statusCode == 200) {
     dynamic res = Profile.fromJson(jsonDecode(response.body));
-    print(res);
+    // print(res);
 
     return [res, img.bodyBytes];
   } else {
@@ -86,7 +86,7 @@ Future<dynamic> getUserPP(String UserID) async {
 }
 
 Future<dynamic> getProfile(String UserID) async {
-  final user = await getUserData(UserID);
+  final user = await getUser(UserID);
   final pp = await getUserPP(UserID);
   return [user, pp];
 }
@@ -94,7 +94,7 @@ Future<dynamic> getProfile(String UserID) async {
 Future<dynamic> getTripFromUser(String UserID) async {
   final response =
       await http.get(Uri.parse('http://127.0.0.1:3000/getTripsByUser/$UserID'));
-  print(response.body.runtimeType);
+  // print(response.body.runtimeType);
   var imgTripList = [];
   var tripList = [];
   if (response.statusCode == 200) {

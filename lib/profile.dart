@@ -1,6 +1,7 @@
 import 'package:diorama_id/main.dart';
 import 'package:flutter/material.dart';
 import 'package:diorama_id/model/profile.dart';
+import 'model/follows_model.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -15,23 +16,27 @@ class _ProfilePageState extends State<ProfilePage> {
   String _username = "";
   var _trips = [];
   var _tripPictures = [];
+  var followings = [];
+  late Followers _followingList;
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   getUserData(_userID.toString()).then((value) {
-  //     setState(() {
-  //       profile = Profile.fromJson(value);
-  //       _username = profile.username;
-  //     });
-  //   });
-  //   getTripFromUser(_userID.toString()).then((value) {
-  //     setState(() {
-  //       _trips = value[0];
-  //       _tripPictures = value[1];
-  //     });
-  //   });
-  // }
+  @override
+  void initState() {
+    super.initState();
+
+    fetchFollowing(_userID.toString()).then((list) {
+      _followingList = list[0];
+      print(_followingList.list);
+      setState(() {});
+    });
+
+    // if(FirebaseAuth.instance.currentUser() != null){
+
+    //   Navigator.of(context).pushReplacement(MaterialPageRoute(
+    //     builder: (context) => HomeScreen()
+    //   ));
+    // }
+  }
+
   // Apakah username berbeda dari name user?
   bool _isUsernameVisible = true;
 
@@ -49,7 +54,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
         backgroundColor: const Color(0xFFF1F1F1),
         body: FutureBuilder(
-          future: getUserData(_userID.toString()),
+          future: getUser(_userID.toString()),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.data == null) {
               return Container(
@@ -70,6 +75,15 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget profileView(BuildContext context, AsyncSnapshot snapshot) {
     Profile _profile = snapshot.data[0];
     var _profilepp = snapshot.data[1];
+    if (_profile.name == _profile.username) {
+      _isUsernameVisible = false;
+    }
+    if (_profile.userID == _userID) {
+      _isSelfProfile = true;
+    }
+    // if (_followingList.list["userID"].contains(_profile.userID)) {
+    //   _isFollowed = true;
+    // }
     return ListView(
       shrinkWrap: true,
       children: <Widget>[
@@ -223,10 +237,13 @@ class _ProfilePageState extends State<ProfilePage> {
           future: getTripFromUser(_userID.toString()),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.data == null) {
-              return Container(
-                child: Center(
-                  child: Text("Loading..."),
+              return Visibility(
+                child: Container(
+                  child: Center(
+                    child: Text("No Trips Available"),
+                  ),
                 ),
+                visible: _noTrips,
               );
             } else {
               // print(snap.data);
@@ -259,14 +276,24 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Widget _tripPic(BuildContext context, AsyncSnapshot snapshot, int index) {
     var _img = snapshot.data[1][index];
-    print(snapshot.data[1]);
-    return Container(
-        height: 150,
-        width: double.infinity,
-        child: Image.memory(
-          _img,
-          fit: BoxFit.cover,
-        ));
+    print(snapshot.data[1][1]);
+    if (snapshot.data[1][index].length == 0) {
+      return Container(
+        child: Center(
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Text("No Image"),
+        ])),
+      );
+    } else {
+      return Container(
+          height: 150,
+          width: double.infinity,
+          child: Image.memory(
+            _img,
+            fit: BoxFit.cover,
+          ));
+    }
   }
 
   Widget _tripText(BuildContext context, AsyncSnapshot snapshot, int index) {
