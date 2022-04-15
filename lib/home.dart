@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'detail_trip.dart';
 
 class TripFeed extends StatefulWidget {
   const TripFeed({Key? key}) : super(key: key);
@@ -54,7 +55,15 @@ class _TripFeedState extends State<TripFeed> {
             child: FittedBox(
               clipBehavior: Clip.hardEdge,
               fit: BoxFit.cover,
-              child: Image.asset("images/car.png"),
+              child: InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const DetailTripPage()),
+                    );
+                  },
+                  child: Image.asset("images/car.png")),
             ),
           ),
           Padding(
