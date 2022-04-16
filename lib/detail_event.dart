@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 import 'model/detail_event_model.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'detail_trip.dart';
 
 class DetailEventPage extends StatefulWidget {
   final int eventID;
-  const DetailEventPage(this.eventID, {Key? key}) : super(key: key);
+  final int tripID;
+  const DetailEventPage(this.eventID, this.tripID, {Key? key})
+      : super(key: key);
 
   @override
-  DetailEventPageState createState() => DetailEventPageState(this.eventID);
+  DetailEventPageState createState() =>
+      DetailEventPageState(this.eventID, this.tripID);
 }
 
 // ketika buka page ini yang dipassing adalah username pengguna, dan eventID
@@ -21,7 +27,8 @@ class DetailEventPageState extends State<DetailEventPage> {
 
   //ini harusnya tidak hardcode
   int eventID;
-  DetailEventPageState(this.eventID);
+  int tripID;
+  DetailEventPageState(this.eventID, this.tripID);
   var username = "username";
 
   @override
@@ -31,13 +38,99 @@ class DetailEventPageState extends State<DetailEventPage> {
     futureImgEvent = getEventPicture(eventID);
   }
 
+  void deleteEventDialog(int id) {
+    // set up the buttons
+    Widget noButton = TextButton(
+      child: Text("NO"),
+      style: ButtonStyle(
+          foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+          backgroundColor:
+              MaterialStateProperty.all<Color>(Colors.red.shade900)),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+    Widget yesButton = TextButton(
+      child: Text("YES"),
+      style: ButtonStyle(
+          foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+          backgroundColor:
+              MaterialStateProperty.all<Color>(Colors.cyan.shade900)),
+      onPressed: () {
+        deleteEvent(id);
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => DetailTripPage(tripID)),
+        );
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Delete Event"),
+      content: Text("Would you like to delete this event?"),
+      actions: [
+        noButton,
+        yesButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  void dialog(String msg) {
+    // set up the button
+    Widget okButton = TextButton(
+      child: Text("OK"),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Success"),
+      content: Text(msg),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  void deleteEvent(int eventID) async {
+    final http.Response response = await http
+        .delete(Uri.parse('http://127.0.0.1:3000/deleteEvent/${eventID}'));
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      var message = data["msg"];
+      dialog(message);
+    } else {
+      throw Exception('Failed to delete event.');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
             title: Text(username + "'s Event",
                 style: TextStyle(fontSize: 20, color: Colors.white))),
-        backgroundColor: const Color(0xFFF1F1F1),
+        backgroundColor: const Color(0xFFFFFFFF),
         body: Center(
           child: ListView(shrinkWrap: true, children: <Widget>[
             // untuk gambar
@@ -83,6 +176,8 @@ class DetailEventPageState extends State<DetailEventPage> {
                   builder: (context, AsyncSnapshot snapshot) {
                     if (snapshot.hasData) {
                       return Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Padding(
                               padding: EdgeInsets.fromLTRB(20, 20, 20, 5),
@@ -135,7 +230,9 @@ class DetailEventPageState extends State<DetailEventPage> {
                                 MaterialStateProperty.all<Color>(Colors.white),
                             backgroundColor: MaterialStateProperty.all<Color>(
                                 Colors.red.shade900)),
-                        onPressed: () {},
+                        onPressed: () {
+                          deleteEventDialog(eventID);
+                        },
                         child: const Text('Delete Event'),
                       )),
                 ),

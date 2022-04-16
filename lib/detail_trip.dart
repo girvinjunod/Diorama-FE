@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 import 'dart:convert';
 import 'detail_event.dart';
 import 'model/detail_trip_model.dart';
-import 'model/detail_event_model.dart';
+import 'package:http/http.dart' as http;
+import 'profile.dart';
 
 class DetailTripPage extends StatefulWidget {
-  const DetailTripPage({Key? key}) : super(key: key);
+  final int tripID;
+  const DetailTripPage(this.tripID, {Key? key}) : super(key: key);
 
   @override
-  DetailTripPageState createState() => DetailTripPageState();
+  DetailTripPageState createState() => DetailTripPageState(this.tripID);
 }
 
 // ketika buka page ini yang dipassing adalah username pengguna dan tripID
@@ -21,7 +22,8 @@ class DetailTripPageState extends State<DetailTripPage> {
   late Future<List> futureEvents;
 
   // harusnya tidak hardcode
-  int tripID = 1;
+  int tripID;
+  DetailTripPageState(this.tripID);
   var username = "username";
 
   @override
@@ -29,6 +31,89 @@ class DetailTripPageState extends State<DetailTripPage> {
     super.initState();
     futureDetailTrip = getDetailTrip(tripID);
     futureEvents = getAllEvent(tripID);
+  }
+
+  void deleteTripDialog(int id) {
+    // set up the buttons
+    Widget noButton = TextButton(
+      child: Text("NO"),
+      style: ButtonStyle(
+          foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+          backgroundColor:
+              MaterialStateProperty.all<Color>(Colors.red.shade900)),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+    Widget yesButton = TextButton(
+      child: Text("YES"),
+      style: ButtonStyle(
+          foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+          backgroundColor:
+              MaterialStateProperty.all<Color>(Colors.cyan.shade900)),
+      onPressed: () {
+        deleteTrip(id);
+        Navigator.pop(context);
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Delete Trip"),
+      content: Text("Would you like to delete this trip?"),
+      actions: [
+        noButton,
+        yesButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  void dialog(String msg) {
+    // set up the button
+    Widget okButton = TextButton(
+      child: Text("OK"),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Success"),
+      content: Text(msg),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  void deleteTrip(int tripID) async {
+    final http.Response response = await http
+        .delete(Uri.parse('http://127.0.0.1:3000/deleteTrip/${tripID}'));
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      var message = data["msg"];
+      dialog(message);
+    } else {
+      throw Exception('Failed to delete trip.');
+    }
   }
 
   @override
@@ -107,7 +192,8 @@ class DetailTripPageState extends State<DetailTripPage> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => DetailEventPage(
-                                            snapshot.data![0].EventID[i])),
+                                            snapshot.data![0].EventID[i],
+                                            tripID)),
                                   );
                                 },
                                 child: Container(
@@ -149,14 +235,14 @@ class DetailTripPageState extends State<DetailTripPage> {
                         ]));
                   } else if (snapshot.hasError) {
                     return Container(
-                        child: Center(child: Text('${snapshot.error}')));
+                        child: Center(child: Text('No Event Yet')));
                   }
                   return const CircularProgressIndicator();
                 }),
             // button delete
             Visibility(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 40, 40),
+                padding: const EdgeInsets.fromLTRB(20, 20, 40, 40),
                 child: Align(
                     alignment: Alignment.centerLeft,
                     child: TextButton(
@@ -165,7 +251,9 @@ class DetailTripPageState extends State<DetailTripPage> {
                               MaterialStateProperty.all<Color>(Colors.white),
                           backgroundColor: MaterialStateProperty.all<Color>(
                               Colors.red.shade900)),
-                      onPressed: () {},
+                      onPressed: () {
+                        deleteTripDialog(tripID);
+                      },
                       child: const Text('Delete Trip'),
                     )),
               ),

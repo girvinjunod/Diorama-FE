@@ -9,6 +9,9 @@ class TripFeed extends StatefulWidget {
 }
 
 class _TripFeedState extends State<TripFeed> {
+  //ini tidak hardcode
+  int tripID = 1;
+
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
@@ -65,7 +68,7 @@ class _TripFeedState extends State<TripFeed> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const DetailTripPage()),
+                          builder: (context) => DetailTripPage(tripID)),
                     );
                   },
                   child: Image.asset("images/car.png")),
