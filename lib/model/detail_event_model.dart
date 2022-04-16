@@ -32,8 +32,6 @@ class DetailEvent {
 }
 
 Future<DetailEvent> getDetailEvent(int EventID) async {
-  // final response = await http.get(Uri.parse('http://127.0.0.1:3000/searchUser/$query'));
-
   final response = await http
       .get(Uri.parse('http://127.0.0.1:3000/getEventDetailByID/${EventID}'));
 

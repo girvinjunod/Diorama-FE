@@ -87,7 +87,7 @@ class _TripFeedState extends State<TripFeed>
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const DetailTripPage()),
+                          builder: (context) => DetailTripPage(tripID)),
                     );
                   },
                   child: Image.network(

@@ -29,11 +29,7 @@ Future<List> getAllEvent(int tripID) async {
           'http://127.0.0.1:3000/getEventPictureByID/${eventID.EventID[i]}'));
       imglist.add(img.bodyBytes);
     }
-    // for (var element in eventID.EventID) {
-    //   final img = await http.get(
-    //       Uri.parse('http://127.0.0.1:3000/getEventPictureByID/${element}'));
-    //   imglist.add(img.bodyBytes);
-    // }
+
     return [eventID, imglist];
   } else {
     // If the server did not return a 200 OK response,
@@ -85,32 +81,3 @@ Future<DetailTrip> getDetailTrip(int tripID) async {
     throw Exception('Failed to load DetailEvent');
   }
 }
-
-// Future<List> getDetailTrip(int tripID) async {
-//   final response = await http
-//       .get(Uri.parse('http://127.0.0.1:3000/getTripDetailByID/${tripID}'));
-
-//   final response2 = await http
-//       .get(Uri.parse('http://127.0.0.1:3000/getEventsFromTrip/${tripID}'));
-
-//   if (response.statusCode == 200 && response2.statusCode == 200) {
-//     // If the server did return a 200 OK response,
-//     // then parse the JSON.
-//     DetailTrip detail = DetailTrip.fromJson(jsonDecode(response.body));
-
-//     AllEvent eventID = AllEvent.fromJson(jsonDecode(response.body));
-
-//     var imglist = [];
-//     for (var element in eventID.EventID) {
-//       final img = await http.get(
-//           Uri.parse('http://127.0.0.1:3000/getEventPictureByID/${element}'));
-//       imglist.add(img.bodyBytes);
-//     }
-
-//     return [detail, imglist];
-//   } else {
-//     // If the server did not return a 200 OK response,
-//     // then throw an exception.
-//     throw Exception('Failed to load DetailEvent');
-//   }
-// }
