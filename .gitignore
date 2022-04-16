@@ -23,6 +23,7 @@
 # Flutter/Dart/Pub related
 **/doc/api/
 **/ios/Flutter/.last_build_id
+.flutter
 .dart_tool/
 .flutter-plugins
 .flutter-plugins-dependencies
@@ -44,3 +45,8 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Windows
+/windows/flutter/generated_plugin_registrant.cc
+/windows/flutter/generated_plugin_registrant.h
+/windows/flutter/generated_plugins.cmake

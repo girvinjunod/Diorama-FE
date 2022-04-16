@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'detail_trip.dart';
+import 'model/home.dart';
 
 class TripFeed extends StatefulWidget {
   const TripFeed({Key? key}) : super(key: key);
@@ -8,28 +9,50 @@ class TripFeed extends StatefulWidget {
   _TripFeedState createState() => _TripFeedState();
 }
 
-class _TripFeedState extends State<TripFeed> {
-  //ini tidak hardcode
-  int tripID = 1;
+class _TripFeedState extends State<TripFeed>
+    with SingleTickerProviderStateMixin {
+  int _userID = 2;
+  Timeline timeline = Timeline(list: []);
+  final timelineeWidget = <Widget>[];
+  String _username = "username";
+
+  @override
+  void initState() {
+    super.initState();
+    asyncInitState();
+  }
+
+  void asyncInitState() async {
+    await getUserData(_userID.toString()).then((value) {
+      setState(() {
+        _username = value["username"];
+      });
+    });
+    await getTimeline(_userID.toString()).then((value) {
+      print(value.list);
+      timeline = value;
+      setState(() {});
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
       shrinkWrap: true,
-      itemCount: 5,
+      itemCount: timeline.list.length,
       padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
-      itemBuilder: (context, i) {
+      itemBuilder: (context, int index) {
         // final index = i ~/ 2;
         // print("$i $index");
         // if (index >= _suggestions.length) {
         //   _suggestions.addAll(generateWordPairs().take(10));
         // }
-        return _buildRow();
+        return _buildRow(index);
       },
     );
   }
 
-  Widget _buildRow() {
+  Widget _buildRow(int index) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
       child: Column(
@@ -39,22 +62,18 @@ class _TripFeedState extends State<TripFeed> {
             child: SizedBox(
                 width: double.infinity,
                 child: Row(
-                  children: const <Widget>[
+                  children: <Widget>[
                     CircleAvatar(
                       radius: 20, // Image radius
-                      backgroundImage: AssetImage('images/pp-temp.jpg'),
+                      backgroundImage: NetworkImage(
+                          "https://diorama-id.herokuapp.com/getPPByID/${timeline.list[index]["userID"]}"),
                     ),
                     Padding(
                       padding: EdgeInsets.only(left: 10),
-                      child: Text("username"),
+                      child: Text(timeline.list[index]["username"]),
                     )
                   ],
                 )
-                // child: const Text(
-                //   "Profile Name + PP",
-                //   textAlign: TextAlign.left,
-                // ),
-
                 ),
           ),
           SizedBox(
@@ -71,7 +90,10 @@ class _TripFeedState extends State<TripFeed> {
                           builder: (context) => DetailTripPage(tripID)),
                     );
                   },
-                  child: Image.asset("images/car.png")),
+                  child: Image.network(
+                "https://diorama-id.herokuapp.com/getEventPictureByID/${timeline.list[index]["eventID"]}",
+                fit: BoxFit.cover,
+              )),
             ),
           ),
           Padding(

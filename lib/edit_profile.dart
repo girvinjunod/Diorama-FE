@@ -13,7 +13,7 @@ class EditProfilePage extends StatefulWidget {
 class EditProfilePageState extends State<EditProfilePage> {
   // String data = "";
   // Future<Null> _fetchDataUser() async {
-  //   String url = "http://127.0.0.1:3000/getUserByID/1";
+  //   String url = "https://diorama-id.herokuapp.com/getUserByID/1";
   //   final response = await get(url as Uri);
 
   //   data = response.body.toString();
