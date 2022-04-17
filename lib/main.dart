@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'package:diorama_id/edit_profile.dart';
 import 'package:diorama_id/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -61,7 +62,7 @@ class NavBar extends StatefulWidget {
 class _NavBarState extends State<NavBar> {
   int _selectedIndex = 0;
 
-  final _pages = [const TripFeed(), const AddTripPage(), const ProfilePage()];
+  final _pages = [const TripFeed(), const AddTripPage(), ProfilePage(int.parse(Holder.userID))];
 
   void _onItemTapped(int index) {
     setState(() {

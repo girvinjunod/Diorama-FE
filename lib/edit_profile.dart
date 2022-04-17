@@ -1,3 +1,5 @@
+import 'package:diorama_id/Utils/edit_profile_api.dart';
+import 'package:diorama_id/main.dart';
 import 'package:flutter/material.dart';
 import 'edit_password.dart';
 import 'package:http/http.dart';
@@ -11,24 +13,19 @@ class EditProfilePage extends StatefulWidget {
 }
 
 class EditProfilePageState extends State<EditProfilePage> {
-  // String data = "";
-  // Future<Null> _fetchDataUser() async {
-  //   String url = "https://diorama-id.herokuapp.com/getUserByID/1";
-  //   final response = await get(url as Uri);
-
-  //   data = response.body.toString();
-  // }
+  late Future<Map<String, dynamic>> data;
 
   String? Uname = null;
   String? Name = null;
   String? Email = null;
+  int userID = int.parse(Holder.userID);
+  String message = "";
 
   @override
   Widget build(BuildContext context) {
     // Build a Form widget using the _formKey created above.
     final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
     TextEditingController msgController = TextEditingController();
-    //String msg = "aaaa";
 
     return Scaffold(
         backgroundColor: Color.fromARGB(255, 255, 255, 255),
@@ -41,6 +38,7 @@ class EditProfilePageState extends State<EditProfilePage> {
               ),
               onPressed: () {
                 // balik ke halaman profile
+                Navigator.pop(context,true);
               },
               child: Text('Cancel'),
             ),
@@ -53,8 +51,12 @@ class EditProfilePageState extends State<EditProfilePage> {
                 // save form
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
-
-                  final message = "Profile Changed Successfully";
+                  var response = EditProfile.EditUserDetail(userID, Uname, Name, Email);
+                  if (response == "SUCCESS") {
+                    message = "Profile updated successfully";
+                  } else {
+                    message = "Error occurred. Cannot update profile.";
+                  }
                   final snackBar = SnackBar(
                     content: Text(
                       message,
@@ -102,7 +104,7 @@ class EditProfilePageState extends State<EditProfilePage> {
                           floatingLabelBehavior: FloatingLabelBehavior.always),
                       validator: (String? value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter some text';
+                          return 'Please enter a name';
                         }
                         return null;
                       },
@@ -120,8 +122,8 @@ class EditProfilePageState extends State<EditProfilePage> {
                       validator: (String? value) {
                         if (value == null ||
                             value.isEmpty ||
-                            value.length < 7) {
-                          return 'Please enter minimum 7 words';
+                            value.length < 6) {
+                          return 'Please enter a valid username';
                         }
                         return null;
                       },
@@ -131,14 +133,14 @@ class EditProfilePageState extends State<EditProfilePage> {
                     ),
                     TextFormField(
                       decoration: const InputDecoration(
-                          hintText: 'old username',
+                          hintText: 'old email',
                           hintStyle:
                               TextStyle(height: 2, fontWeight: FontWeight.bold),
                           labelText: 'Email',
                           floatingLabelBehavior: FloatingLabelBehavior.always),
                       validator: (String? value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter some text';
+                          return 'Please enter an email';
                         }
                         return null;
                       },

@@ -131,3 +131,80 @@ Future<dynamic> getTripFromUser(String UserID) async {
     throw Exception('Failed to load trips');
   }
 }
+
+Future<String> fetchFollowStatus(String followerid, String followedid) async {
+  var header = {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+    'Authorization': 'Bearer ${Holder.token}',
+  };
+  final response = await http.get(
+      Uri.parse('https://diorama-id.herokuapp.com/checkIfFollowed/$followerid/$followedid'),
+      headers: header);
+
+  if (response.statusCode == 200) {
+    var ans = jsonDecode(response.body);
+    // print(response.body);
+    if(ans["is_followed"] == true)
+    {
+      return "YES";
+    }
+    else
+    {
+      return "NO";
+    }
+  } else {
+    return "ERROR";
+  }
+}
+
+Future<String> followUser(String followerid, String followedid) async {
+  var header = {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+    'Authorization': 'Bearer ${Holder.token}',
+  };
+  final response = await http.put(
+      Uri.parse('https://diorama-id.herokuapp.com/follow/$followerid/$followedid'),
+      headers: header);
+
+  if (response.statusCode == 200) {
+    var ans = jsonDecode(response.body);
+    if(ans["error"] == false)
+    {
+      return "SUCCESS";
+    }
+    else
+    {
+      return "ERROR";
+    }
+  } else {
+    return "ERROR";
+  }
+}
+
+Future<String> unfollowUser(String followerid, String followedid) async {
+  var header = {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+    'Authorization': 'Bearer ${Holder.token}',
+  };
+  final response = await http.delete(
+      Uri.parse('https://diorama-id.herokuapp.com/unfollow/$followerid/$followedid'),
+      headers: header);
+
+  // print(response.body);
+  if (response.statusCode == 200) {
+    var ans = jsonDecode(response.body);
+    if(ans["error"] == false)
+    {
+      return "SUCCESS";
+    }
+    else
+    {
+      return "ERROR";
+    }
+  } else {
+    return "ERROR";
+  }
+}

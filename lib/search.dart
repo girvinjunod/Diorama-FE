@@ -1,3 +1,4 @@
+import 'package:diorama_id/profile.dart';
 import 'package:flutter/material.dart';
 import 'model/search_model.dart';
 
@@ -86,7 +87,14 @@ class _SearchPageState extends State<SearchPage> {
                       },
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>  ProfilePage(_searchList.list[i]['id'])
+                      )
+                    );                   
+                  },
                   child: Container(
                     height: 100,
                     width: double.infinity,

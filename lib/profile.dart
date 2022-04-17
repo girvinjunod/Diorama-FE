@@ -6,14 +6,16 @@ import 'package:diorama_id/model/profile.dart';
 import 'model/follows_model.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({Key? key}) : super(key: key);
+  final int _userID;
+  const ProfilePage(this._userID, {Key? key}) : super(key: key);
 
   @override
-  _ProfilePageState createState() => _ProfilePageState();
+  _ProfilePageState createState() => _ProfilePageState(this._userID);
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  int _userID = 1;
+  int _userID;
+  _ProfilePageState(this._userID);
   // late Profile profile;
   String _username = "";
   var _trips = [];
@@ -24,7 +26,10 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
-
+    _isSelfProfile = int.parse(Holder.userID) == _userID;
+    fetchFollowStatus(Holder.userID, _userID.toString()).then((result){
+      _isFollowed = result == "YES";
+    });
     fetchFollowing(_userID.toString()).then((list) {
       _followingList = list[0];
       // print(_followingList.list);
@@ -54,6 +59,9 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+            title: Text("Profile",
+                style: TextStyle(fontSize: 20, color: Colors.white))),
         backgroundColor: const Color(0xFFF1F1F1),
         body: FutureBuilder(
           future: getUser(_userID.toString()),
@@ -79,9 +87,6 @@ class _ProfilePageState extends State<ProfilePage> {
     var _profilepp = snapshot.data[1];
     if (_profile.name == _profile.username) {
       _isUsernameVisible = false;
-    }
-    if (_profile.userID == _userID) {
-      _isSelfProfile = true;
     }
     // if (_followingList.list["userID"].contains(_profile.userID)) {
     //   _isFollowed = true;
@@ -164,8 +169,20 @@ class _ProfilePageState extends State<ProfilePage> {
                           EdgeInsets.fromLTRB(30, 15, 30, 15)),
                     ),
                     onPressed: () {
+                      followUser(Holder.userID, _userID.toString()).then((result){
+                        if(result == "SUCCESS")
+                        {
+                          _isFollowed = true;
+                        }
+                        else
+                        {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Error following.')),
+                          );
+                        }
+                      });
                       setState(() {
-                        _isFollowed = true;
+                        
                       });
                     }),
                 visible: (!_isSelfProfile && !_isFollowed),
@@ -196,8 +213,20 @@ class _ProfilePageState extends State<ProfilePage> {
                           EdgeInsets.fromLTRB(30, 15, 30, 15)),
                     ),
                     onPressed: () {
+                      unfollowUser(Holder.userID, _userID.toString()).then((result){
+                        if(result == "SUCCESS")
+                        {
+                          _isFollowed = false;
+                        }
+                        else
+                        {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Error unfollowing.')),
+                          );
+                        }
+                      });
                       setState(() {
-                        _isFollowed = false;
+                        
                       });
                     }),
                 visible: (!_isSelfProfile && _isFollowed),
