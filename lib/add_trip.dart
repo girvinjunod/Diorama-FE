@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:diorama_id/detail_trip.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'main.dart';
@@ -160,7 +163,7 @@ class _AddTripPageState extends State<AddTripPage> {
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
                             addTrip(int.parse(Holder.userID), _startDate.text, _endDate.text, _tripName.text, _locationName.text).then((status){
-                              if(status == "SUCCESS"){
+                              if(status != "ERROR"){
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(content: Text('Trip successfully added')),
                                 );

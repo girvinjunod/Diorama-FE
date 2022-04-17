@@ -1,3 +1,5 @@
+import 'package:diorama_id/main.dart';
+import 'package:diorama_id/model/detail_trip_model.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:image_picker/image_picker.dart';
@@ -6,32 +8,47 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'model/event.dart';
 
 class AddEventPage extends StatefulWidget {
-  const AddEventPage({Key? key}) : super(key: key);
+  final int tripID;
+  const AddEventPage(this.tripID, {Key? key}) : super(key: key);
 
   @override
-  _AddEventPageState createState() => _AddEventPageState();
+  _AddEventPageState createState() => _AddEventPageState(this.tripID);
 }
 
 class _AddEventPageState extends State<AddEventPage> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController _startDate = TextEditingController();
   TextEditingController _caption = TextEditingController();
-  String _tripName = "Trip: Tes Nama Trip";
-  String _dateRange = "(DD-MM-YYYY - DD-MM-YYYY)";
+  String startdate = "2000-01-01";
+  String enddate = "2000-01-01";
+  String _tripName = "";
+  String _dateRange = "";
   var _imageFile;
   var _imagePath;
   bool _isNotPicked = true;
+  int tripID;
+  _AddEventPageState(this.tripID);
 
   @override
   void initState() {
-    _startDate.text = "";
     super.initState();
+    _startDate.text = "";
+    getDetailTrip(tripID).then((result){
+      this._tripName = "Trip: " + result.TripName;
+      this._dateRange = "(" + result.StartDate + " - " + result.EndDate + ")";
+      this.startdate = result.StartDate;
+      this.enddate = result.EndDate;
+      setState(() {});
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     // Build a Form widget using the _formKey created above.
     return Scaffold(
+      appBar: AppBar(
+            title: Text("Add Event",
+                style: TextStyle(fontSize: 20, color: Colors.white))),
         backgroundColor: const Color(0xFFFFFFFF),
         body: Align(
           alignment: Alignment.topCenter,
@@ -45,12 +62,6 @@ class _AddEventPageState extends State<AddEventPage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(
-                        'Add New Event',
-                        style: TextStyle(
-                            fontSize: 26, color: const Color(0xFF05445E)),
-                      ),
-                      SizedBox(height: 20),
                       Text(
                         _tripName,
                         style: TextStyle(
@@ -149,6 +160,12 @@ class _AddEventPageState extends State<AddEventPage> {
                           if (value == null || value.isEmpty) {
                             return 'Please enter a date';
                           }
+                          DateTime eventdate = DateFormat("yyyy-MM-dd").parse(value);
+                          DateTime sd = DateFormat("yyyy-MM-dd").parse(startdate);
+                          DateTime ed = DateFormat("yyyy-MM-dd").parse(enddate);
+                          if (eventdate.isBefore(sd) || ed.isBefore(eventdate)) {
+                            return "Event date must be in trip date range";
+                          }
                           return null;
                         },
                       ),
@@ -181,15 +198,16 @@ class _AddEventPageState extends State<AddEventPage> {
                               DateTime now = DateTime.now();
                               String postTime =
                                   DateFormat('yyyy-MM-dd kk:mm:ss').format(now);
-                              addEvent("1", "1", _caption.text, _startDate.text,
+                              addEvent(tripID.toString(), Holder.userID, _caption.text, _startDate.text,
                                       postTime, _imageFile, _imagePath)
                                   .then((status) {
                                 if (status == "SUCCESS") {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
                                         content:
-                                            Text('Trip successfully added')),
+                                            Text('Event successfully added')),
                                   );
+                                  Navigator.pop(context,true);
                                 } else {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(

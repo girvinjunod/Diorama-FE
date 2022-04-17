@@ -1,18 +1,26 @@
 import 'package:flutter/material.dart';
 
 class CommentDetail extends StatefulWidget {
-  const CommentDetail({Key? key}) : super(key: key);
+  final int eventID;
+  const CommentDetail(this.eventID, {Key? key}) : super(key: key);
 
   @override
-  _CommentDetailState createState() => _CommentDetailState();
+  _CommentDetailState createState() => _CommentDetailState(this.eventID);
 }
 
 class _CommentDetailState extends State<CommentDetail> {
+  int eventID;
+  _CommentDetailState(this.eventID);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+            title: Text("Comments",
+                style: TextStyle(fontSize: 20, color: Colors.white))),
       backgroundColor: const Color(0xFFF1F1F1),
-      body: Column(
+      body: SingleChildScrollView(child:
+      Column(
         children: <Widget> [
           ListView.builder(
             shrinkWrap: true,
@@ -48,7 +56,7 @@ class _CommentDetailState extends State<CommentDetail> {
             )
           )
         ]
-      )
+      ))
     );
     }
 

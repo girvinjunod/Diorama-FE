@@ -1,24 +1,27 @@
+import 'package:diorama_id/main.dart';
 import 'package:flutter/material.dart';
 import 'model/detail_event_model.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'detail_trip.dart';
+import 'model/follows_model.dart';
 
 class DetailEventPage extends StatefulWidget {
   final int eventID;
   final int tripID;
-  const DetailEventPage(this.eventID, this.tripID, {Key? key})
+  final int userID;
+  const DetailEventPage(this.eventID, this.tripID, this.userID, {Key? key})
       : super(key: key);
 
   @override
   DetailEventPageState createState() =>
-      DetailEventPageState(this.eventID, this.tripID);
+      DetailEventPageState(this.eventID, this.tripID, this.userID);
 }
 
 // ketika buka page ini yang dipassing adalah username pengguna, dan eventID
 class DetailEventPageState extends State<DetailEventPage> {
   // Apakah event milik sendiri?
-  bool _isSelfEvent = true;
+  bool _isSelfEvent = false;
 
   late DetailEvent _detailEvent;
   var ImgEvent = [];
@@ -28,7 +31,8 @@ class DetailEventPageState extends State<DetailEventPage> {
   //ini harusnya tidak hardcode
   int eventID;
   int tripID;
-  DetailEventPageState(this.eventID, this.tripID);
+  int userID;
+  DetailEventPageState(this.eventID, this.tripID, this.userID);
   var username = "username";
 
   @override
@@ -36,6 +40,11 @@ class DetailEventPageState extends State<DetailEventPage> {
     super.initState();
     futureDetailEvent = getDetailEvent(eventID);
     futureImgEvent = getEventPicture(eventID);
+    getUserData(Holder.userID.toString()).then((result){
+      username = result["username"];
+      setState(() {});
+    });
+    _isSelfEvent = Holder.userID == userID.toString();
   }
 
   void deleteEventDialog(int id) {
@@ -60,7 +69,7 @@ class DetailEventPageState extends State<DetailEventPage> {
         deleteEvent(id);
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => DetailTripPage(tripID)),
+          MaterialPageRoute(builder: (context) => DetailTripPage(tripID, userID)),
         );
       },
     );
@@ -112,8 +121,14 @@ class DetailEventPageState extends State<DetailEventPage> {
   }
 
   void deleteEvent(int eventID) async {
+    var header = {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+    'Authorization': 'Bearer ${Holder.token}',
+    };
+
     final http.Response response = await http
-        .delete(Uri.parse('http://127.0.0.1:3000/deleteEvent/${eventID}'));
+        .delete(Uri.parse('https://diorama-id.herokuapp.com/deleteEvent/${eventID}'), headers: header);
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
@@ -138,34 +153,41 @@ class DetailEventPageState extends State<DetailEventPage> {
               child: FutureBuilder(
                   future: futureImgEvent,
                   builder: (context, AsyncSnapshot snapshot) {
-                    if (snapshot.hasData) {
-                      return Column(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
-                            child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    width: double.infinity,
-                                    height: 350,
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                        fit: BoxFit.cover,
-                                        image: MemoryImage(snapshot.data![0]),
+                    if (snapshot.connectionState != ConnectionState.done) {
+                          return const Align(
+                    alignment: Alignment.center,
+                    child: CircularProgressIndicator()
+                    );
+                    } else {
+                      if (snapshot.hasData) {
+                        return Column(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                              child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      width: double.infinity,
+                                      height: 350,
+                                      decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                          fit: BoxFit.cover,
+                                          image: MemoryImage(snapshot.data![0]),
+                                        ),
                                       ),
-                                    ),
-                                  )
-                                ]),
-                          ),
-                        ],
-                      );
-                    } else if (snapshot.hasError) {
-                      return Container(
-                          child: Center(child: Text('${snapshot.error}')));
-                    }
-                    return const CircularProgressIndicator();
+                                    )
+                                  ]),
+                            ),
+                          ],
+                        );
+                      } else if (snapshot.hasError) {
+                        return Container(
+                            child: Center(child: Text('${snapshot.error}')));
+                      }
+                    } 
+                    return const Text("Event load error");
                   }),
             ),
 
@@ -200,7 +222,10 @@ class DetailEventPageState extends State<DetailEventPage> {
                           child: Center(child: Text('${snapshot.error}')));
                     }
 
-                    return const CircularProgressIndicator();
+                    return const Align(
+                    alignment: Alignment.center,
+                    child: CircularProgressIndicator()
+                    );
                   }),
             ),
             Row(children: <Widget>[

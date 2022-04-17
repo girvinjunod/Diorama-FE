@@ -1,3 +1,4 @@
+import 'package:diorama_id/comment.dart';
 import 'package:flutter/material.dart';
 import 'detail_trip.dart';
 import 'model/home.dart';
@@ -11,7 +12,7 @@ class TripFeed extends StatefulWidget {
 
 class _TripFeedState extends State<TripFeed>
     with SingleTickerProviderStateMixin {
-  int _userID = 2;
+  int _userID = 2; // add holder id later
   Timeline timeline = Timeline(list: []);
   final timelineeWidget = <Widget>[];
   String _username = "username";
@@ -40,7 +41,7 @@ class _TripFeedState extends State<TripFeed>
     return ListView.builder(
       shrinkWrap: true,
       itemCount: timeline.list.length,
-      padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
+      padding: const EdgeInsets.fromLTRB(0, 0, 0, 40),
       itemBuilder: (context, int index) {
         // final index = i ~/ 2;
         // print("$i $index");
@@ -87,7 +88,7 @@ class _TripFeedState extends State<TripFeed>
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => DetailTripPage(tripID)),
+                          builder: (context) => DetailTripPage(1, timeline.list[index]["userID"])),
                     );
                   },
                   child: Image.network(
@@ -97,7 +98,14 @@ class _TripFeedState extends State<TripFeed>
             ),
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(5, 10, 0, 0),
+            padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
+            child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text("${timeline.list[index]["caption"]}"),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
             child: Align(
                 alignment: Alignment.centerLeft,
                 child: TextButton(
@@ -106,7 +114,14 @@ class _TripFeedState extends State<TripFeed>
                           MaterialStateProperty.all<Color>(Colors.white),
                       backgroundColor: MaterialStateProperty.all<Color>(
                           Colors.cyan.shade900)),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => CommentDetail(timeline.list[index]["eventID"])
+                      )
+                    );
+                  },
                   child: const Text('Comment'),
                 )),
           )

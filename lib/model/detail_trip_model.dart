@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:diorama_id/main.dart';
 import 'package:http/http.dart' as http;
 
 class AllEvent {
@@ -16,8 +17,14 @@ class AllEvent {
 }
 
 Future<List> getAllEvent(int tripID) async {
+  var header = {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+    'Authorization': 'Bearer ${Holder.token}',
+  };
+
   final response = await http
-      .get(Uri.parse('http://127.0.0.1:3000/getEventsFromTrip/${tripID}'));
+      .get(Uri.parse('https://diorama-id.herokuapp.com/getEventsFromTrip/${tripID}'), headers: header);
 
   var imglist = [];
   if (response.statusCode == 200) {
@@ -26,7 +33,7 @@ Future<List> getAllEvent(int tripID) async {
     AllEvent eventID = AllEvent.fromJson(jsonDecode(response.body));
     for (int i = 0; i < eventID.EventID.length; i++) {
       final img = await http.get(Uri.parse(
-          'http://127.0.0.1:3000/getEventPictureByID/${eventID.EventID[i]}'));
+          'https://diorama-id.herokuapp.com/getEventPictureByID/${eventID.EventID[i]}'), headers: header);
       imglist.add(img.bodyBytes);
     }
 
@@ -68,8 +75,14 @@ class DetailTrip {
 }
 
 Future<DetailTrip> getDetailTrip(int tripID) async {
+  var header = {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+    'Authorization': 'Bearer ${Holder.token}',
+  };
+  
   final response = await http
-      .get(Uri.parse('http://127.0.0.1:3000/getTripDetailByID/${tripID}'));
+      .get(Uri.parse('https://diorama-id.herokuapp.com/getTripDetailByID/${tripID}'), headers: header);
 
   if (response.statusCode == 200) {
     // If the server did return a 200 OK response,

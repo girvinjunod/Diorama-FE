@@ -1,36 +1,47 @@
+import 'package:diorama_id/add_event.dart';
+import 'package:diorama_id/main.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'detail_event.dart';
 import 'model/detail_trip_model.dart';
 import 'package:http/http.dart' as http;
+import 'model/follows_model.dart';
 import 'profile.dart';
 
 class DetailTripPage extends StatefulWidget {
   final int tripID;
-  const DetailTripPage(this.tripID, {Key? key}) : super(key: key);
+  final int userID;
+  const DetailTripPage(this.tripID, this.userID, {Key? key}) : super(key: key);
 
   @override
-  DetailTripPageState createState() => DetailTripPageState(this.tripID);
+  DetailTripPageState createState() => DetailTripPageState(this.tripID, this.userID);
 }
 
 // ketika buka page ini yang dipassing adalah username pengguna dan tripID
 class DetailTripPageState extends State<DetailTripPage> {
   // Apakah event milik sendiri?
-  bool _isSelfTrip = true;
+  bool _isSelfTrip = false;
 
   late Future<DetailTrip> futureDetailTrip;
   late Future<List> futureEvents;
 
   // harusnya tidak hardcode
   int tripID;
-  DetailTripPageState(this.tripID);
+  int userID;
+  DetailTripPageState(this.tripID, this.userID);
   var username = "username";
 
+  
   @override
   void initState() {
     super.initState();
     futureDetailTrip = getDetailTrip(tripID);
     futureEvents = getAllEvent(tripID);
+    getUserData(this.userID.toString()).then((result){
+      username = result["username"];
+      setState(() { });
+    });
+    _isSelfTrip = Holder.userID == userID.toString();
   }
 
   void deleteTripDialog(int id) {
@@ -104,8 +115,14 @@ class DetailTripPageState extends State<DetailTripPage> {
   }
 
   void deleteTrip(int tripID) async {
+    var header = {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+    'Authorization': 'Bearer ${Holder.token}',
+  };
+
     final http.Response response = await http
-        .delete(Uri.parse('http://127.0.0.1:3000/deleteTrip/${tripID}'));
+        .delete(Uri.parse('https://diorama-id.herokuapp.com/deleteTrip/${tripID}'), headers: header);
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
@@ -167,7 +184,10 @@ class DetailTripPageState extends State<DetailTripPage> {
                     return Container(
                         child: Center(child: Text('${snapshot.error}')));
                   }
-                  return const CircularProgressIndicator();
+                  return const Align(
+                    alignment: Alignment.center,
+                    child: CircularProgressIndicator()
+                    );
                 }),
             Padding(
                 padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
@@ -193,7 +213,7 @@ class DetailTripPageState extends State<DetailTripPage> {
                                     MaterialPageRoute(
                                         builder: (context) => DetailEventPage(
                                             snapshot.data![0].EventID[i],
-                                            tripID)),
+                                            tripID, userID)),
                                   );
                                 },
                                 child: Container(
@@ -221,11 +241,11 @@ class DetailTripPageState extends State<DetailTripPage> {
                                             MaterialStateProperty.all<Color>(
                                                 Colors.cyan.shade900)),
                                     onPressed: () {
-                                      // Navigator.push(
-                                      //   context,
-                                      //   MaterialPageRoute(
-                                      //       builder: (context) => const EditProfilePage()),
-                                      // );
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => AddEventPage(tripID)),
+                                      );
                                     },
                                     child: const Text('+ Event'),
                                   )),
@@ -237,7 +257,10 @@ class DetailTripPageState extends State<DetailTripPage> {
                     return Container(
                         child: Center(child: Text('No Event Yet')));
                   }
-                  return const CircularProgressIndicator();
+                  return const Align(
+                    alignment: Alignment.center,
+                    child: CircularProgressIndicator()
+                    );
                 }),
             // button delete
             Visibility(

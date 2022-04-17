@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
+import 'package:diorama_id/main.dart';
 import 'package:http/http.dart' as http;
 import 'dart:developer';
 
@@ -32,8 +33,14 @@ class DetailEvent {
 }
 
 Future<DetailEvent> getDetailEvent(int EventID) async {
+  var header = {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+    'Authorization': 'Bearer ${Holder.token}',
+  };
+
   final response = await http
-      .get(Uri.parse('http://127.0.0.1:3000/getEventDetailByID/${EventID}'));
+      .get(Uri.parse('https://diorama-id.herokuapp.com/getEventDetailByID/${EventID}'), headers: header);
 
   if (response.statusCode == 200) {
     // If the server did return a 200 OK response,
@@ -49,8 +56,14 @@ Future<DetailEvent> getDetailEvent(int EventID) async {
 }
 
 Future<List> getEventPicture(int EventID) async {
+  var header = {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+    'Authorization': 'Bearer ${Holder.token}',
+  };
+
   final response = await http
-      .get(Uri.parse('http://127.0.0.1:3000/getEventPictureByID/${EventID}'));
+      .get(Uri.parse('https://diorama-id.herokuapp.com/getEventPictureByID/${EventID}'), headers: header);
 
   var imglist = [];
   if (response.statusCode == 200) {
