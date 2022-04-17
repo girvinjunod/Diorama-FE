@@ -1,4 +1,5 @@
 import 'package:diorama_id/comment.dart';
+import 'package:diorama_id/profile.dart';
 import 'package:flutter/material.dart';
 import 'detail_trip.dart';
 import 'model/home.dart';
@@ -62,7 +63,15 @@ class _TripFeedState extends State<TripFeed>
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
             child: SizedBox(
                 width: double.infinity,
-                child: Row(
+                child: InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ProfilePage(timeline.list[index]["userID"])),
+                    );
+                  },
+                  child: Row(
                   children: <Widget>[
                     CircleAvatar(
                       radius: 20, // Image radius
@@ -75,7 +84,7 @@ class _TripFeedState extends State<TripFeed>
                     )
                   ],
                 )
-                ),
+                )),
           ),
           SizedBox(
             height: 350,

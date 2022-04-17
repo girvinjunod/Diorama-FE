@@ -1,3 +1,4 @@
+import 'package:diorama_id/comment.dart';
 import 'package:diorama_id/main.dart';
 import 'package:flutter/material.dart';
 import 'model/detail_event_model.dart';
@@ -239,7 +240,14 @@ class DetailEventPageState extends State<DetailEventPage> {
                               MaterialStateProperty.all<Color>(Colors.white),
                           backgroundColor: MaterialStateProperty.all<Color>(
                               Colors.cyan.shade900)),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => CommentDetail(eventID)
+                          )
+                        );
+                      },
                       child: const Text('Comment'),
                     )),
               ),

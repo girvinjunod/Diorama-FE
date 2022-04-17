@@ -315,6 +315,20 @@ class _ProfilePageState extends State<ProfilePage> {
     return Stack(
       children: <Widget>[
         _tripPic(context, snapshot, index),
+        Container(
+          height: 150,
+          width: double.infinity,
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Color(0x02000000),
+                Color(0x90000000),
+              ],
+            ),
+          ),
+        ),
         _tripText(context, snapshot, index),
       ],
     );
