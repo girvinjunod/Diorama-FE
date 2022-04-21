@@ -19,11 +19,11 @@ class LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    // Build a Form widget using the _formKey created above.
     return Scaffold(
         backgroundColor: const Color(0xFF9DE2E2),
         body: Center(
-          child: ListView(shrinkWrap: true, children: <Widget>[
+          child: Container(constraints: const BoxConstraints(maxWidth: 1200),child:
+          ListView(shrinkWrap: true, children: <Widget>[
             Form(
               key: _formKey,
               child: Padding(
@@ -153,6 +153,6 @@ class LoginPageState extends State<LoginPage> {
               ),
             ),
           ]),
-        ));
+        )));
   }
 }

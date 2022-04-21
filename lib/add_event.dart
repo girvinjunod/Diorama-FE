@@ -52,7 +52,8 @@ class _AddEventPageState extends State<AddEventPage> {
         backgroundColor: const Color(0xFFFFFFFF),
         body: Align(
           alignment: Alignment.topCenter,
-          child: ListView(shrinkWrap: true, children: <Widget>[
+          child: Container(constraints: const BoxConstraints(maxWidth: 1200),child:
+          ListView(shrinkWrap: true, children: <Widget>[
             Form(
               key: _formKey,
               child: Padding(
@@ -85,7 +86,7 @@ class _AddEventPageState extends State<AddEventPage> {
                                   color: const Color(0xFF189AB4),
                                   fontWeight: FontWeight.w400)),
                           style: ElevatedButton.styleFrom(
-                            minimumSize: Size.fromHeight(200),
+                            minimumSize: Size.fromHeight(400),
                             primary: const Color(0xffD4F1F4),
                             padding: EdgeInsets.all(15),
                             shape: new RoundedRectangleBorder(
@@ -237,7 +238,7 @@ class _AddEventPageState extends State<AddEventPage> {
               ),
             ),
           ]),
-        ));
+        )));
   }
 
   _getFromGallery() async {

@@ -17,35 +17,28 @@ class _SearchPageState extends State<SearchPage> {
   var _searchPics = [];
   var _isSearched = false;
   var success = false;
+  var currsearchdone = false;
 
   @override
   void initState() {
     super.initState();
-    // fetchSearch("g").then((list) {
-    //   if (list[0].length!=0)
-    //   {
-    //     _noResults = false;
-    //     _searchList = list[0];
-    //     _searchPics = list[1];
-    //     InitSearchList();
-    //   }
-    //   else{
-    //      _noResults = true;
-    //   }
-    //   setState(() {});
-    // });
   }
 
   void getSearchResults(){
     _searchWidget.clear();
     _isSearched = true;
+    currsearchdone = false;
     fetchSearch(_textcontroller.text).then((list) {
       if (list.isNotEmpty)
       {
-        _noResults = false;
-        _searchList = list[0];
-        _searchPics = list[1];
-        initSearchList();
+        if(currsearchdone == false)
+        {
+          _noResults = false;
+          _searchList = list[0];
+          _searchPics = list[1];
+          initSearchList();
+          currsearchdone = true;
+        }
       }
       else{
          _noResults = true;

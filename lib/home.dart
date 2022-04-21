@@ -39,14 +39,16 @@ class _TripFeedState extends State<TripFeed>
 
   @override
   Widget build(BuildContext context) {
-    return timeline.list.isEmpty ? const Center(child: Text('Follow other users to see your timeline')) :ListView.builder(
+    return Scaffold(
+        backgroundColor: const Color(0xFFF1F1F1),
+        body: timeline.list.isEmpty ? const Center(child: Text('Follow other users to see your timeline')) : ListView.builder(
       shrinkWrap: true,
       itemCount: timeline.list.length,
       padding: const EdgeInsets.fromLTRB(0, 0, 0, 40),
       itemBuilder: (context, int index) {
         return _buildRow(index);
       },
-    );
+    ));
   }
 
   Widget _buildRow(int index) {
@@ -55,6 +57,7 @@ class _TripFeedState extends State<TripFeed>
       child: Column(
         children: <Widget>[
           Container(
+            constraints: const BoxConstraints(maxWidth: 1200),
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
             child: SizedBox(
                 width: double.infinity,
@@ -81,8 +84,9 @@ class _TripFeedState extends State<TripFeed>
                 )
                 )),
           ),
+          Container(constraints: const BoxConstraints(maxWidth: 1200), child:
           SizedBox(
-            height: 350,
+            height: 500,
             width: double.infinity,
             child: FittedBox(
               clipBehavior: Clip.hardEdge,
@@ -100,14 +104,16 @@ class _TripFeedState extends State<TripFeed>
                 fit: BoxFit.cover,
               )),
             ),
-          ),
+          )),
+          Container(constraints: const BoxConstraints(maxWidth: 1200),child:
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
             child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text("${timeline.list[index]["caption"]}"),
             ),
-          ),
+          )),
+          Container(constraints: const BoxConstraints(maxWidth: 1200),child:
           Padding(
             padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
             child: Align(
@@ -128,7 +134,7 @@ class _TripFeedState extends State<TripFeed>
                   },
                   child: const Text('Comment'),
                 )),
-          )
+          ))
         ],
       ),
     );

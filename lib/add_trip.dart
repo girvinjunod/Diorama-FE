@@ -34,7 +34,8 @@ class _AddTripPageState extends State<AddTripPage> {
         backgroundColor: const Color(0xFFFFFFFF),
         body: Align(
           alignment: Alignment.topCenter,
-          child: ListView(shrinkWrap: true, children: <Widget>[
+          child: Container(constraints: const BoxConstraints(maxWidth: 1200),child:
+          ListView(shrinkWrap: true, children: <Widget>[
             Form(
               key: _formKey,
               child: Padding(
@@ -197,6 +198,6 @@ class _AddTripPageState extends State<AddTripPage> {
               ),
             ),
           ]),
-        ));
+    )));
   }
 }
