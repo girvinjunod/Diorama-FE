@@ -42,13 +42,15 @@ class TripDetail {
   final String EndDate;
   final String TripName;
   final String LocationName;
+  final int TripID;
 
   const TripDetail(
       {required this.UserID,
       required this.StartDate,
       required this.EndDate,
       required this.TripName,
-      required this.LocationName});
+      required this.LocationName,
+      required this.TripID});
 
   factory TripDetail.fromJson(Map<String, dynamic> json) {
     return TripDetail(
@@ -57,6 +59,7 @@ class TripDetail {
       EndDate: json['endDate'],
       TripName: json['tripName'],
       LocationName: json['locationName'],
+      TripID: json['id']
     );
   }
 }

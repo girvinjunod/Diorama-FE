@@ -1,4 +1,5 @@
 import 'package:diorama_id/comment.dart';
+import 'package:diorama_id/main.dart';
 import 'package:diorama_id/profile.dart';
 import 'package:flutter/material.dart';
 import 'detail_trip.dart';
@@ -13,7 +14,7 @@ class TripFeed extends StatefulWidget {
 
 class _TripFeedState extends State<TripFeed>
     with SingleTickerProviderStateMixin {
-  int _userID = 2; // add holder id later
+  int _userID = int.parse(Holder.userID);
   Timeline timeline = Timeline(list: []);
   final timelineeWidget = <Widget>[];
   String _username = "username";
@@ -31,7 +32,6 @@ class _TripFeedState extends State<TripFeed>
       });
     });
     await getTimeline(_userID.toString()).then((value) {
-      print(value.list);
       timeline = value;
       setState(() {});
     });
@@ -39,16 +39,11 @@ class _TripFeedState extends State<TripFeed>
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
+    return timeline.list.isEmpty ? const Center(child: Text('Follow other users to see your timeline')) :ListView.builder(
       shrinkWrap: true,
       itemCount: timeline.list.length,
       padding: const EdgeInsets.fromLTRB(0, 0, 0, 40),
       itemBuilder: (context, int index) {
-        // final index = i ~/ 2;
-        // print("$i $index");
-        // if (index >= _suggestions.length) {
-        //   _suggestions.addAll(generateWordPairs().take(10));
-        // }
         return _buildRow(index);
       },
     );
@@ -97,7 +92,7 @@ class _TripFeedState extends State<TripFeed>
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => DetailTripPage(1, timeline.list[index]["userID"])),
+                          builder: (context) => DetailTripPage(timeline.list[index]["tripID"], timeline.list[index]["userID"])),
                     );
                   },
                   child: Image.network(

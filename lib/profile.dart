@@ -381,7 +381,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     context,
                     MaterialPageRoute(
                         // masih hardcode, fix later
-                        builder: (context) => DetailTripPage(1, _userID)),
+                        builder: (context) => DetailTripPage(snapshot.data[0][index].TripID, _userID)),
                   );
                 },
                 child: Container(

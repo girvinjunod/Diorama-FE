@@ -47,7 +47,7 @@ class DetailTripPageState extends State<DetailTripPage> {
   void deleteTripDialog(int id) {
     // set up the buttons
     Widget noButton = TextButton(
-      child: Text("NO"),
+      child: const Text("NO"),
       style: ButtonStyle(
           foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
           backgroundColor:
@@ -57,7 +57,7 @@ class DetailTripPageState extends State<DetailTripPage> {
       },
     );
     Widget yesButton = TextButton(
-      child: Text("YES"),
+      child: const Text("YES"),
       style: ButtonStyle(
           foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
           backgroundColor:
@@ -70,8 +70,8 @@ class DetailTripPageState extends State<DetailTripPage> {
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: Text("Delete Trip"),
-      content: Text("Would you like to delete this trip?"),
+      title: const Text("Delete Trip"),
+      content: const Text("Would you like to delete this trip?"),
       actions: [
         noButton,
         yesButton,
@@ -90,7 +90,7 @@ class DetailTripPageState extends State<DetailTripPage> {
   void dialog(String msg) {
     // set up the button
     Widget okButton = TextButton(
-      child: Text("OK"),
+      child: const Text("OK"),
       onPressed: () {
         Navigator.pop(context);
       },
@@ -98,7 +98,7 @@ class DetailTripPageState extends State<DetailTripPage> {
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: Text("Success"),
+      title: const Text("Success"),
       content: Text(msg),
       actions: [
         okButton,
@@ -138,7 +138,7 @@ class DetailTripPageState extends State<DetailTripPage> {
     return Scaffold(
         appBar: AppBar(
             title: Text(username + "'s Trip",
-                style: TextStyle(fontSize: 20, color: Colors.white))),
+                style: const TextStyle(fontSize: 20, color: Colors.white))),
         backgroundColor: Colors.white,
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -167,15 +167,15 @@ class DetailTripPageState extends State<DetailTripPage> {
                                   Text(
                                       "Location   : " +
                                           snapshot.data!.LocationName,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           color: Colors.black, fontSize: 15)),
                                   Text(
                                       "Start Date : " +
                                           snapshot.data!.StartDate,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           color: Colors.black, fontSize: 15)),
                                   Text("End Date   : " + snapshot.data!.EndDate,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           color: Colors.black, fontSize: 15))
                                 ]))
                       ],
@@ -189,7 +189,7 @@ class DetailTripPageState extends State<DetailTripPage> {
                     child: CircularProgressIndicator()
                     );
                 }),
-            Padding(
+            const Padding(
                 padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
                 child: Text("Event", style: TextStyle(fontSize: 18))),
             FutureBuilder(
@@ -254,8 +254,36 @@ class DetailTripPageState extends State<DetailTripPage> {
                           ),
                         ]));
                   } else if (snapshot.hasError) {
-                    return Container(
-                        child: Center(child: Text('No Event Yet')));
+                    return Column(
+                        children: <Widget>[
+                          const Center(child: Text('No Event Yet')),
+                          Visibility(
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(20, 40, 20, 40),
+                              child: Align(
+                                  alignment: Alignment.center,
+                                  child: TextButton(
+                                    style: ButtonStyle(
+                                        foregroundColor:
+                                            MaterialStateProperty.all<Color>(
+                                                Colors.white),
+                                        backgroundColor:
+                                            MaterialStateProperty.all<Color>(
+                                                Colors.cyan.shade900)),
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => AddEventPage(tripID)),
+                                      );
+                                    },
+                                    child: const Text('+ Event'),
+                                  )),
+                            ),
+                            visible: _isSelfTrip,
+                          ),
+                          ]
+                        );
                   }
                   return const Align(
                     alignment: Alignment.center,
