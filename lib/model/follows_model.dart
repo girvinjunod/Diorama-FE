@@ -76,3 +76,34 @@ Future<List> fetchFollowing(String UserID) async {
     return [[], []];
   }
 }
+
+Future<List> fetchFollowNum(String UserID) async {
+  var header = {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+    'Authorization': 'Bearer ${Holder.token}',
+  };
+  var followernum = 0;
+  var followingnum = 0;
+
+  final response = await http.get(
+      Uri.parse('https://diorama-id.herokuapp.com/getFollowers/$UserID'),
+      headers: header);
+  
+
+  final response2 = await http.get(
+      Uri.parse('https://diorama-id.herokuapp.com/getFollowedUsers/$UserID'),
+      headers: header);
+
+  if (response.statusCode == 200) {
+    Followers follower = Followers.fromJson(jsonDecode(response.body));
+    followernum = follower.list.length;
+  }
+
+  if (response2.statusCode == 200){
+    Followers following = Followers.fromJson(jsonDecode(response2.body));
+    followingnum = following.list.length;
+  }
+
+  return [followernum, followingnum];
+}

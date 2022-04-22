@@ -1,5 +1,6 @@
 import 'package:diorama_id/detail_trip.dart';
 import 'package:diorama_id/edit_profile.dart';
+import 'package:diorama_id/follows.dart';
 import 'package:diorama_id/main.dart';
 import 'package:flutter/material.dart';
 import 'package:diorama_id/model/profile.dart';
@@ -21,7 +22,8 @@ class _ProfilePageState extends State<ProfilePage> {
   var _trips = [];
   var _tripPictures = [];
   var followings = [];
-  late Followers _followingList;
+  var followernum = 0;
+  var followingnum = 0;
 
   @override
   void initState() {
@@ -30,18 +32,11 @@ class _ProfilePageState extends State<ProfilePage> {
     fetchFollowStatus(Holder.userID, _userID.toString()).then((result){
       _isFollowed = result == "YES";
     });
-    fetchFollowing(_userID.toString()).then((list) {
-      _followingList = list[0];
-      // print(_followingList.list);
-      setState(() {});
-    });
-
-    // if(FirebaseAuth.instance.currentUser() != null){
-
-    //   Navigator.of(context).pushReplacement(MaterialPageRoute(
-    //     builder: (context) => HomeScreen()
-    //   ));
-    // }
+   fetchFollowNum(_userID.toString()).then((result){
+     followernum = result[0];
+     followingnum = result[1];
+   });
+    
   }
 
   // Apakah username berbeda dari name user?
@@ -88,9 +83,6 @@ class _ProfilePageState extends State<ProfilePage> {
     if (_profile.name == _profile.username) {
       _isUsernameVisible = false;
     }
-    // if (_followingList.list["userID"].contains(_profile.userID)) {
-    //   _isFollowed = true;
-    // }
     return ListView(
       shrinkWrap: true,
       children: <Widget>[
@@ -98,7 +90,7 @@ class _ProfilePageState extends State<ProfilePage> {
           color: const Color(0xFFD4F1F4),
           child: Column(
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 40,
               ),
               CircleAvatar(
@@ -106,17 +98,17 @@ class _ProfilePageState extends State<ProfilePage> {
                 backgroundImage: MemoryImage(_profilepp),
                 backgroundColor: Colors.transparent,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Text(
                 _profile.username,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: 3),
+              const SizedBox(height: 3),
               Visibility(
                 child: Text(
                   _profile.username,
@@ -124,7 +116,25 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 visible: _isUsernameVisible,
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
+              InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => FollowPage(_userID)),
+                    );
+                  },
+                  child: Text(
+                    '$followingnum Following | $followernum Follower',
+                    style: const TextStyle(
+                      fontSize: 20,
+                      color: Color(0xFF05445E),
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              const SizedBox(height: 20),
               Visibility(
                 child: InkWell(
                   onTap: () {
@@ -134,11 +144,11 @@ class _ProfilePageState extends State<ProfilePage> {
                           builder: (context) => const EditProfilePage()),
                     );
                   },
-                  child: Text(
+                  child: const Text(
                     'Edit Profile \u{1F58C}',
                     style: TextStyle(
                       fontSize: 16,
-                      color: const Color(0xFF189AB4),
+                      color: Color(0xFF189AB4),
                     ),
                   ),
                 ),
@@ -146,10 +156,10 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               Visibility(
                 child: TextButton(
-                    child: Text(
+                    child: const Text(
                       'Follow',
                       style: TextStyle(
-                          fontSize: 18.0, color: const Color(0xFFFFFFFF)),
+                          fontSize: 18.0, color: Color(0xFFFFFFFF)),
                     ),
                     style: ButtonStyle(
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -166,7 +176,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         },
                       ),
                       padding: MaterialStateProperty.all<EdgeInsets>(
-                          EdgeInsets.fromLTRB(30, 15, 30, 15)),
+                          const EdgeInsets.fromLTRB(30, 15, 30, 15)),
                     ),
                     onPressed: () {
                       followUser(Holder.userID, _userID.toString()).then((result){
@@ -189,10 +199,10 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               Visibility(
                 child: TextButton(
-                    child: Text(
+                    child: const Text(
                       'Unfollow',
                       style: TextStyle(
-                          fontSize: 18.0, color: const Color(0xFF189AB4)),
+                          fontSize: 18.0, color: Color(0xFF189AB4)),
                     ),
                     style: ButtonStyle(
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -210,7 +220,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         },
                       ),
                       padding: MaterialStateProperty.all<EdgeInsets>(
-                          EdgeInsets.fromLTRB(30, 15, 30, 15)),
+                          const EdgeInsets.fromLTRB(30, 15, 30, 15)),
                     ),
                     onPressed: () {
                       unfollowUser(Holder.userID, _userID.toString()).then((result){
@@ -231,7 +241,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     }),
                 visible: (!_isSelfProfile && _isFollowed),
               ),
-              SizedBox(height: 40),
+              const SizedBox(height: 40),
             ],
           ),
         ),
@@ -245,7 +255,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   width: double.infinity,
                   padding: const EdgeInsets.all(18.0),
                   color: Colors.white,
-                  child: Text(
+                  child: const Text(
                     'Trips',
                     style: TextStyle(fontSize: 20),
                   ),
@@ -256,11 +266,11 @@ class _ProfilePageState extends State<ProfilePage> {
                 visible: _noTrips,
               ),
               Visibility(
-                child: Text(
+                child: const Text(
                   'No trips available',
                   style: TextStyle(
                     fontSize: 16,
-                    color: const Color(0x95000000),
+                    color: Color(0x95000000),
                   ),
                 ),
                 visible: _noTrips,

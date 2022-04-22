@@ -1,16 +1,19 @@
+import 'package:diorama_id/profile.dart';
 import 'package:flutter/material.dart';
 import 'model/follows_model.dart';
 class FollowPage extends StatefulWidget {
-  const FollowPage({Key? key}) : super(key: key);
+  final int _userID;
+  const FollowPage(this._userID, {Key? key}) : super(key: key);
 
   @override
-  _FollowPageState createState() => _FollowPageState();
+  _FollowPageState createState() => _FollowPageState(this._userID);
 }
 
 class _FollowPageState extends State<FollowPage>
     with SingleTickerProviderStateMixin {
   late TabController _controller;
-  final int _userID = 1; // which user's follow page
+  int _userID; // which user's follow page
+  _FollowPageState(this._userID);
   late Followers _followerList;
   late Followers _followingList;
   final followerWidget = <Widget>[];
@@ -81,7 +84,13 @@ class _FollowPageState extends State<FollowPage>
                       },
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ProfilePage(_followerList.list[i]["userId"])),
+                    );
+                  },
                   child: Container(
                     height: 100,
                     width: double.infinity,
@@ -178,7 +187,13 @@ class _FollowPageState extends State<FollowPage>
                       },
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ProfilePage(_followingList.list[i]["userId"])),
+                    );
+                  },
                   child: Container(
                     height: 100,
                     width: double.infinity,
@@ -241,6 +256,9 @@ class _FollowPageState extends State<FollowPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+            title: Text("Follows",
+                style: TextStyle(fontSize: 20, color: Colors.white))),
         backgroundColor: const Color(0xFFFFFFFF),
         body: Container(
             width: double.infinity,
