@@ -25,7 +25,7 @@ class _RegisterPageState extends State<RegisterPage> {
     return Scaffold(
         backgroundColor: const Color(0xFF9DE2E2),
         body: Center(
-          child: Container(constraints: const BoxConstraints(maxWidth: 1200),child:
+          child: Container(constraints: const BoxConstraints(maxWidth: 1080),child:
           ListView(shrinkWrap: true, children: <Widget>[
             Form(
               key: _formKey,

@@ -122,7 +122,7 @@ class DetailTripPageState extends State<DetailTripPage> {
   };
 
     final http.Response response = await http
-        .delete(Uri.parse('https://diorama-id.herokuapp.com/deleteTrip/${tripID}'), headers: header);
+        .delete(Uri.parse('http://34.101.123.15:8080/deleteTrip/${tripID}'), headers: header);
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);

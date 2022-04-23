@@ -7,7 +7,7 @@ import 'package:http_parser/http_parser.dart';
 Future<String?> addEvent(String tripID, String userID, String caption,
     String eventDate, String postTime, var file, String path) async {
   var request = http.MultipartRequest(
-      'POST', Uri.parse('https://diorama-id.herokuapp.com/addEvent'));
+      'POST', Uri.parse('http://34.101.123.15:8080/addEvent'));
   // request.headers["Content-Type"] = 'multipart/form-data';
   request.headers["Authorization"] = 'Bearer ${Holder.token}';
   request.fields["tripID"] = tripID;

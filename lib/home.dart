@@ -57,7 +57,7 @@ class _TripFeedState extends State<TripFeed>
       child: Column(
         children: <Widget>[
           Container(
-            constraints: const BoxConstraints(maxWidth: 1200),
+            constraints: const BoxConstraints(maxWidth: 1080),
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
             child: SizedBox(
                 width: double.infinity,
@@ -74,7 +74,7 @@ class _TripFeedState extends State<TripFeed>
                     CircleAvatar(
                       radius: 20, // Image radius
                       backgroundImage: NetworkImage(
-                          "https://diorama-id.herokuapp.com/getPPByID/${timeline.list[index]["userID"]}"),
+                          "http://34.101.123.15:8080/getPPByID/${timeline.list[index]["userID"]}"),
                     ),
                     Padding(
                       padding: EdgeInsets.only(left: 10),
@@ -84,7 +84,7 @@ class _TripFeedState extends State<TripFeed>
                 )
                 )),
           ),
-          Container(constraints: const BoxConstraints(maxWidth: 1200), child:
+          Container(constraints: const BoxConstraints(maxWidth: 1080), child:
           SizedBox(
             height: 500,
             width: double.infinity,
@@ -100,12 +100,12 @@ class _TripFeedState extends State<TripFeed>
                     );
                   },
                   child: Image.network(
-                "https://diorama-id.herokuapp.com/getEventPictureByID/${timeline.list[index]["eventID"]}",
+                "http://34.101.123.15:8080/getEventPictureByID/${timeline.list[index]["eventID"]}",
                 fit: BoxFit.cover,
               )),
             ),
           )),
-          Container(constraints: const BoxConstraints(maxWidth: 1200),child:
+          Container(constraints: const BoxConstraints(maxWidth: 1080),child:
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
             child: Align(
@@ -113,7 +113,7 @@ class _TripFeedState extends State<TripFeed>
                 child: Text("${timeline.list[index]["caption"]}"),
             ),
           )),
-          Container(constraints: const BoxConstraints(maxWidth: 1200),child:
+          Container(constraints: const BoxConstraints(maxWidth: 1080),child:
           Padding(
             padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
             child: Align(

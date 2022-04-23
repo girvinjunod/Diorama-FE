@@ -8,7 +8,7 @@ class AuthApi {
       "password": password,
     };
     final response = await http.post(
-        Uri.parse("https://diorama-id.herokuapp.com/login"),
+        Uri.parse("http://34.101.123.15:8080/login"),
         body: json.encode(data),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -27,7 +27,7 @@ class AuthApi {
       "password": password,
     };
     final response = await http.post(
-        Uri.parse("https://diorama-id.herokuapp.com/login"),
+        Uri.parse("http://34.101.123.15:8080/login"),
         body: json.encode(data),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',

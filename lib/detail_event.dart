@@ -129,7 +129,7 @@ class DetailEventPageState extends State<DetailEventPage> {
     };
 
     final http.Response response = await http
-        .delete(Uri.parse('https://diorama-id.herokuapp.com/deleteEvent/${eventID}'), headers: header);
+        .delete(Uri.parse('http://34.101.123.15:8080/deleteEvent/${eventID}'), headers: header);
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);

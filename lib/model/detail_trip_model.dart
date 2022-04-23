@@ -24,7 +24,7 @@ Future<List> getAllEvent(int tripID) async {
   };
 
   final response = await http
-      .get(Uri.parse('https://diorama-id.herokuapp.com/getEventsFromTrip/${tripID}'), headers: header);
+      .get(Uri.parse('http://34.101.123.15:8080/getEventsFromTrip/${tripID}'), headers: header);
 
   var imglist = [];
   if (response.statusCode == 200) {
@@ -33,7 +33,7 @@ Future<List> getAllEvent(int tripID) async {
     AllEvent eventID = AllEvent.fromJson(jsonDecode(response.body));
     for (int i = 0; i < eventID.EventID.length; i++) {
       final img = await http.get(Uri.parse(
-          'https://diorama-id.herokuapp.com/getEventPictureByID/${eventID.EventID[i]}'), headers: header);
+          'http://34.101.123.15:8080/getEventPictureByID/${eventID.EventID[i]}'), headers: header);
       imglist.add(img.bodyBytes);
     }
 
@@ -82,7 +82,7 @@ Future<DetailTrip> getDetailTrip(int tripID) async {
   };
   
   final response = await http
-      .get(Uri.parse('https://diorama-id.herokuapp.com/getTripDetailByID/${tripID}'), headers: header);
+      .get(Uri.parse('http://34.101.123.15:8080/getTripDetailByID/${tripID}'), headers: header);
 
   if (response.statusCode == 200) {
     // If the server did return a 200 OK response,

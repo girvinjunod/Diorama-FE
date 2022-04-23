@@ -11,7 +11,7 @@ class EditProfile {
       "NewPassword": new_password,
     };
     final response = await http.post(
-        Uri.parse("https://diorama-id.herokuapp.com/setUserPassword"),
+        Uri.parse("http://34.101.123.15:8080/setUserPassword"),
         body: json.encode(data),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -26,7 +26,7 @@ class EditProfile {
 
   static Future<String?> ChangePPRequest(userID, var file) async {
     var request = http.MultipartRequest(
-        'POST', Uri.parse('https://diorama-id.herokuapp.com/setUserPP'));
+        'POST', Uri.parse('http://34.101.123.15:8080/setUserPP'));
     request.headers["Content-Type"] = 'multipart/form-data';
     request.headers["Authorization"] = 'Bearer ${Holder.token}';
 
@@ -58,7 +58,7 @@ class EditProfile {
   };
   
     final response = await http.post(
-        Uri.parse("https://diorama-id.herokuapp.com/setUserDetail"),
+        Uri.parse("http://34.101.123.15:8080/setUserDetail"),
         body: json.encode(data),
         headers: header
     );

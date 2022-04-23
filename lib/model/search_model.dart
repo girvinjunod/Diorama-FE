@@ -24,7 +24,7 @@ Future<List> fetchSearch(String query) async {
   // print(header);
   // print(Holder.token);
   final response = await http.get(
-      Uri.parse('https://diorama-id.herokuapp.com/searchUser/$query'),
+      Uri.parse('http://34.101.123.15:8080/searchUser/$query'),
       headers: header);
   // print(response.body);
 
@@ -33,7 +33,7 @@ Future<List> fetchSearch(String query) async {
     Search json = Search.fromJson(jsonDecode(response.body));
     for (var element in json.list) {
       final img = await http.get(Uri.parse(
-          'https://diorama-id.herokuapp.com/getPPByID/${element["id"]}'));
+          'http://34.101.123.15:8080/getPPByID/${element["id"]}'));
       imglist.add(img.bodyBytes);
     }
     return [json, imglist];
