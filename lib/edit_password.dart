@@ -104,6 +104,7 @@ class EditPasswordPageState extends State<EditPasswordPage> {
                             value.length < 7) {
                           return 'Please enter minimum 7 words';
                         }
+
                         return null;
                       },
                       onSaved: (value) => setState(() {
@@ -122,11 +123,13 @@ class EditPasswordPageState extends State<EditPasswordPage> {
                           _formKey.currentState!.save();
                           String message = "";
                           if (newPassword == valPassword) {
-                            var response = EditProfile.ChangePassRequest(userID, oldPassword, newPassword);
+                            var response = EditProfile.ChangePassRequest(
+                                userID, oldPassword, newPassword);
                             if (response == "SUCCESS") {
                               message = "Password Changed Successfully";
                             } else {
-                              message = "Error occurred. Cannot change your password.";
+                              message =
+                                  "Error occurred. Cannot change your password.";
                             }
                           } else {
                             message = "Confirm Password False";

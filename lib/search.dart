@@ -24,24 +24,21 @@ class _SearchPageState extends State<SearchPage> {
     super.initState();
   }
 
-  void getSearchResults(){
+  void getSearchResults() {
     _searchWidget.clear();
     _isSearched = true;
     currsearchdone = false;
     fetchSearch(_textcontroller.text).then((list) {
-      if (list.isNotEmpty)
-      {
-        if(currsearchdone == false)
-        {
+      if (list.isNotEmpty) {
+        if (currsearchdone == false) {
           _noResults = false;
           _searchList = list[0];
           _searchPics = list[1];
           initSearchList();
           currsearchdone = true;
         }
-      }
-      else{
-         _noResults = true;
+      } else {
+        _noResults = true;
       }
       setState(() {});
     });
@@ -82,11 +79,10 @@ class _SearchPageState extends State<SearchPage> {
                   ),
                   onPressed: () {
                     Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>  ProfilePage(_searchList.list[i]['id'])
-                      )
-                    );                   
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                ProfilePage(_searchList.list[i]['id'])));
                   },
                   child: Container(
                     height: 100,
@@ -113,50 +109,51 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: TextField(
-              style: const TextStyle(color: Colors.white),
-              decoration: const InputDecoration(
-                hintText: 'Enter username',
-                border: InputBorder.none,
-              ),
-              controller: _textcontroller,
-              onSubmitted: (value) {
-                getSearchResults();
-              },
-              textInputAction: TextInputAction.search,
+        appBar: AppBar(
+          title: TextField(
+            style: const TextStyle(color: Colors.white),
+            decoration: const InputDecoration(
+              hintText: 'Enter username',
+              border: InputBorder.none,
             ),
-        actions: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(right: 20.0),
-            child: GestureDetector(
-              onTap: () {
-                // Search
-                getSearchResults();
-              },
-              child: const Icon(
-                Icons.search,
-                size: 26.0,
-              ),
-            )
-          )
-        ],
-      ),
+            controller: _textcontroller,
+            onSubmitted: (value) {
+              getSearchResults();
+            },
+            textInputAction: TextInputAction.search,
+          ),
+          actions: <Widget>[
+            Padding(
+                padding: const EdgeInsets.only(right: 20.0),
+                child: GestureDetector(
+                  onTap: () {
+                    // Search
+                    getSearchResults();
+                  },
+                  child: const Icon(
+                    Icons.search,
+                    size: 26.0,
+                  ),
+                ))
+          ],
+        ),
         backgroundColor: const Color(0xFFFFFFFF),
         body: Container(
             width: double.infinity,
             height: MediaQuery.of(context).size.height,
             color: const Color(0xFFFFFFFF),
             child: Column(children: [
-              Visibility(child: Container(
-                alignment: Alignment.centerLeft,
-                padding: const EdgeInsets.all(18.0),
-                child: Text(
-                  "Search results for \"" + _textcontroller.text + "\"",
-                  style: const TextStyle(fontSize: 20, color: Color(0xFF05445E)),
+              Visibility(
+                child: Container(
+                  alignment: Alignment.centerLeft,
+                  padding: const EdgeInsets.all(18.0),
+                  child: Text(
+                    "Search results for \"" + _textcontroller.text + "\"",
+                    style:
+                        const TextStyle(fontSize: 20, color: Color(0xFF05445E)),
+                  ),
                 ),
-              ),
-              visible: _isSearched,
+                visible: _isSearched,
               ),
               Visibility(
                   child: Expanded(
@@ -167,8 +164,7 @@ class _SearchPageState extends State<SearchPage> {
                         color: const Color(0xFFF1F1F1),
                         child: const Text("No results found",
                             style: TextStyle(
-                                color: Color(0xFF05445E),
-                                fontSize: 20.0))),
+                                color: Color(0xFF05445E), fontSize: 20.0))),
                     Container(
                         alignment: Alignment.center,
                         padding: const EdgeInsets.fromLTRB(0, 0, 0, 50),
@@ -181,7 +177,7 @@ class _SearchPageState extends State<SearchPage> {
                     child: Column(children: _searchWidget),
                   ),
                 ),
-                visible: _noResults == false && _isSearched, 
+                visible: _noResults == false && _isSearched,
               )
             ])));
   }
