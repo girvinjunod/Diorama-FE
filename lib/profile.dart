@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:diorama_id/model/profile.dart';
 import 'model/follows_model.dart';
 import 'model/Logout.dart';
-import 'follows.dart'
+import 'follows.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -106,7 +106,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     primary: Color.fromARGB(255, 148, 3, 3),
                   ),
                   onPressed: () {
-                    response = Logout()
+                    var response = Logout();
                   },
                   child: Text('Logout'),
                 ),
