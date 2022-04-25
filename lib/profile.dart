@@ -4,6 +4,8 @@ import 'package:diorama_id/main.dart';
 import 'package:flutter/material.dart';
 import 'package:diorama_id/model/profile.dart';
 import 'model/follows_model.dart';
+import 'model/Logout.dart';
+import 'follows.dart'
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -94,7 +96,24 @@ class _ProfilePageState extends State<ProfilePage> {
           child: Column(
             children: [
               SizedBox(
-                height: 40,
+                height: 10,
+              ),
+              SizedBox(height: 3),
+              Visibility(
+                child: TextButton(
+                  style: TextButton.styleFrom(
+                    padding: const EdgeInsets.only(left: 300.0, right: 10.0),
+                    primary: Color.fromARGB(255, 148, 3, 3),
+                  ),
+                  onPressed: () {
+                    response = Logout()
+                  },
+                  child: Text('Logout'),
+                ),
+                visible: _isSelfProfile,
+              ),
+              SizedBox(
+                height: 20,
               ),
               CircleAvatar(
                 radius: 100,
@@ -118,6 +137,28 @@ class _ProfilePageState extends State<ProfilePage> {
                   style: TextStyle(fontSize: 16),
                 ),
                 visible: _isUsernameVisible,
+              ),
+              SizedBox(height: 20),
+              Visibility(
+                child:
+                  Visibility(
+                    child: TextButton(
+                      style: TextButton.styleFrom(
+                        padding: const EdgeInsets.only(left: 30.0, right: 30.0),
+                        primary: const Color(0xFF189AB4),
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const FollowPage()),
+                        );
+                      },
+                      child: Text('Follower | Following'),
+                    ),
+                    visible: true,
+                ),
+                visible: true,
               ),
               SizedBox(height: 20),
               Visibility(
