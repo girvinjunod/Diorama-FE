@@ -1,9 +1,12 @@
 import 'package:diorama_id/detail_trip.dart';
 import 'package:diorama_id/edit_profile.dart';
 import 'package:diorama_id/follows.dart';
+import 'package:diorama_id/login.dart';
 import 'package:diorama_id/main.dart';
+import 'package:diorama_id/model/Logout.dart';
 import 'package:flutter/material.dart';
 import 'package:diorama_id/model/profile.dart';
+import 'package:flutter/widgets.dart';
 import 'model/follows_model.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -55,17 +58,15 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-            title: Text("Profile",
+            title: const Text("Profile",
                 style: TextStyle(fontSize: 20, color: Colors.white))),
         backgroundColor: const Color(0xFFF1F1F1),
         body: FutureBuilder(
           future: getUser(_userID.toString()),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.data == null) {
-              return Container(
-                child: Center(
-                  child: Text("Loading..."),
-                ),
+              return const Center(
+                child: Text("Loading..."),
               );
             } else {
               // Profile a = snapshot.data[0];
@@ -87,12 +88,39 @@ class _ProfilePageState extends State<ProfilePage> {
       shrinkWrap: true,
       children: <Widget>[
         Container(
+          width: double.infinity,
           color: const Color(0xFFD4F1F4),
           child: Column(
             children: [
-              const SizedBox(
-                height: 40,
+              Container(alignment: Alignment.topRight, child:
+              Visibility(
+                child: TextButton(
+                  style: TextButton.styleFrom(
+                    padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+                    primary: const Color.fromARGB(255, 148, 3, 3),
+                  ),
+                  onPressed: () {
+                    Logout().then((response) {
+                      if (response == "SUCCESS") {
+                        Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const LoginPage(),
+                            ),
+                            (r) => false);
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Logout failed')),
+                        );
+                      }
+                    });
+                  },
+                  child: const Text('Logout'),
+                ),
+                visible: _isSelfProfile,
               ),
+              ),
+              const SizedBox(height: 20),
               CircleAvatar(
                 radius: 100,
                 backgroundImage: MemoryImage(_profilepp),
@@ -112,7 +140,7 @@ class _ProfilePageState extends State<ProfilePage> {
               Visibility(
                 child: Text(
                   _profile.username,
-                  style: TextStyle(fontSize: 16),
+                  style: const TextStyle(fontSize: 16),
                 ),
                 visible: _isUsernameVisible,
               ),
@@ -165,12 +193,13 @@ class _ProfilePageState extends State<ProfilePage> {
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(50.0),
-                              side: BorderSide(color: Colors.transparent))),
+                              side: const BorderSide(color: Colors.transparent))),
                       backgroundColor: MaterialStateProperty.resolveWith<Color>(
                         (Set<MaterialState> states) {
                           if (states.contains(MaterialState.pressed) ||
-                              states.contains(MaterialState.hovered))
+                              states.contains(MaterialState.hovered)) {
                             return const Color(0xFF05445E);
+                          }
                           return const Color(
                               0xFF189AB4); // Use the component's default.
                         },
@@ -209,12 +238,13 @@ class _ProfilePageState extends State<ProfilePage> {
                           RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(50.0),
                               side:
-                                  BorderSide(color: const Color(0xFF189AB4)))),
+                                  const BorderSide(color: Color(0xFF189AB4)))),
                       backgroundColor: MaterialStateProperty.resolveWith<Color>(
                         (Set<MaterialState> states) {
                           if (states.contains(MaterialState.pressed) ||
-                              states.contains(MaterialState.hovered))
+                              states.contains(MaterialState.hovered)) {
                             return const Color(0xFF9DE2E2);
+                          }
                           return Colors
                               .transparent; // Use the component's default.
                         },
@@ -296,7 +326,7 @@ class _ProfilePageState extends State<ProfilePage> {
               return Visibility(
                 child: Container(
                   child: Center(
-                    child: Text("No Trips Available"),
+                    child: const Text("No Trips Available"),
                   ),
                 ),
                 visible: _noTrips,
@@ -352,7 +382,7 @@ class _ProfilePageState extends State<ProfilePage> {
         child: Center(
             child:
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Text("No Image"),
+          const Text("No Image"),
         ])),
       );
     } else {
@@ -398,22 +428,22 @@ class _ProfilePageState extends State<ProfilePage> {
                     height: 150,
                     width: double.infinity,
                     alignment: Alignment.bottomLeft,
-                    padding: EdgeInsets.fromLTRB(4, 8, 4, 8),
+                    padding: const EdgeInsets.fromLTRB(4, 8, 4, 8),
                     child: RichText(
                       text: TextSpan(
                         text: '$_tripName\n',
-                        style: TextStyle(color: Colors.white, fontSize: 22),
+                        style: const TextStyle(color: Colors.white, fontSize: 22),
                         children: <TextSpan>[
                           TextSpan(
                               text: '$_tripStartDate - $_tripEndDate\n',
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 12,
                                 height: 1.5,
                               )),
                           TextSpan(
                               text: '$_tripLocation\n',
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 12,
                                 height: 1.5,

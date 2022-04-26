@@ -41,7 +41,7 @@ class DetailEventPageState extends State<DetailEventPage> {
     super.initState();
     futureDetailEvent = getDetailEvent(eventID);
     futureImgEvent = getEventPicture(eventID);
-    getUserData(Holder.userID.toString()).then((result){
+    getUserData(Holder.userID.toString()).then((result) {
       username = result["username"];
       setState(() {});
     });
@@ -70,7 +70,8 @@ class DetailEventPageState extends State<DetailEventPage> {
         deleteEvent(id);
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => DetailTripPage(tripID, userID)),
+          MaterialPageRoute(
+              builder: (context) => DetailTripPage(tripID, userID)),
         );
       },
     );
@@ -123,9 +124,9 @@ class DetailEventPageState extends State<DetailEventPage> {
 
   void deleteEvent(int eventID) async {
     var header = {
-    'Content-Type': 'application/json',
-    'Accept': 'application/json',
-    'Authorization': 'Bearer ${Holder.token}',
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer ${Holder.token}',
     };
 
     final http.Response response = await http
@@ -155,10 +156,9 @@ class DetailEventPageState extends State<DetailEventPage> {
                   future: futureImgEvent,
                   builder: (context, AsyncSnapshot snapshot) {
                     if (snapshot.connectionState != ConnectionState.done) {
-                          return const Align(
-                    alignment: Alignment.center,
-                    child: CircularProgressIndicator()
-                    );
+                      return const Align(
+                          alignment: Alignment.center,
+                          child: CircularProgressIndicator());
                     } else {
                       if (snapshot.hasData) {
                         return Column(
@@ -187,7 +187,7 @@ class DetailEventPageState extends State<DetailEventPage> {
                         return Container(
                             child: Center(child: Text('${snapshot.error}')));
                       }
-                    } 
+                    }
                     return const Text("Event load error");
                   }),
             ),
@@ -224,9 +224,8 @@ class DetailEventPageState extends State<DetailEventPage> {
                     }
 
                     return const Align(
-                    alignment: Alignment.center,
-                    child: CircularProgressIndicator()
-                    );
+                        alignment: Alignment.center,
+                        child: CircularProgressIndicator());
                   }),
             ),
             Row(children: <Widget>[

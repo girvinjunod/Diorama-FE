@@ -1,5 +1,7 @@
 import 'package:diorama_id/comment.dart';
+import 'package:diorama_id/detail_event.dart';
 import 'package:diorama_id/main.dart';
+import 'package:diorama_id/model/detail_event_model.dart';
 import 'package:diorama_id/profile.dart';
 import 'package:flutter/material.dart';
 import 'detail_trip.dart';
@@ -96,7 +98,7 @@ class _TripFeedState extends State<TripFeed>
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => DetailTripPage(timeline.list[index]["tripID"], timeline.list[index]["userID"])),
+                          builder: (context) => DetailEventPage(timeline.list[index]["eventID"], timeline.list[index]["tripID"], timeline.list[index]["userID"])),
                     );
                   },
                   child: Image.network(
@@ -109,8 +111,8 @@ class _TripFeedState extends State<TripFeed>
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
             child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text("${timeline.list[index]["caption"]}"),
+              alignment: Alignment.centerLeft,
+              child: Text("${timeline.list[index]["caption"]}"),
             ),
           )),
           Container(constraints: const BoxConstraints(maxWidth: 1080),child:

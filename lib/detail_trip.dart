@@ -14,7 +14,8 @@ class DetailTripPage extends StatefulWidget {
   const DetailTripPage(this.tripID, this.userID, {Key? key}) : super(key: key);
 
   @override
-  DetailTripPageState createState() => DetailTripPageState(this.tripID, this.userID);
+  DetailTripPageState createState() =>
+      DetailTripPageState(this.tripID, this.userID);
 }
 
 // ketika buka page ini yang dipassing adalah username pengguna dan tripID
@@ -31,15 +32,14 @@ class DetailTripPageState extends State<DetailTripPage> {
   DetailTripPageState(this.tripID, this.userID);
   var username = "username";
 
-  
   @override
   void initState() {
     super.initState();
     futureDetailTrip = getDetailTrip(tripID);
     futureEvents = getAllEvent(tripID);
-    getUserData(this.userID.toString()).then((result){
+    getUserData(this.userID.toString()).then((result) {
       username = result["username"];
-      setState(() { });
+      setState(() {});
     });
     _isSelfTrip = Holder.userID == userID.toString();
   }
@@ -116,10 +116,10 @@ class DetailTripPageState extends State<DetailTripPage> {
 
   void deleteTrip(int tripID) async {
     var header = {
-    'Content-Type': 'application/json',
-    'Accept': 'application/json',
-    'Authorization': 'Bearer ${Holder.token}',
-  };
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer ${Holder.token}',
+    };
 
     final http.Response response = await http
         .delete(Uri.parse('http://34.101.123.15:8080/deleteTrip/${tripID}'), headers: header);
@@ -185,9 +185,8 @@ class DetailTripPageState extends State<DetailTripPage> {
                         child: Center(child: Text('${snapshot.error}')));
                   }
                   return const Align(
-                    alignment: Alignment.center,
-                    child: CircularProgressIndicator()
-                    );
+                      alignment: Alignment.center,
+                      child: CircularProgressIndicator());
                 }),
             const Padding(
                 padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
@@ -213,7 +212,8 @@ class DetailTripPageState extends State<DetailTripPage> {
                                     MaterialPageRoute(
                                         builder: (context) => DetailEventPage(
                                             snapshot.data![0].EventID[i],
-                                            tripID, userID)),
+                                            tripID,
+                                            userID)),
                                   );
                                 },
                                 child: Container(
@@ -244,7 +244,8 @@ class DetailTripPageState extends State<DetailTripPage> {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) => AddEventPage(tripID)),
+                                            builder: (context) =>
+                                                AddEventPage(tripID)),
                                       );
                                     },
                                     child: const Text('+ Event'),
@@ -286,9 +287,8 @@ class DetailTripPageState extends State<DetailTripPage> {
                         );
                   }
                   return const Align(
-                    alignment: Alignment.center,
-                    child: CircularProgressIndicator()
-                    );
+                      alignment: Alignment.center,
+                      child: CircularProgressIndicator());
                 }),
             // button delete
             Visibility(
