@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:diorama_id/main.dart';
 import 'package:http/http.dart' as http;
-import 'dart:typed_data';
 
 
 class Comments {
@@ -51,7 +50,7 @@ Future<dynamic> getComments(String UserID, String EventID) async {
   }
 }
 
-static Future<String> addComment(userID, EventID, Text) async {
+Future<String> addComment(userID, EventID, Text) async {
   var header = {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
@@ -66,10 +65,27 @@ static Future<String> addComment(userID, EventID, Text) async {
     Uri.parse("http://127.0.0.1:3000/addComment"),
     body: json.encode(data),
     headers: header);
-  );
-  log(response.reasonPhrase.toString());
   if (response.statusCode == 200) {
     return "SUCCESS";
   }
     return "ERROR";
+}
+
+Future<String> deleteComment(commentID) async {
+  var header = {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+    'Authorization': 'Bearer ${Holder.token}',
+  };
+  var data = {
+    "CommentID": commentID,
+  };
+  final response = await http.post(
+      Uri.parse("http://127.0.0.1:3000/deleteComment"),
+      body: json.encode(data),
+      headers: header);
+  if (response.statusCode == 200) {
+    return "SUCCESS";
+  }
+  return "ERROR";
 }

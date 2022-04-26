@@ -10,21 +10,19 @@ class CommentDetail extends StatefulWidget {
 }
 
 class _CommentDetailState extends State<CommentDetail> {
-    with SingleTickerProviderStateMixin {
-  late TabController _controller;
   final int _userID = 1; // which user's current user page
   final int _eventID = 1;
   late Comments _commentsList;
   final commentsWidget = <Widget>[];
   var _userPics = [];
   String _username = "username";
-  String text_comments;
+  String text_comments = "";
   String message ="";
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
-    _controller = TabController(vsync: this, length: 2);
     getComments(_userID.toString(), _eventID.toString()).then((list){
     _commentsList = list[0];
     _userPics = list[1];
@@ -43,8 +41,8 @@ class _CommentDetailState extends State<CommentDetail> {
       for(var i=0;i<_commentsList.list.length;i++)
       {
         commentsWidget.add(
-          Stack(children: <Widget>[
-          Sizebox(
+          Stack(children: const <Widget>[
+            SizedBox(
             width: double.infinity;
             child: Column(
               Sizebox (
@@ -101,6 +99,29 @@ class _CommentDetailState extends State<CommentDetail> {
                       ),
                     ),
                   ),
+                  TextButton(
+                    style: TextButton.styleFrom(
+                      padding: const EdgeInsets.only(left: 150.0, right: 10.0),
+                      primary: Color.fromARGB(255, 148, 3, 3),
+                    ),
+                    onPressed: () {
+                      var response = deleteComment(_commentsList.list[i]['id']);
+                      if (response == "SUCCESS"){
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                              content: Text(
+                                  'Comment deleted')),
+                        );
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                              content: Text(
+                                  'Error. Unable to delete comment')),
+                        );
+                      }
+                    },
+                    child: Text('delete'),
+                  ),
                 ),
               ),
               Container(
@@ -120,68 +141,70 @@ class _CommentDetailState extends State<CommentDetail> {
                     ),
                   ),
                 ),
-              )
-            ]
+              ),
+            ),
+            ),
+          ],
           ),
         );
       }
     }
 
-
-
-    @override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF1F1F1),
-      body: Column(
-        children: <Widget> [
-          SingleChildScrollView(
-            child: Column(children:
-              commentsWidget
+        backgroundColor: const Color(0xFFF1F1F1),
+          body: Column(
+            children: <Widget> [
+              SingleChildScrollView(
+                child: Column(children:
+                  commentsWidget
+              ),
             ),
-          ),
-          Container(
-            padding: const EdgeInsets.fromLTRB(15, 0, 0, 20),
-            child: SizedBox(
-              width: double.infinity,
-              child: Row(
+            Container(
+              padding: const EdgeInsets.fromLTRB(15, 0, 0, 20),
+              child: Form(
+                key: _formKey,
+                child: Padding(
+                padding: const EdgeInsets.all(80.0),
+                child: Row(
                   children: <Widget>[
-                  CircleAvatar(
-                    radius: 20, // Image radius
-                    backgroundImage: AssetImage('images/pp-temp.jpg'),
-                  ),
-                  SizedBox(
+                    CircleAvatar(
+                      radius: 20, // Image radius
+                        backgroundImage: AssetImage('images/pp-temp.jpg'),
+                      ),
+                    SizedBox(
                       //padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                    width: 200,
-                    child: TextField(
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Add comment...',
-                        contentPadding: EdgeInsets.only(left: 10),
-                      ),
-                    onSaved: (value) => setState(() {
-                      text_comments = value.toString();
-                      response = addComment(_userID, _eventID, text_comments);
-                      if (response == "SUCCESS") {
-                        message = "Comment added successfully";
-                      } else {
-                        message = "Error occurred. Cannot add your comment.";
-                      }
-                    final snackBar = SnackBar(
-                      content: Text(
-                        message,
-                        style: TextStyle(fontSize: 20),
-                      ),
-                    );
-                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                    }),
+                      width: 200,
+                      child: TextField(
+                        decoration: InputDecoration(
+                      border: InputBorder.none,
+                      hintText: 'Add comment...',
+                      contentPadding: EdgeInsets.only(left: 10),
+                    ),
+                      onChanged: (value) => setState(() {
+                        text_comments = value.toString();
+                      //   var response = addComment(_userID, _eventID, text_comments);
+                      //   if (response == "SUCCESS") {
+                      //     message = "Comment added successfully";
+                      //   } else {
+                      //     message = "Error occurred. Cannot add your comment.";
+                      //   }
+                      // final snackBar = SnackBar(
+                      //   content: Text(
+                      //     message,
+                      //     style: TextStyle(fontSize: 20),
+                      //   ),
+                      // );
+                      // ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                      }),
                     )
                   ),
                 ],
               )
             )
           )
-        ]
+        )]
       )
     );
     }

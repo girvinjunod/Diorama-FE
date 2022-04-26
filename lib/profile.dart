@@ -107,6 +107,20 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   onPressed: () {
                     var response = Logout();
+                    if (response == "SUCCESS"){
+                      Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const NavBar(),
+                          ),
+                              (r) => false);
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                            content: Text(
+                                'Logout failed')),
+                      );
+                    }
                   },
                   child: Text('Logout'),
                 ),

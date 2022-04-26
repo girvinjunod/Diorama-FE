@@ -115,12 +115,12 @@ class _TripFeedState extends State<TripFeed>
                       backgroundColor: MaterialStateProperty.all<Color>(
                           Colors.cyan.shade900)),
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => CommentDetail(timeline.list[index]["eventID"])
-                      )
-                    );
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //       builder: (context) => CommentDetail(timeline.list[index]["eventID"])
+                    //   )
+                    // );
                   },
                   child: const Text('Comment'),
                 )),
