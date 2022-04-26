@@ -11,7 +11,7 @@ class CommentDetail extends StatefulWidget {
 }
 
 class _CommentDetailState extends State<CommentDetail> {
-  final int _userID = 0; // which user's current user page
+  final int _userID = 1; // which user's current user page
   final int _eventID = 1;
   late Comments _commentsList;
   final commentsWidget = <Widget>[];
@@ -153,7 +153,6 @@ class _CommentDetailState extends State<CommentDetail> {
 
   @override
   Widget build(BuildContext context) {
-    developer.log(a);
     return Scaffold(
         backgroundColor: const Color(0xFFF1F1F1),
         body: Column(children: <Widget>[
@@ -184,29 +183,32 @@ class _CommentDetailState extends State<CommentDetail> {
                                 onChanged: (value) => setState(() {
                                   text_comments = value.toString();
                                 }),
-                              )
-                          ),
+                              )),
                           TextButton(
-                              style: TextButton.styleFrom(
-                                padding: const EdgeInsets.only(left: 50.0, right: 10.0),
-                                primary: Color.fromARGB(255, 5, 68, 94),
-                              ),
-                              child: Text('Send'),
-                              onPressed: (){
-                                var response = addComment(_userID, _eventID, text_comments);
-                                if (response == "SUCCESS") {
-                                  message = "Comment added successfully";
-                                } else {
-                                  message = "Error occurred. Cannot add your comment.";
-                                }
-                                final snackBar = SnackBar(
+                            style: TextButton.styleFrom(
+                              padding: const EdgeInsets.only(
+                                  left: 50.0, right: 10.0),
+                              primary: Color.fromARGB(255, 5, 68, 94),
+                            ),
+                            child: Text('Send'),
+                            onPressed: () {
+                              var response =
+                                  addComment(_userID, _eventID, text_comments);
+                              if (response == "SUCCESS") {
+                                message = "Comment added successfully";
+                              } else {
+                                message =
+                                    "Error occurred. Cannot add your comment.";
+                              }
+                              final snackBar = SnackBar(
                                 content: Text(
-                                message,
-                                style: TextStyle(fontSize: 20),
+                                  message,
+                                  style: TextStyle(fontSize: 20),
                                 ),
-                                );
-                                ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                              },
+                              );
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackBar);
+                            },
                           )
                         ],
                       ))))

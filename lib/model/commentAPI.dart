@@ -19,11 +19,13 @@ Future<dynamic> getUserData(String UserID) async {
   var header = {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
-    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZ2lydmluanVub2QifQ.uy_5_DzArTfCLZh5zgebUok27RwtmAykmTxXAu7-FdY',
+    'Authorization':
+        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZ2lydmluanVub2QifQ.uy_5_DzArTfCLZh5zgebUok27RwtmAykmTxXAu7-FdY',
   };
   final response = await http.get(
       Uri.parse('http://34.101.123.15:8080/getUserByID/$UserID'),
       headers: header);
+  print(response.body);
   if (response.statusCode == 200) {
     return jsonDecode(response.body);
   } else {
@@ -31,23 +33,23 @@ Future<dynamic> getUserData(String UserID) async {
   }
 }
 
-
 Future<dynamic> getComments(String UserID, String EventID) async {
   var header = {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
-    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZ2lydmluanVub2QifQ.uy_5_DzArTfCLZh5zgebUok27RwtmAykmTxXAu7-FdY',
+    'Authorization':
+        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZ2lydmluanVub2QifQ.uy_5_DzArTfCLZh5zgebUok27RwtmAykmTxXAu7-FdY',
   };
   final response = await http.get(
-      Uri.parse('http://34.101.123.15:8080/GetAllCommentsFromEvent/$EventID'),
+      Uri.parse('http://34.101.123.15:8080/GetCommentsFromEvent/$EventID'),
       headers: header);
-  var imglist = [];
-  developer.log(response.statusCode.toString());
+  print(response.body);
+  // developer.log(response.statusCode.toString());s
   if (response.statusCode == 200) {
     Comments json = Comments.fromJson(jsonDecode(response.body));
-      return json;
+    return json;
   } else {
-      throw Exception('Failed to load timeline data');
+    throw Exception('Failed to load timeline data');
   }
 }
 
@@ -55,7 +57,8 @@ Future<dynamic> getPPUser(String UserID) async {
   var header = {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
-    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZ2lydmluanVub2QifQ.uy_5_DzArTfCLZh5zgebUok27RwtmAykmTxXAu7-FdY',
+    'Authorization':
+        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZ2lydmluanVub2QifQ.uy_5_DzArTfCLZh5zgebUok27RwtmAykmTxXAu7-FdY',
   };
   final response = await http.get(
       Uri.parse('http://34.101.123.15:8080/getPPByID/$UserID'),
@@ -73,7 +76,8 @@ Future<String> addComment(userID, EventID, Text) async {
   var header = {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
-    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZ2lydmluanVub2QifQ.uy_5_DzArTfCLZh5zgebUok27RwtmAykmTxXAu7-FdY',
+    'Authorization':
+        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZ2lydmluanVub2QifQ.uy_5_DzArTfCLZh5zgebUok27RwtmAykmTxXAu7-FdY',
   };
   var data = {
     "EventID": EventID,
@@ -81,20 +85,21 @@ Future<String> addComment(userID, EventID, Text) async {
     "Text": Text,
   };
   final response = await http.post(
-    Uri.parse("http://34.101.123.15:8080/addComment"),
-    body: json.encode(data),
-    headers: header);
+      Uri.parse("http://34.101.123.15:8080/addComment"),
+      body: json.encode(data),
+      headers: header);
   if (response.statusCode == 200) {
     return "SUCCESS";
   }
-    return "ERROR";
+  return "ERROR";
 }
 
 Future<String> deleteComment(commentID) async {
   var header = {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
-    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZ2lydmluanVub2QifQ.uy_5_DzArTfCLZh5zgebUok27RwtmAykmTxXAu7-FdY',
+    'Authorization':
+        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZ2lydmluanVub2QifQ.uy_5_DzArTfCLZh5zgebUok27RwtmAykmTxXAu7-FdY',
   };
   var data = {
     "id": commentID,

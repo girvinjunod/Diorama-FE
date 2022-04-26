@@ -22,7 +22,7 @@ Future<dynamic> getUserData(String UserID) async {
     'Authorization': 'Bearer ${Holder.token}',
   };
   final response = await http.get(
-      Uri.parse('https://diorama-id.herokuapp.com/getUserByID/$UserID'),
+      Uri.parse('http://34.101.123.15:8080/getUserByID/$UserID'),
       headers: header);
   if (response.statusCode == 200) {
     return jsonDecode(response.body);
@@ -38,14 +38,14 @@ Future<List> fetchFollowers(String UserID) async {
     'Authorization': 'Bearer ${Holder.token}',
   };
   final response = await http.get(
-      Uri.parse('https://diorama-id.herokuapp.com/getFollowers/$UserID'),
+      Uri.parse('http://34.101.123.15:8080/getFollowers/$UserID'),
       headers: header);
   var imglist = [];
   if (response.statusCode == 200) {
     Followers json = Followers.fromJson(jsonDecode(response.body));
     for (var element in json.list) {
       final img = await http.get(Uri.parse(
-          'https://diorama-id.herokuapp.com/getPPByID/${element["userId"]}'));
+          'http://34.101.123.15:8080/getPPByID/${element["userId"]}'));
       imglist.add(img.bodyBytes);
     }
     return [json, imglist];
@@ -61,14 +61,14 @@ Future<List> fetchFollowing(String UserID) async {
     'Authorization': 'Bearer ${Holder.token}',
   };
   final response = await http.get(
-      Uri.parse('https://diorama-id.herokuapp.com/getFollowedUsers/$UserID'),
+      Uri.parse('http://34.101.123.15:8080/getFollowedUsers/$UserID'),
       headers: header);
   var imglist = [];
   if (response.statusCode == 200) {
     Followers json = Followers.fromJson(jsonDecode(response.body));
     for (var element in json.list) {
       final img = await http.get(Uri.parse(
-          'https://diorama-id.herokuapp.com/getPPByID/${element["userId"]}'));
+          'http://34.101.123.15:8080/getPPByID/${element["userId"]}'));
       imglist.add(img.bodyBytes);
     }
     return [json, imglist];

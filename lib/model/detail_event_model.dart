@@ -39,8 +39,9 @@ Future<DetailEvent> getDetailEvent(int EventID) async {
     'Authorization': 'Bearer ${Holder.token}',
   };
 
-  final response = await http
-      .get(Uri.parse('https://diorama-id.herokuapp.com/getEventDetailByID/${EventID}'), headers: header);
+  final response = await http.get(
+      Uri.parse('http://34.101.123.15:8080/getEventDetailByID/${EventID}'),
+      headers: header);
 
   if (response.statusCode == 200) {
     // If the server did return a 200 OK response,
@@ -62,8 +63,9 @@ Future<List> getEventPicture(int EventID) async {
     'Authorization': 'Bearer ${Holder.token}',
   };
 
-  final response = await http
-      .get(Uri.parse('https://diorama-id.herokuapp.com/getEventPictureByID/${EventID}'), headers: header);
+  final response = await http.get(
+      Uri.parse('http://34.101.123.15:8080/getEventPictureByID/${EventID}'),
+      headers: header);
 
   var imglist = [];
   if (response.statusCode == 200) {

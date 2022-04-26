@@ -20,8 +20,8 @@ Future<dynamic> getUserData(String UserID) async {
     'Accept': 'application/json',
     'Authorization': 'Bearer ${Holder.token}',
   };
-  final response = await http
-      .get(Uri.parse('https://diorama-id.herokuapp.com/getUserByID/$UserID'),
+  final response = await http.get(
+      Uri.parse('http://34.101.123.15:8080/getUserByID/$UserID'),
       headers: header);
   if (response.statusCode == 200) {
     return jsonDecode(response.body);
@@ -36,8 +36,8 @@ Future<dynamic> getTimeline(String UserID) async {
     'Accept': 'application/json',
     'Authorization': 'Bearer ${Holder.token}',
   };
-  final response = await http
-      .get(Uri.parse('https://diorama-id.herokuapp.com/getTimeline/$UserID'),
+  final response = await http.get(
+      Uri.parse('http://34.101.123.15:8080/getTimeline/$UserID'),
       headers: header);
   var imglist = [];
   if (response.statusCode == 200) {

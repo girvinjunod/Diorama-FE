@@ -35,7 +35,7 @@ Future<String> register(
   //print(body);
 
   final response = await http.post(
-    Uri.parse('https://diorama-id.herokuapp.com/register'),
+    Uri.parse('http://34.101.123.15:8080/register'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       'Accept': 'application/json',

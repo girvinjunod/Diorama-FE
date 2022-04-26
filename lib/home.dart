@@ -67,15 +67,14 @@ class _TripFeedState extends State<TripFeed>
                     CircleAvatar(
                       radius: 20, // Image radius
                       backgroundImage: NetworkImage(
-                          "https://diorama-id.herokuapp.com/getPPByID/${timeline.list[index]["userID"]}"),
+                          "http://34.101.123.15:8080/getPPByID/${timeline.list[index]["userID"]}"),
                     ),
                     Padding(
                       padding: EdgeInsets.only(left: 10),
                       child: Text(timeline.list[index]["username"]),
                     )
                   ],
-                )
-                ),
+                )),
           ),
           SizedBox(
             height: 350,
@@ -88,20 +87,21 @@ class _TripFeedState extends State<TripFeed>
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => DetailTripPage(1, timeline.list[index]["userID"])),
+                          builder: (context) => DetailTripPage(
+                              1, timeline.list[index]["userID"])),
                     );
                   },
                   child: Image.network(
-                "https://diorama-id.herokuapp.com/getEventPictureByID/${timeline.list[index]["eventID"]}",
-                fit: BoxFit.cover,
-              )),
+                    "http://34.101.123.15:8080/getEventPictureByID/${timeline.list[index]["eventID"]}",
+                    fit: BoxFit.cover,
+                  )),
             ),
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
             child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text("${timeline.list[index]["caption"]}"),
+              alignment: Alignment.centerLeft,
+              child: Text("${timeline.list[index]["caption"]}"),
             ),
           ),
           Padding(
