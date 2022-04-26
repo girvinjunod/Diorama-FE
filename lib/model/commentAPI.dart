@@ -48,27 +48,10 @@ Future<dynamic> getComments(String UserID, String EventID) async {
     Comments json = Comments.fromJson(jsonDecode(response.body));
     return json;
   } else {
-    throw Exception('Failed to load timeline data');
+    throw Exception('Failed to load comments data');
   }
 }
 
-Future<dynamic> getPPUser(String UserID) async {
-  var header = {
-    'Content-Type': 'application/json',
-    'Accept': 'application/json',
-    'Authorization':
-        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZ2lydmluanVub2QifQ.uy_5_DzArTfCLZh5zgebUok27RwtmAykmTxXAu7-FdY',
-  };
-  final response = await http.get(
-      Uri.parse('http://34.101.123.15:8080/getPPByID/$UserID'),
-      headers: header);
-  developer.log(response.body);
-  if (response.statusCode == 200) {
-    return "SUCCESS";
-  } else {
-    throw Exception('Failed to load timeline data');
-  }
-}
 
 Future<String> addComment(userID, EventID, Text) async {
   var header = {
@@ -102,8 +85,8 @@ Future<String> deleteComment(commentID) async {
   var data = {
     "id": commentID,
   };
-  final response = await http.post(
-      Uri.parse("http://34.101.123.15:8080/deleteComment"),
+  final response = await http.delete(
+      Uri.parse("http://34.101.123.15:8080/deleteComment/$commentID"),
       body: json.encode(data),
       headers: header);
   if (response.statusCode == 200) {

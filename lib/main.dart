@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Diorama',
-      home: jwt == null ? const CommentDetail() : const NavBar(),
+      home: jwt == null ? const CommentDetail(1) : const NavBar(),
       theme: ThemeData(
         appBarTheme: AppBarTheme(
             backgroundColor: Colors.cyan.shade700,
