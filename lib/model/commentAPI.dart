@@ -43,7 +43,6 @@ Future<dynamic> getComments(String UserID, String EventID) async {
   final response = await http.get(
       Uri.parse('http://34.101.123.15:8080/GetCommentsFromEvent/$EventID'),
       headers: header);
-  print(response.body);
   // developer.log(response.statusCode.toString());s
   if (response.statusCode == 200) {
     Comments json = Comments.fromJson(jsonDecode(response.body));
@@ -63,10 +62,9 @@ Future<dynamic> getPPUser(String UserID) async {
   final response = await http.get(
       Uri.parse('http://34.101.123.15:8080/getPPByID/$UserID'),
       headers: header);
-  developer.log("Aaa");
+  developer.log(response.body);
   if (response.statusCode == 200) {
-    Comments json = Comments.fromJson(jsonDecode(response.body));
-    return json;
+    return "SUCCESS";
   } else {
     throw Exception('Failed to load timeline data');
   }

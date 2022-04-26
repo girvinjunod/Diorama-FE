@@ -17,18 +17,19 @@ class _CommentDetailState extends State<CommentDetail> {
   final commentsWidget = <Widget>[];
   var _userPics = [];
   String _username = "username";
+  var _pp;
   String text_comments = "";
   String message = "";
   final _formKey = GlobalKey<FormState>();
   var a = "1";
+  var current_uname = "";
+  var current_pp = "";
 
   @override
   void initState() {
     super.initState();
     getComments(_userID.toString(), _eventID.toString()).then((list) {
-      _commentsList = list[0];
-      _userPics = list[1];
-      a = "hayo";
+      _commentsList = list;
       initCommentsList();
       setState(() {});
     });
@@ -42,29 +43,32 @@ class _CommentDetailState extends State<CommentDetail> {
 
   void initCommentsList() {
     for (var i = 0; i < _commentsList.list.length; i++) {
+
       commentsWidget.add(
         Stack(
           children: <Widget>[
             SizedBox(
               width: double.infinity,
-              child: Column(children: <Widget>[
+              child: Column(
+                children: <Widget>[
                 SizedBox(
+                  height: 200,
                   width: double.infinity,
                   child: Row(children: <Widget>[
                     Container(
                       height: 100,
-                      width: double.infinity,
+                      width: 30,
                       alignment: Alignment.centerLeft,
                       padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
                       child: CircleAvatar(
-                        radius: 40,
-                        backgroundImage: MemoryImage(_userPics[i]),
-                        backgroundColor: Colors.transparent,
-                      ),
+                        radius: 20, // Image radius
+                        backgroundImage: NetworkImage(
+                        "http://34.101.123.15:8080/getPPByID/${_commentsList.list[i]["userID"]}"),
+                        ),
                     ),
                     SizedBox(
                       height: 100,
-                      width: double.infinity,
+                      width: 200,
                       child: SizedBox(
                         width: double.infinity,
                         height: double.infinity,
@@ -84,7 +88,7 @@ class _CommentDetailState extends State<CommentDetail> {
                           onPressed: () {},
                           child: Container(
                             height: 100,
-                            width: double.infinity,
+                            width: 300,
                             alignment: Alignment.centerLeft,
                             padding: const EdgeInsets.fromLTRB(100, 8, 4, 8),
                             child: RichText(
@@ -103,7 +107,7 @@ class _CommentDetailState extends State<CommentDetail> {
                     TextButton(
                       style: TextButton.styleFrom(
                         padding:
-                            const EdgeInsets.only(left: 150.0, right: 10.0),
+                            const EdgeInsets.only(left: 100.0, right: 10.0),
                         primary: Color.fromARGB(255, 148, 3, 3),
                       ),
                       onPressed: () {
@@ -155,10 +159,24 @@ class _CommentDetailState extends State<CommentDetail> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: const Color(0xFFF1F1F1),
-        body: Column(children: <Widget>[
-          SingleChildScrollView(
-            child: Column(children: commentsWidget),
-          ),
+        body: Column(
+            children: [
+              ListView(
+                children: commentsWidget),
+            // ValueListenableBuilder<int>(
+            //   builder: (BuildContext context, int value, Widget? child) {
+            //     // This builder will only get called when the _counter
+            //     // is updated.
+            //     return Row(
+            //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            //       children: <Widget>[
+                    
+            //       ],
+            //     );
+            //   },
+            //   valueListenable: _commentsList,)
+  
+          
           Container(
               padding: const EdgeInsets.fromLTRB(15, 0, 0, 10),
               child: Form(
@@ -169,8 +187,9 @@ class _CommentDetailState extends State<CommentDetail> {
                         children: <Widget>[
                           CircleAvatar(
                             radius: 20, // Image radius
-                            backgroundImage: AssetImage('images/pp-temp.jpg'),
-                          ),
+                            backgroundImage: NetworkImage(
+                            "http://34.101.123.15:8080/getPPByID/$_userID"),
+                            ),
                           SizedBox(
                               //padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
                               width: 200,
