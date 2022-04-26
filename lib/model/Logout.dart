@@ -4,7 +4,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 Future<String> Logout() async {
   Holder.token = "";
   Holder.userID = "";
-  const storage = FlutterSecureStorage();
+  final storage = new FlutterSecureStorage();
   storage.deleteAll();
 
   if (Holder.userID.isEmpty && Holder.token.isEmpty){

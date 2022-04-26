@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'model/commentAPI.dart';
+import 'dart:developer' as developer;
 
 class CommentDetail extends StatefulWidget {
   const CommentDetail({Key? key}) : super(key: key);
@@ -10,7 +11,7 @@ class CommentDetail extends StatefulWidget {
 }
 
 class _CommentDetailState extends State<CommentDetail> {
-  final int _userID = 1; // which user's current user page
+  final int _userID = 0; // which user's current user page
   final int _eventID = 1;
   late Comments _commentsList;
   final commentsWidget = <Widget>[];
@@ -19,6 +20,7 @@ class _CommentDetailState extends State<CommentDetail> {
   String text_comments = "";
   String message = "";
   final _formKey = GlobalKey<FormState>();
+  var a = "1";
 
   @override
   void initState() {
@@ -26,13 +28,14 @@ class _CommentDetailState extends State<CommentDetail> {
     getComments(_userID.toString(), _eventID.toString()).then((list) {
       _commentsList = list[0];
       _userPics = list[1];
+      a = "hayo";
       initCommentsList();
       setState(() {});
     });
-
     getUserData(_userID.toString()).then((userdata) {
       setState(() {
         _username = userdata["username"];
+        a = "GETUSER";
       });
     });
   }
@@ -150,6 +153,7 @@ class _CommentDetailState extends State<CommentDetail> {
 
   @override
   Widget build(BuildContext context) {
+    developer.log(a);
     return Scaffold(
         backgroundColor: const Color(0xFFF1F1F1),
         body: Column(children: <Widget>[
@@ -157,11 +161,11 @@ class _CommentDetailState extends State<CommentDetail> {
             child: Column(children: commentsWidget),
           ),
           Container(
-              padding: const EdgeInsets.fromLTRB(15, 0, 0, 20),
+              padding: const EdgeInsets.fromLTRB(15, 0, 0, 10),
               child: Form(
                   key: _formKey,
                   child: Padding(
-                      padding: const EdgeInsets.all(80.0),
+                      padding: const EdgeInsets.all(20.0),
                       child: Row(
                         children: <Widget>[
                           CircleAvatar(
@@ -179,21 +183,31 @@ class _CommentDetailState extends State<CommentDetail> {
                                 ),
                                 onChanged: (value) => setState(() {
                                   text_comments = value.toString();
-                                  //   var response = addComment(_userID, _eventID, text_comments);
-                                  //   if (response == "SUCCESS") {
-                                  //     message = "Comment added successfully";
-                                  //   } else {
-                                  //     message = "Error occurred. Cannot add your comment.";
-                                  //   }
-                                  // final snackBar = SnackBar(
-                                  //   content: Text(
-                                  //     message,
-                                  //     style: TextStyle(fontSize: 20),
-                                  //   ),
-                                  // );
-                                  // ScaffoldMessenger.of(context).showSnackBar(snackBar);
                                 }),
-                              )),
+                              )
+                          ),
+                          TextButton(
+                              style: TextButton.styleFrom(
+                                padding: const EdgeInsets.only(left: 50.0, right: 10.0),
+                                primary: Color.fromARGB(255, 5, 68, 94),
+                              ),
+                              child: Text('Send'),
+                              onPressed: (){
+                                var response = addComment(_userID, _eventID, text_comments);
+                                if (response == "SUCCESS") {
+                                  message = "Comment added successfully";
+                                } else {
+                                  message = "Error occurred. Cannot add your comment.";
+                                }
+                                final snackBar = SnackBar(
+                                content: Text(
+                                message,
+                                style: TextStyle(fontSize: 20),
+                                ),
+                                );
+                                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                              },
+                          )
                         ],
                       ))))
         ]));

@@ -69,9 +69,9 @@ Future<dynamic> getUser(String UserID) async {
   };
   
   final response =
-      await http.get(Uri.parse('https://diorama-id.herokuapp.com/getUserByID/$UserID'), headers: header);
+      await http.get(Uri.parse('http://34.101.123.15:8080/getUserByID/$UserID'), headers: header);
   final img =
-      await http.get(Uri.parse('https://diorama-id.herokuapp.com/getPPByID/$UserID'), headers: header);
+      await http.get(Uri.parse('http://34.101.123.15:8080/getPPByID/$UserID'), headers: header);
   if (response.statusCode == 200 && img.statusCode == 200) {
     dynamic res = Profile.fromJson(jsonDecode(response.body));
     // print(res);
@@ -90,7 +90,7 @@ Future<dynamic> getUserPP(String UserID) async {
   };
 
   final response =
-      await http.get(Uri.parse('https://diorama-id.herokuapp.com/getPPByID/$UserID'), headers: header);
+      await http.get(Uri.parse('http://34.101.123.15:8080/getPPByID/$UserID'), headers: header);
   if (response.statusCode == 200) {
     return jsonDecode(response.body);
   } else {
@@ -112,7 +112,7 @@ Future<dynamic> getTripFromUser(String UserID) async {
   };
 
   final response =
-      await http.get(Uri.parse('https://diorama-id.herokuapp.com/getTripsByUser/$UserID'), headers: header);
+      await http.get(Uri.parse('http://34.101.123.15:8080/getTripsByUser/$UserID'), headers: header);
   // print(response.body.runtimeType);
   var imgTripList = [];
   var tripList = [];
@@ -120,10 +120,10 @@ Future<dynamic> getTripFromUser(String UserID) async {
     Trips json = Trips.fromJson(jsonDecode(response.body));
     for (var element in json.list) {
       final img = await http
-          .get(Uri.parse('https://diorama-id.herokuapp.com/getTripsImage/$element'), headers: header);
+          .get(Uri.parse('http://34.101.123.15:8080/getTripsImage/$element'), headers: header);
       imgTripList.add(img.bodyBytes);
       final detail = await http
-          .get(Uri.parse('https://diorama-id.herokuapp.com/getTripDetailByID/$element'), headers: header);
+          .get(Uri.parse('http://34.101.123.15:8080/getTripDetailByID/$element'), headers: header);
       tripList.add(TripDetail.fromJson(jsonDecode(detail.body)));
     }
     return [tripList, imgTripList];

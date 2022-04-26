@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:diorama_id/main.dart';
 import 'package:http/http.dart' as http;
-
+import 'dart:developer' as developer;
 
 class Comments {
   final List<dynamic> list;
@@ -19,10 +19,10 @@ Future<dynamic> getUserData(String UserID) async {
   var header = {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
-    'Authorization': 'Bearer ${Holder.token}',
+    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZ2lydmluanVub2QifQ.uy_5_DzArTfCLZh5zgebUok27RwtmAykmTxXAu7-FdY',
   };
   final response = await http.get(
-      Uri.parse('https://diorama-id.herokuapp.com/getUserByID/$UserID'),
+      Uri.parse('http://34.101.123.15:8080/getUserByID/$UserID'),
       headers: header);
   if (response.statusCode == 200) {
     return jsonDecode(response.body);
@@ -36,12 +36,13 @@ Future<dynamic> getComments(String UserID, String EventID) async {
   var header = {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
-    'Authorization': 'Bearer ${Holder.token}',
+    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZ2lydmluanVub2QifQ.uy_5_DzArTfCLZh5zgebUok27RwtmAykmTxXAu7-FdY',
   };
   final response = await http.get(
-      Uri.parse('https://diorama-id.herokuapp.com/getCommentDetailByID/$EventID'),
+      Uri.parse('http://34.101.123.15:8080/GetAllCommentsFromEvent/$EventID'),
       headers: header);
   var imglist = [];
+  developer.log(response.statusCode.toString());
   if (response.statusCode == 200) {
     Comments json = Comments.fromJson(jsonDecode(response.body));
       return json;
@@ -50,19 +51,37 @@ Future<dynamic> getComments(String UserID, String EventID) async {
   }
 }
 
+Future<dynamic> getPPUser(String UserID) async {
+  var header = {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZ2lydmluanVub2QifQ.uy_5_DzArTfCLZh5zgebUok27RwtmAykmTxXAu7-FdY',
+  };
+  final response = await http.get(
+      Uri.parse('http://34.101.123.15:8080/getPPByID/$UserID'),
+      headers: header);
+  developer.log("Aaa");
+  if (response.statusCode == 200) {
+    Comments json = Comments.fromJson(jsonDecode(response.body));
+    return json;
+  } else {
+    throw Exception('Failed to load timeline data');
+  }
+}
+
 Future<String> addComment(userID, EventID, Text) async {
   var header = {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
-    'Authorization': 'Bearer ${Holder.token}',
+    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZ2lydmluanVub2QifQ.uy_5_DzArTfCLZh5zgebUok27RwtmAykmTxXAu7-FdY',
   };
   var data = {
-    "EventId": EventID,
-    "UserId": userID,
+    "EventID": EventID,
+    "UserID": userID,
     "Text": Text,
   };
   final response = await http.post(
-    Uri.parse("http://127.0.0.1:3000/addComment"),
+    Uri.parse("http://34.101.123.15:8080/addComment"),
     body: json.encode(data),
     headers: header);
   if (response.statusCode == 200) {
@@ -75,13 +94,13 @@ Future<String> deleteComment(commentID) async {
   var header = {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
-    'Authorization': 'Bearer ${Holder.token}',
+    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZ2lydmluanVub2QifQ.uy_5_DzArTfCLZh5zgebUok27RwtmAykmTxXAu7-FdY',
   };
   var data = {
-    "CommentID": commentID,
+    "id": commentID,
   };
   final response = await http.post(
-      Uri.parse("http://127.0.0.1:3000/deleteComment"),
+      Uri.parse("http://34.101.123.15:8080/deleteComment"),
       body: json.encode(data),
       headers: header);
   if (response.statusCode == 200) {
