@@ -15,7 +15,7 @@ class CommentDetail extends StatefulWidget {
 }
 
 class _CommentDetailState extends State<CommentDetail> {
-  final _userID = Holder.userID;
+  final _userID = 1;
   int _eventID;
   _CommentDetailState(this._eventID);
   late Comments _commentsList;
@@ -151,6 +151,41 @@ class _CommentDetailState extends State<CommentDetail> {
     return Scaffold(
         backgroundColor: const Color(0xFFF1F1F1),
         body: Column(children: <Widget>[
+          Container(
+            width: double.infinity,
+            height: 100,
+            padding: EdgeInsets.all(20),
+            child: Row(
+              children: <Widget>[
+                    InkWell(
+                      child: RichText(
+                        textAlign: TextAlign.left,
+                        text: TextSpan(
+                          text: "Back",
+                          style: const TextStyle(
+                              color: Color.fromARGB(255, 5, 68, 94),
+                              fontWeight: FontWeight.w400,
+                              fontSize: 20.0),
+                        ),
+                      ),
+                      onTap: () {},
+                    ),
+                Expanded(child: Container(
+                  padding: EdgeInsets.only(right: 30),
+                  child: RichText(
+                    textAlign: TextAlign.center,
+                    text: TextSpan(
+                      text: "Comments",
+                      style: const TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w400,
+                          fontSize: 24.0),
+                    ),
+                  ),
+                ),),
+              ],
+            ),
+          ),
           Expanded(child:
             ListView.builder(
               shrinkWrap: true,
@@ -160,21 +195,6 @@ class _CommentDetailState extends State<CommentDetail> {
         return initCommentsList(index);
       },
       )),
-      // ValueListenableBuilder<int>(
-      //         builder: (BuildContext context, int value, Widget? child) {
-      //           // This builder will only get called when the _counter
-      //           // is updated.
-      //           return Row(
-      //             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      //             children: <Widget>[
-      //               Text('$value'),
-      //               child!,
-      //             ],
-      //           );
-      //         },
-      //         valueListenable: sum_comment,
-
-      //       ),
           Container(
               padding: const EdgeInsets.fromLTRB(10, 0, 0, 10),
               child: Form(
