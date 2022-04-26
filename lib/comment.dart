@@ -15,7 +15,7 @@ class CommentDetail extends StatefulWidget {
 }
 
 class _CommentDetailState extends State<CommentDetail> {
-  final _userID = 1;
+  final _userID = Holder.userID;
   int _eventID;
   _CommentDetailState(this._eventID);
   late Comments _commentsList;
@@ -81,14 +81,15 @@ class _CommentDetailState extends State<CommentDetail> {
                             text: _commentsList.list[i]['username'],
                             style: const TextStyle(
                                 color: Colors.black,
-                                fontWeight: FontWeight.w400,
+                                fontWeight: FontWeight.w600,
                                 fontSize: 16.0),
                           ),
                         ),
                         onTap: (){},
                       ),
                     ),
-                    TextButton(
+                    Visibility
+                    (child: TextButton(
                       style: TextButton.styleFrom(
                         padding:
                             const EdgeInsets.only(left: 10.0, right: 10.0),
@@ -120,26 +121,48 @@ class _CommentDetailState extends State<CommentDetail> {
                       },
                       child: Text('delete'),
                     ),
+                    visible: _userID == _commentsList.list[i]['userID'],
+                    ),
                   ]),
                 ),),
-                Container(
-                  height: 50,
-                  width: double.infinity,
-                  alignment: Alignment.centerLeft,
-                  padding: const EdgeInsets.fromLTRB(20, 8, 4, 8),
-                  child: Align(
+                Row(children:<Widget> [
+                  Expanded(child:
+                    Container(
+                    height: 50,
                     alignment: Alignment.centerLeft,
-                    child: RichText(
-                      text: TextSpan(
-                        text: _commentsList.list[i]['text'],
-                        style: const TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w400,
-                            fontSize: 16.0),
+                    padding: const EdgeInsets.fromLTRB(20, 8, 4, 8),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: RichText(
+                        text: TextSpan(
+                          text: _commentsList.list[i]['text'],
+                          style: const TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w400,
+                              fontSize: 16.0),
+                        ),
                       ),
                     ),
                   ),
                 ),
+                Container(
+                  width: 100,
+                  alignment: Alignment.centerRight,
+                  padding: EdgeInsets.only(right: 20),
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: RichText(
+                      textAlign: TextAlign.right,
+                      text: TextSpan(
+                        text: _commentsList.list[i]['commentTime'],
+                        style: const TextStyle(
+                            color: Color.fromARGB(255, 104, 103, 103),
+                            fontWeight: FontWeight.w400,
+                            fontSize: 10.0),
+                      ),
+                    ),
+                  ),
+                  )])
               ]),
             ),
           ],
