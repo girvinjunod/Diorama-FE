@@ -193,12 +193,14 @@ class _CommentDetailState extends State<CommentDetail> {
                             ),
                             Padding(
                               padding: const EdgeInsets.only(top: 16),
-                              child: Text('Error: ${snapshot.error}'),
+                              child: Text('${snapshot.error}'),
                             )
                           ];
 
-                          return SingleChildScrollView(
+                          return Center(
                             child: Column(
+                               mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                           children: children,
                         ));
                         } else {

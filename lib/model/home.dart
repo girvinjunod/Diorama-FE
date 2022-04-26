@@ -74,6 +74,6 @@ Future<dynamic> getTimeline(String UserID) async {
     Timeline json = Timeline.fromJson(jsonDecode(response.body));
     return json;
   } else {
-    throw Exception('Failed to load timeline data');
+    return const Timeline(list: []);
   }
 }

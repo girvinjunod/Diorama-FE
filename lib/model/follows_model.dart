@@ -43,11 +43,11 @@ Future<List> fetchFollowers(String UserID) async {
   var imglist = [];
   if (response.statusCode == 200) {
     Followers json = Followers.fromJson(jsonDecode(response.body));
-    for (var element in json.list) {
-      final img = await http.get(Uri.parse(
-          'http://34.101.123.15:8080/getPPByID/${element["userId"]}'));
-      imglist.add(img.bodyBytes);
-    }
+    // for (var element in json.list) {
+    //   final img = await http.get(Uri.parse(
+    //       'http://34.101.123.15:8080/getPPByID/${element["userId"]}'));
+    //   imglist.add(img.bodyBytes);
+    // }
     return [json, imglist];
   } else {
     return [[], []];
@@ -66,11 +66,11 @@ Future<List> fetchFollowing(String UserID) async {
   var imglist = [];
   if (response.statusCode == 200) {
     Followers json = Followers.fromJson(jsonDecode(response.body));
-    for (var element in json.list) {
-      final img = await http.get(Uri.parse(
-          'http://34.101.123.15:8080/getPPByID/${element["userId"]}'));
-      imglist.add(img.bodyBytes);
-    }
+    // for (var element in json.list) {
+    //   final img = await http.get(Uri.parse(
+    //       'http://34.101.123.15:8080/getPPByID/${element["userId"]}'));
+    //   imglist.add(img.bodyBytes);
+    // }
     return [json, imglist];
   } else {
     return [[], []];

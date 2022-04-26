@@ -41,7 +41,7 @@ class DetailEventPageState extends State<DetailEventPage> {
     super.initState();
     futureDetailEvent = getDetailEvent(eventID);
     futureImgEvent = getEventPicture(eventID);
-    getUserData(Holder.userID.toString()).then((result) {
+    getUserData(userID.toString()).then((result) {
       username = result["username"];
       setState(() {});
     });

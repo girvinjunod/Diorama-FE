@@ -37,7 +37,7 @@ class DetailTripPageState extends State<DetailTripPage> {
     super.initState();
     futureDetailTrip = getDetailTrip(tripID);
     futureEvents = getAllEvent(tripID);
-    getUserData(this.userID.toString()).then((result) {
+    getUserData(userID.toString()).then((result) {
       username = result["username"];
       setState(() {});
     });

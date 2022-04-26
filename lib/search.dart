@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:diorama_id/profile.dart';
 import 'package:flutter/material.dart';
 import 'model/search_model.dart';
@@ -10,11 +12,9 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  late Search _searchList;
+  Search _searchList = const Search(list: []);
   final TextEditingController _textcontroller = TextEditingController();
   var _noResults = true;
-  final _searchWidget = <Widget>[];
-  var _searchPics = [];
   var _isSearched = false;
   var success = false;
   var currsearchdone = false;
@@ -25,7 +25,6 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   void getSearchResults() {
-    _searchWidget.clear();
     _isSearched = true;
     currsearchdone = false;
     fetchSearch(_textcontroller.text).then((list) {
@@ -33,8 +32,6 @@ class _SearchPageState extends State<SearchPage> {
         if (currsearchdone == false) {
           _noResults = false;
           _searchList = list[0];
-          _searchPics = list[1];
-          initSearchList();
           currsearchdone = true;
         }
       } else {
@@ -44,9 +41,8 @@ class _SearchPageState extends State<SearchPage> {
     });
   }
 
-  void initSearchList() {
-    for (var i = 0; i < _searchList.list.length; i++) {
-      _searchWidget.add(
+  Widget initSearchList(int i) {
+      return
         Stack(children: <Widget>[
           Container(
             height: 100,
@@ -55,7 +51,7 @@ class _SearchPageState extends State<SearchPage> {
             padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
             child: CircleAvatar(
               radius: 40,
-              backgroundImage: MemoryImage(_searchPics[i]),
+              backgroundImage: NetworkImage("http://34.101.123.15:8080/getPPByID/${_searchList.list[i]['id']}"),
               backgroundColor: Colors.transparent,
             ),
           ),
@@ -101,9 +97,7 @@ class _SearchPageState extends State<SearchPage> {
                   ),
                 )),
           ),
-        ]),
-      );
-    }
+        ]);
   }
 
   @override
@@ -142,7 +136,8 @@ class _SearchPageState extends State<SearchPage> {
             width: double.infinity,
             height: MediaQuery.of(context).size.height,
             color: const Color(0xFFFFFFFF),
-            child: Column(children: [
+            child: (_isSearched) ? Column(children:
+            [
               Visibility(
                 child: Container(
                   alignment: Alignment.centerLeft,
@@ -155,8 +150,7 @@ class _SearchPageState extends State<SearchPage> {
                 ),
                 visible: _isSearched,
               ),
-              Visibility(
-                  child: Expanded(
+              (_noResults)?Expanded(
                       child: Stack(children: <Widget>[
                     Container(
                         alignment: Alignment.center,
@@ -169,16 +163,17 @@ class _SearchPageState extends State<SearchPage> {
                         alignment: Alignment.center,
                         padding: const EdgeInsets.fromLTRB(0, 0, 0, 50),
                         child: Image.asset("images/notfound.png"))
-                  ])),
-                  visible: _noResults && _isSearched),
-              Visibility(
-                child: Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(children: _searchWidget),
-                  ),
-                ),
-                visible: _noResults == false && _isSearched,
+                  ])):
+                Expanded(
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: _searchList.list.length,
+                    padding:
+                        const EdgeInsets.fromLTRB(0, 0, 0, 100),
+                    itemBuilder: (context, int index) {
+                      return initSearchList(index);
+                    })
               )
-            ])));
+            ]) : const Text("")));
   }
 }

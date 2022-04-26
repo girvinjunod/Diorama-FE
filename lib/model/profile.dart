@@ -122,14 +122,11 @@ Future<dynamic> getTripFromUser(String UserID) async {
   if (response.statusCode == 200) {
     Trips json = Trips.fromJson(jsonDecode(response.body));
     for (var element in json.list) {
-      final img = await http
-          .get(Uri.parse('http://34.101.123.15:8080/getTripsImage/$element'), headers: header);
-      imgTripList.add(img.bodyBytes);
       final detail = await http
           .get(Uri.parse('http://34.101.123.15:8080/getTripDetailByID/$element'), headers: header);
       tripList.add(TripDetail.fromJson(jsonDecode(detail.body)));
     }
-    return [tripList, imgTripList];
+    return [tripList, ""];
   } else {
     throw Exception('Failed to load trips');
   }

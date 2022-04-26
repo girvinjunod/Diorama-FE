@@ -16,30 +16,12 @@ class _FollowPageState extends State<FollowPage>
   _FollowPageState(this._userID);
   late Followers _followerList;
   late Followers _followingList;
-  final followerWidget = <Widget>[];
-  var _followPics = [];
-  final followingWidget = <Widget>[];
-  var _followingPics = [];
   String _username = "username";
 
   @override
   void initState() {
     super.initState();
     _controller = TabController(vsync: this, length: 2);
-    fetchFollowers(_userID.toString()).then((list){
-      _followerList = list[0];
-      _followPics = list[1];
-      initFollowerList();
-      setState(() {});
-    });
-
-    fetchFollowing(_userID.toString()).then((list){
-      _followingList = list[0];
-      _followingPics = list[1];
-      initFollowingList();
-      setState(() {});
-    });
-
     getUserData(_userID.toString()).then((userdata){
       setState(() {
         _username = userdata["username"];
@@ -47,11 +29,8 @@ class _FollowPageState extends State<FollowPage>
     });
   }
 
-  void initFollowerList() {
-    for(var i=0;i<_followerList.list.length;i++)
-    {
-      followerWidget.add(
-        Stack(children: <Widget>[
+  Widget initFollowerList(int i) {
+    return Stack(children: <Widget>[
           Container(
             height: 100,
             width: double.infinity,
@@ -59,7 +38,7 @@ class _FollowPageState extends State<FollowPage>
             padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
             child: CircleAvatar(
               radius: 40,
-              backgroundImage: MemoryImage(_followPics[i]),
+              backgroundImage: NetworkImage("http://34.101.123.15:8080/getPPByID/${_followerList.list[i]['userId']}"),
               backgroundColor: Colors.transparent,
             ),
           ),
@@ -145,16 +124,11 @@ class _FollowPageState extends State<FollowPage>
           //     ),
           //   ),
           // ),
-        ]),
-      );
+        ]);
     }
-  }
 
-  void initFollowingList() {
-    for(var i=0;i<_followingList.list.length;i++)
-    {
-      followingWidget.add(
-        Stack(children: <Widget>[
+  Widget initFollowingList(int i) {
+      return Stack(children: <Widget>[
           Container(
             height: 100,
             width: double.infinity,
@@ -162,7 +136,7 @@ class _FollowPageState extends State<FollowPage>
             padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
             child: CircleAvatar(
               radius: 40,
-              backgroundImage: MemoryImage(_followingPics[i]),
+              backgroundImage: NetworkImage("http://34.101.123.15:8080/getPPByID/${_followingList.list[i]['userId']}"),
               backgroundColor: Colors.transparent,
             ),
           ),
@@ -248,10 +222,8 @@ class _FollowPageState extends State<FollowPage>
           //     ),
           //   ),
           // ),
-        ]),
-      );
+        ]);
     }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -291,16 +263,116 @@ class _FollowPageState extends State<FollowPage>
                 child: TabBarView(
                   controller: _controller,
                   children: [
-                    SingleChildScrollView(
-                      child: Column(children:
-                        followingWidget
-                      ),
-                    ),
-                    SingleChildScrollView(
-                      child: Column(children:
-                        followerWidget
-                      ),
-                    ),
+                    FutureBuilder<dynamic>(
+                        future: fetchFollowing(_userID.toString()),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<dynamic> snapshot) {
+                          List<Widget> children;
+                          if (snapshot.hasData) {
+                            _followingList = snapshot.data[0];
+                            return ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: _followingList.list.length,
+                                padding:
+                                    const EdgeInsets.fromLTRB(0, 0, 0, 100),
+                                itemBuilder: (context, int index) {
+                                  return initFollowingList(index);
+                                });
+                          } else if (snapshot.hasError) {
+                            children = <Widget>[
+                              const Icon(
+                                Icons.error_outline,
+                                color: Colors.red,
+                                size: 60,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 16),
+                                child: Text('${snapshot.error}'),
+                              )
+                            ];
+
+                            return Center(
+                                child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: children,
+                            ));
+                          } else {
+                            children = const <Widget>[
+                              SizedBox(
+                                width: 60,
+                                height: 60,
+                                child: CircularProgressIndicator(),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(top: 16),
+                                child: Text('Loading...'),
+                              )
+                            ];
+
+                            return Center(
+                                child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: children,
+                            ));
+                          }
+                        }),
+                    FutureBuilder<dynamic>(
+                        future: fetchFollowers(_userID.toString()),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<dynamic> snapshot) {
+                          List<Widget> children;
+                          if (snapshot.hasData) {
+                            _followerList = snapshot.data[0];
+                            return ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: _followerList.list.length,
+                                padding:
+                                    const EdgeInsets.fromLTRB(0, 0, 0, 100),
+                                itemBuilder: (context, int index) {
+                                  return initFollowerList(index);
+                                });
+                          } else if (snapshot.hasError) {
+                            children = <Widget>[
+                              const Icon(
+                                Icons.error_outline,
+                                color: Colors.red,
+                                size: 60,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 16),
+                                child: Text('${snapshot.error}'),
+                              )
+                            ];
+
+                            return Center(
+                                child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: children,
+                            ));
+                          } else {
+                            children = const <Widget>[
+                              SizedBox(
+                                width: 60,
+                                height: 60,
+                                child: CircularProgressIndicator(),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(top: 16),
+                                child: Text('Loading...'),
+                              )
+                            ];
+
+                            return Center(
+                                child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: children,
+                            ));
+                          }
+                        }),
                   ],
                 ),
               ),

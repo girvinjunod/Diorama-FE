@@ -345,6 +345,7 @@ class _ProfilePageState extends State<ProfilePage> {
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
       itemCount: snapshot.data[0].length,
+      physics: const NeverScrollableScrollPhysics(),
       itemBuilder: (context, index) {
         return tripCard(context, snapshot, index);
       },
@@ -363,8 +364,8 @@ class _ProfilePageState extends State<ProfilePage> {
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: [
-                Color(0x02000000),
-                Color(0x90000000),
+                Color(0x50000000),
+                Color(0xB0000000),
               ],
             ),
           ),
@@ -375,25 +376,13 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Widget _tripPic(BuildContext context, AsyncSnapshot snapshot, int index) {
-    var _img = snapshot.data[1][index];
-    // print(snapshot.data[1][1]);
-    if (snapshot.data[1][index].length == 0) {
-      return Container(
-        child: Center(
-            child:
-                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          const Text("No Image"),
-        ])),
-      );
-    } else {
-      return Container(
+    return Container(
           height: 150,
           width: double.infinity,
-          child: Image.memory(
-            _img,
-            fit: BoxFit.cover,
-          ));
-    }
+          child: Image.network(
+                "http://34.101.123.15:8080/getTripsImage/${snapshot.data[0][index].TripID}",
+                fit: BoxFit.cover,
+              ));
   }
 
   Widget _tripText(BuildContext context, AsyncSnapshot snapshot, int index) {
@@ -413,14 +402,13 @@ class _ProfilePageState extends State<ProfilePage> {
                     if (states.contains(MaterialState.pressed) ||
                         states.contains(MaterialState.hovered))
                       return const Color(0x70000000);
-                    return Colors.transparent; // Use the component's default.
+                    return Colors.transparent;
                   },
                 )),
                 onPressed: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        // masih hardcode, fix later
                         builder: (context) => DetailTripPage(snapshot.data[0][index].TripID, _userID)),
                   );
                 },
