@@ -257,7 +257,7 @@ class _CommentDetailState extends State<CommentDetail> {
                               TextButton(
                                   style: TextButton.styleFrom(
                                     padding: const EdgeInsets.only(
-                                        left: 50.0, right: 10.0),
+                                        left: 10.0, right: 10.0),
                                     primary:
                                         const Color.fromARGB(255, 5, 68, 94),
                                   ),

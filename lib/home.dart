@@ -2,6 +2,7 @@ import 'package:diorama_id/comment.dart';
 import 'package:diorama_id/detail_event.dart';
 import 'package:diorama_id/main.dart';
 import 'package:diorama_id/model/detail_event_model.dart';
+import 'package:diorama_id/model/profile.dart';
 import 'package:diorama_id/profile.dart';
 import 'package:flutter/material.dart';
 import 'detail_trip.dart';
@@ -116,8 +117,42 @@ class _TripFeedState extends State<TripFeed>
             ),
           )),
           Container(constraints: const BoxConstraints(maxWidth: 1080),child:
+          Padding(padding: const EdgeInsets.fromLTRB(20, 0, 20, 20), child:
+          Align(
+              alignment: Alignment.centerLeft,
+              child: 
+                Row(
+                  children: [
+                    const Padding(padding: EdgeInsets.fromLTRB(0,0,10,0), child: Text('Trip: ',
+                        style: TextStyle(color: Colors.black))),
+                    TextButton(
+                        style: ButtonStyle(
+                          shape: MaterialStateProperty.all(
+                            RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20)),
+                          ),
+                          backgroundColor:
+                              MaterialStateProperty.all(const Color(0xFF9DE2E2))
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => DetailTripPage(timeline.list[index]["tripID"], timeline.list[index]["userID"])
+                            )
+                          );
+                        },
+                        child: Text('${timeline.list[index]["tripname"]}',
+                        style: const TextStyle(
+                          color: Colors.black,
+                        ))),
+                        ]
+                      ),
+                    )),
+          ),
+          Container(constraints: const BoxConstraints(maxWidth: 1080),child:
           Padding(
-            padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
+            padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
             child: Align(
                 alignment: Alignment.centerLeft,
                 child: TextButton(
