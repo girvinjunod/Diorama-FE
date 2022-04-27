@@ -6,7 +6,6 @@ import 'package:diorama_id/main.dart';
 import 'package:diorama_id/model/Logout.dart';
 import 'package:flutter/material.dart';
 import 'package:diorama_id/model/profile.dart';
-import 'package:flutter/widgets.dart';
 import 'model/follows_model.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -18,12 +17,9 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  int _userID;
+  final int _userID;
   _ProfilePageState(this._userID);
   // late Profile profile;
-  String _username = "";
-  var _trips = [];
-  var _tripPictures = [];
   var followings = [];
   var followernum = 0;
   var followingnum = 0;
@@ -292,7 +288,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
               Visibility(
-                child: SizedBox(height: 20),
+                child: const SizedBox(height: 20),
                 visible: _noTrips,
               ),
               Visibility(
@@ -306,7 +302,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 visible: _noTrips,
               ),
               Visibility(
-                child: SizedBox(height: 20),
+                child: const SizedBox(height: 20),
                 visible: _noTrips,
               ),
             ])),
@@ -324,10 +320,8 @@ class _ProfilePageState extends State<ProfilePage> {
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.data == null) {
               return Visibility(
-                child: Container(
-                  child: Center(
-                    child: const Text("No Trips Available"),
-                  ),
+                child: const Center(
+                  child: Text("No Trips Available"),
                 ),
                 visible: _noTrips,
               );
@@ -400,8 +394,9 @@ class _ProfilePageState extends State<ProfilePage> {
                     backgroundColor: MaterialStateProperty.resolveWith<Color>(
                   (Set<MaterialState> states) {
                     if (states.contains(MaterialState.pressed) ||
-                        states.contains(MaterialState.hovered))
+                        states.contains(MaterialState.hovered)) {
                       return const Color(0x70000000);
+                    }
                     return Colors.transparent;
                   },
                 )),

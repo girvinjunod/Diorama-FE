@@ -1,8 +1,6 @@
 import 'package:diorama_id/comment.dart';
 import 'package:diorama_id/detail_event.dart';
 import 'package:diorama_id/main.dart';
-import 'package:diorama_id/model/detail_event_model.dart';
-import 'package:diorama_id/model/profile.dart';
 import 'package:diorama_id/profile.dart';
 import 'package:flutter/material.dart';
 import 'detail_trip.dart';

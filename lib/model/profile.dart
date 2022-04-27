@@ -117,7 +117,6 @@ Future<dynamic> getTripFromUser(String UserID) async {
   final response =
       await http.get(Uri.parse('http://34.101.123.15:8080/getTripsByUser/$UserID'), headers: header);
   // print(response.body.runtimeType);
-  var imgTripList = [];
   var tripList = [];
   if (response.statusCode == 200) {
     Trips json = Trips.fromJson(jsonDecode(response.body));

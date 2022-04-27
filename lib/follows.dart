@@ -12,7 +12,7 @@ class FollowPage extends StatefulWidget {
 class _FollowPageState extends State<FollowPage>
     with SingleTickerProviderStateMixin {
   late TabController _controller;
-  int _userID; // which user's follow page
+  final int _userID; // which user's follow page
   _FollowPageState(this._userID);
   late Followers _followerList;
   late Followers _followingList;
@@ -229,7 +229,7 @@ class _FollowPageState extends State<FollowPage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-            title: Text("Follows",
+            title: const Text("Follows",
                 style: TextStyle(fontSize: 20, color: Colors.white))),
         backgroundColor: const Color(0xFFFFFFFF),
         body: Container(

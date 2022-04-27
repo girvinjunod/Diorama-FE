@@ -23,8 +23,6 @@ class DetailEventPage extends StatefulWidget {
 class DetailEventPageState extends State<DetailEventPage> {
   // Apakah event milik sendiri?
   bool _isSelfEvent = false;
-
-  late DetailEvent _detailEvent;
   var ImgEvent = [];
   late Future<DetailEvent> futureDetailEvent;
   late Future<List> futureImgEvent;
@@ -51,7 +49,7 @@ class DetailEventPageState extends State<DetailEventPage> {
   void deleteEventDialog(int id) {
     // set up the buttons
     Widget noButton = TextButton(
-      child: Text("NO"),
+      child: const Text("NO"),
       style: ButtonStyle(
           foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
           backgroundColor:
@@ -61,7 +59,7 @@ class DetailEventPageState extends State<DetailEventPage> {
       },
     );
     Widget yesButton = TextButton(
-      child: Text("YES"),
+      child: const Text("YES"),
       style: ButtonStyle(
           foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
           backgroundColor:
@@ -78,8 +76,8 @@ class DetailEventPageState extends State<DetailEventPage> {
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: Text("Delete Event"),
-      content: Text("Would you like to delete this event?"),
+      title: const Text("Delete Event"),
+      content: const Text("Would you like to delete this event?"),
       actions: [
         noButton,
         yesButton,
@@ -98,7 +96,7 @@ class DetailEventPageState extends State<DetailEventPage> {
   void dialog(String msg) {
     // set up the button
     Widget okButton = TextButton(
-      child: Text("OK"),
+      child: const Text("OK"),
       onPressed: () {
         Navigator.pop(context);
       },
@@ -106,7 +104,7 @@ class DetailEventPageState extends State<DetailEventPage> {
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: Text("Success"),
+      title: const Text("Success"),
       content: Text(msg),
       actions: [
         okButton,
@@ -130,7 +128,7 @@ class DetailEventPageState extends State<DetailEventPage> {
     };
 
     final http.Response response = await http
-        .delete(Uri.parse('http://34.101.123.15:8080/deleteEvent/${eventID}'), headers: header);
+        .delete(Uri.parse('http://34.101.123.15:8080/deleteEvent/$eventID'), headers: header);
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
@@ -146,88 +144,82 @@ class DetailEventPageState extends State<DetailEventPage> {
     return Scaffold(
         appBar: AppBar(
             title: Text(username + "'s Event",
-                style: TextStyle(fontSize: 20, color: Colors.white))),
+                style: const TextStyle(fontSize: 20, color: Colors.white))),
         backgroundColor: const Color(0xFFFFFFFF),
         body: Center(
           child: ListView(shrinkWrap: true, children: <Widget>[
             // untuk gambar
-            Container(
-              child: FutureBuilder(
-                  future: futureImgEvent,
-                  builder: (context, AsyncSnapshot snapshot) {
-                    if (snapshot.connectionState != ConnectionState.done) {
-                      return const Align(
-                          alignment: Alignment.center,
-                          child: CircularProgressIndicator());
-                    } else {
-                      if (snapshot.hasData) {
-                        return Column(
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
-                              child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      width: double.infinity,
-                                      height: 350,
-                                      decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                          fit: BoxFit.cover,
-                                          image: MemoryImage(snapshot.data![0]),
-                                        ),
-                                      ),
-                                    )
-                                  ]),
-                            ),
-                          ],
-                        );
-                      } else if (snapshot.hasError) {
-                        return Container(
-                            child: Center(child: Text('${snapshot.error}')));
-                      }
-                    }
-                    return const Text("Event load error");
-                  }),
-            ),
-
-            // untuk detail
-            Container(
-              child: FutureBuilder(
-                  future: futureDetailEvent,
-                  builder: (context, AsyncSnapshot snapshot) {
-                    if (snapshot.hasData) {
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Padding(
-                              padding: EdgeInsets.fromLTRB(20, 20, 20, 5),
-                              child: Text(snapshot.data!.Caption,
-                                  style: TextStyle(fontSize: 15))),
-                          Padding(
-                              padding: EdgeInsets.fromLTRB(20, 5, 10, 5),
-                              child: Text("Date : " + snapshot.data!.EventDate,
-                                  style: TextStyle(fontSize: 15))),
-                          Padding(
-                              padding: EdgeInsets.fromLTRB(20, 5, 10, 5),
-                              child: Text(snapshot.data!.PostTime,
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      color: Colors.black.withOpacity(0.6)))),
-                        ],
-                      );
-                    } else if (snapshot.hasError) {
-                      return Container(
-                          child: Center(child: Text('${snapshot.error}')));
-                    }
-
+            FutureBuilder(
+                future: futureImgEvent,
+                builder: (context, AsyncSnapshot snapshot) {
+                  if (snapshot.connectionState != ConnectionState.done) {
                     return const Align(
                         alignment: Alignment.center,
                         child: CircularProgressIndicator());
-                  }),
-            ),
+                  } else {
+                    if (snapshot.hasData) {
+                      return Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    width: double.infinity,
+                                    height: 350,
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        fit: BoxFit.cover,
+                                        image: MemoryImage(snapshot.data![0]),
+                                      ),
+                                    ),
+                                  )
+                                ]),
+                          ),
+                        ],
+                      );
+                    } else if (snapshot.hasError) {
+                      return Center(child: Text('${snapshot.error}'));
+                    }
+                  }
+                  return const Text("Event load error");
+                }),
+
+            // untuk detail
+            FutureBuilder(
+                future: futureDetailEvent,
+                builder: (context, AsyncSnapshot snapshot) {
+                  if (snapshot.hasData) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                            padding: const EdgeInsets.fromLTRB(20, 20, 20, 5),
+                            child: Text(snapshot.data!.Caption,
+                                style: const TextStyle(fontSize: 15))),
+                        Padding(
+                            padding: const EdgeInsets.fromLTRB(20, 5, 10, 5),
+                            child: Text("Date : " + snapshot.data!.EventDate,
+                                style: const TextStyle(fontSize: 15))),
+                        Padding(
+                            padding: const EdgeInsets.fromLTRB(20, 5, 10, 5),
+                            child: Text(snapshot.data!.PostTime,
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    color: Colors.black.withOpacity(0.6)))),
+                      ],
+                    );
+                  } else if (snapshot.hasError) {
+                    return Center(child: Text('${snapshot.error}'));
+                  }
+
+                  return const Align(
+                      alignment: Alignment.center,
+                      child: CircularProgressIndicator());
+                }),
             Row(children: <Widget>[
               Padding(
                 padding: const EdgeInsets.fromLTRB(20, 40, 0, 40),

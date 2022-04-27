@@ -17,8 +17,8 @@ class AddEventPage extends StatefulWidget {
 
 class _AddEventPageState extends State<AddEventPage> {
   final _formKey = GlobalKey<FormState>();
-  TextEditingController _startDate = TextEditingController();
-  TextEditingController _caption = TextEditingController();
+  final TextEditingController _startDate = TextEditingController();
+  final TextEditingController _caption = TextEditingController();
   String startdate = "2000-01-01";
   String enddate = "2000-01-01";
   String _tripName = "";
@@ -34,10 +34,10 @@ class _AddEventPageState extends State<AddEventPage> {
     super.initState();
     _startDate.text = "";
     getDetailTrip(tripID).then((result){
-      this._tripName = "Trip: " + result.TripName;
-      this._dateRange = "(" + result.StartDate + " - " + result.EndDate + ")";
-      this.startdate = result.StartDate;
-      this.enddate = result.EndDate;
+      _tripName = "Trip: " + result.TripName;
+      _dateRange = "(" + result.StartDate + " - " + result.EndDate + ")";
+      startdate = result.StartDate;
+      enddate = result.EndDate;
       setState(() {});
     });
   }
@@ -47,7 +47,7 @@ class _AddEventPageState extends State<AddEventPage> {
     // Build a Form widget using the _formKey created above.
     return Scaffold(
       appBar: AppBar(
-            title: Text("Add Event",
+            title: const Text("Add Event",
                 style: TextStyle(fontSize: 20, color: Colors.white))),
         backgroundColor: const Color(0xFFFFFFFF),
         body: Align(
@@ -65,15 +65,15 @@ class _AddEventPageState extends State<AddEventPage> {
                     children: [
                       Text(
                         _tripName,
-                        style: TextStyle(
-                            fontSize: 16, color: const Color(0xFF000000)),
+                        style: const TextStyle(
+                            fontSize: 16, color: Color(0xFF000000)),
                       ),
                       Text(
                         _dateRange,
-                        style: TextStyle(
-                            fontSize: 14, color: const Color(0xFF189AB4)),
+                        style: const TextStyle(
+                            fontSize: 14, color: Color(0xFF189AB4)),
                       ),
-                      SizedBox(height: 40),
+                      const SizedBox(height: 40),
                       Visibility(
                         child: ElevatedButton(
                           onPressed: () {
@@ -83,16 +83,16 @@ class _AddEventPageState extends State<AddEventPage> {
                           child: const Text('+ Add Photo',
                               style: TextStyle(
                                   fontSize: 24,
-                                  color: const Color(0xFF189AB4),
+                                  color: Color(0xFF189AB4),
                                   fontWeight: FontWeight.w400)),
                           style: ElevatedButton.styleFrom(
-                            minimumSize: Size.fromHeight(400),
+                            minimumSize: const Size.fromHeight(400),
                             primary: const Color(0xffD4F1F4),
-                            padding: EdgeInsets.all(15),
-                            shape: new RoundedRectangleBorder(
-                                borderRadius: new BorderRadius.circular(10.0),
-                                side: BorderSide(
-                                    color: const Color(0xFF189AB4), width: 2)),
+                            padding: const EdgeInsets.all(15),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                                side: const BorderSide(
+                                    color: Color(0xFF189AB4), width: 2)),
                           ),
                         ),
                         visible: _isNotPicked,
@@ -102,11 +102,11 @@ class _AddEventPageState extends State<AddEventPage> {
                             ? (kIsWeb)
                                 ? Image.memory(_imageFile)
                                 : Image.file(_imageFile)
-                            : SizedBox(height: 0),
+                            : const SizedBox(height: 0),
                         visible: _imageFile != null,
                       ),
                       Visibility(
-                        child: SizedBox(height: 40),
+                        child: const SizedBox(height: 40),
                         visible: _isNotPicked == false,
                       ),
                       Visibility(
@@ -117,23 +117,23 @@ class _AddEventPageState extends State<AddEventPage> {
                           child: const Text('Change Photo',
                               style: TextStyle(
                                   fontSize: 24,
-                                  color: const Color(0xFF189AB4),
+                                  color: Color(0xFF189AB4),
                                   fontWeight: FontWeight.w400)),
                           style: ElevatedButton.styleFrom(
-                            minimumSize: Size.fromHeight(40),
+                            minimumSize: const Size.fromHeight(40),
                             primary: const Color(0xffD4F1F4),
-                            padding: EdgeInsets.all(15),
-                            shape: new RoundedRectangleBorder(
-                                borderRadius: new BorderRadius.circular(10.0),
-                                side: BorderSide(
-                                    color: const Color(0xFF189AB4), width: 2)),
+                            padding: const EdgeInsets.all(15),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                                side: const BorderSide(
+                                    color: Color(0xFF189AB4), width: 2)),
                           ),
                         ),
                         visible: _isNotPicked == false,
                       ),
-                      SizedBox(height: 40),
+                      const SizedBox(height: 40),
                       TextFormField(
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           errorMaxLines: 3,
                           labelText: 'Event Date',
                           icon: Icon(Icons.calendar_today),
@@ -170,12 +170,12 @@ class _AddEventPageState extends State<AddEventPage> {
                           return null;
                         },
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       TextFormField(
                         maxLength: 1000,
                         minLines: 3,
                         maxLines: 5,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           errorMaxLines: 3,
                           labelText: 'Caption',
                           icon: Icon(Icons.book),
@@ -185,7 +185,7 @@ class _AddEventPageState extends State<AddEventPage> {
                         ),
                         controller: _caption,
                       ),
-                      SizedBox(height: 40),
+                      const SizedBox(height: 40),
                       ElevatedButton(
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
@@ -222,18 +222,18 @@ class _AddEventPageState extends State<AddEventPage> {
                         child: const Text('Create Event',
                             style: TextStyle(
                                 fontSize: 22,
-                                color: const Color(0xFFFFFFFF),
+                                color: Color(0xFFFFFFFF),
                                 fontWeight: FontWeight.w400)),
                         style: ElevatedButton.styleFrom(
-                          minimumSize: Size.fromHeight(40),
+                          minimumSize: const Size.fromHeight(40),
                           primary: const Color(0xFF189AB4),
-                          padding: EdgeInsets.all(15),
-                          shape: new RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(10.0),
+                          padding: const EdgeInsets.all(15),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
                           ),
                         ),
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                     ]),
               ),
             ),
@@ -249,7 +249,6 @@ class _AddEventPageState extends State<AddEventPage> {
         var f = await pickedFile.readAsBytes();
         setState(() {
           _imagePath = pickedFile.path;
-          print(_imagePath);
           _imageFile = f;
         });
       } else {

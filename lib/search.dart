@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:diorama_id/profile.dart';
 import 'package:flutter/material.dart';
 import 'model/search_model.dart';

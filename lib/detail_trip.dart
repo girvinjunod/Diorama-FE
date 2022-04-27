@@ -6,7 +6,6 @@ import 'detail_event.dart';
 import 'model/detail_trip_model.dart';
 import 'package:http/http.dart' as http;
 import 'model/follows_model.dart';
-import 'profile.dart';
 
 class DetailTripPage extends StatefulWidget {
   final int tripID;
@@ -122,7 +121,7 @@ class DetailTripPageState extends State<DetailTripPage> {
     };
 
     final http.Response response = await http
-        .delete(Uri.parse('http://34.101.123.15:8080/deleteTrip/${tripID}'), headers: header);
+        .delete(Uri.parse('http://34.101.123.15:8080/deleteTrip/$tripID'), headers: header);
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
@@ -154,12 +153,12 @@ class DetailTripPageState extends State<DetailTripPage> {
                       children: [
                         Container(
                           child: Text(snapshot.data!.TripName,
-                              style: TextStyle(fontSize: 18)),
+                              style: const TextStyle(fontSize: 18)),
                           padding: const EdgeInsets.fromLTRB(50, 10, 50, 10),
                           alignment: Alignment.center,
                         ),
                         Padding(
-                            padding: EdgeInsets.fromLTRB(20, 15, 20, 10),
+                            padding: const EdgeInsets.fromLTRB(20, 15, 20, 10),
                             child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisAlignment: MainAxisAlignment.start,
@@ -181,8 +180,7 @@ class DetailTripPageState extends State<DetailTripPage> {
                       ],
                     );
                   } else if (snapshot.hasError) {
-                    return Container(
-                        child: Center(child: Text('${snapshot.error}')));
+                    return Center(child: Text('${snapshot.error}'));
                   }
                   return const Align(
                       alignment: Alignment.center,

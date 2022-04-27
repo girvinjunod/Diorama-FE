@@ -24,13 +24,13 @@ Future<List> getAllEvent(int tripID) async {
   };
 
   final response = await http
-      .get(Uri.parse('http://34.101.123.15:8080/getEventsFromTrip/${tripID}'), headers: header);
+      .get(Uri.parse('http://34.101.123.15:8080/getEventsFromTrip/$tripID'), headers: header);
 
   var imglist = [];
   if (response.statusCode == 200) {
     // If the server did return a 200 OK response,
     // then parse the JSON.
-    AllEvent eventID = AllEvent.fromJson(jsonDecode(response.body));
+    AllEvent eventID = AllEvent.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
     for (int i = 0; i < eventID.EventID.length; i++) {
       final img = await http.get(Uri.parse(
           'http://34.101.123.15:8080/getEventPictureByID/${eventID.EventID[i]}'), headers: header);
@@ -82,7 +82,7 @@ Future<DetailTrip> getDetailTrip(int tripID) async {
   };
   
   final response = await http
-      .get(Uri.parse('http://34.101.123.15:8080/getTripDetailByID/${tripID}'), headers: header);
+      .get(Uri.parse('http://34.101.123.15:8080/getTripDetailByID/$tripID'), headers: header);
 
   if (response.statusCode == 200) {
     // If the server did return a 200 OK response,

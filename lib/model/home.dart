@@ -68,7 +68,7 @@ Future<dynamic> getTimeline(String UserID) async {
   final response = await http.get(
       Uri.parse('http://34.101.123.15:8080/getTimeline/$UserID'),
       headers: header);
-  var imglist = [];
+
   if (response.statusCode == 200) {
     Timeline json =
         Timeline.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));

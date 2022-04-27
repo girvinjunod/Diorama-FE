@@ -1,6 +1,3 @@
-import 'dart:convert';
-
-import 'package:diorama_id/detail_trip.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'main.dart';

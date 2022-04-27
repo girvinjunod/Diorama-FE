@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:diorama_id/main.dart';
 import 'package:http/http.dart' as http;
-import 'dart:typed_data';
 
 class Followers {
   final List<dynamic> list;

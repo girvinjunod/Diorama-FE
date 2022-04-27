@@ -15,13 +15,10 @@ class CommentDetail extends StatefulWidget {
 
 class _CommentDetailState extends State<CommentDetail> {
   final _userID = Holder.userID;
-  int _eventID;
+  final int _eventID;
   _CommentDetailState(this._eventID);
   late Comments _commentsList;
   final commentsWidget = <Widget>[];
-  var _userPics = [];
-  String _username = "username";
-  var _pp;
   String text_comments = "";
   String message = "";
   final _formKey = GlobalKey<FormState>();
@@ -41,7 +38,6 @@ class _CommentDetailState extends State<CommentDetail> {
     });
     getUserData(_userID.toString()).then((userdata) {
       setState(() {
-        _username = userdata["username"];
         a = "GETUSER";
       });
     });
@@ -125,7 +121,7 @@ class _CommentDetailState extends State<CommentDetail> {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                   content:
-                                      Text('Error. Unable to delete comment')),
+                                      Text('Error: unable to delete comment')),
                             );
                           }
                           });
@@ -186,17 +182,12 @@ class _CommentDetailState extends State<CommentDetail> {
                                 });
                         } else if (snapshot.hasError) {
                           children = <Widget>[
-                            const Icon(
-                              Icons.error_outline,
-                              color: Colors.red,
-                              size: 60,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 16),
-                              child: Text('${snapshot.error}'),
+                            Image.asset("images/notfound.png"),
+                            const Padding(
+                              padding: EdgeInsets.only(top: 16),
+                              child: Text('No comments available'),
                             )
                           ];
-
                           return Center(
                             child: Column(
                                mainAxisAlignment: MainAxisAlignment.center,

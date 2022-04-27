@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:typed_data';
 import 'package:diorama_id/main.dart';
 import 'package:http/http.dart' as http;
 import 'dart:developer';
@@ -40,7 +39,7 @@ Future<DetailEvent> getDetailEvent(int EventID) async {
   };
 
   final response = await http.get(
-      Uri.parse('http://34.101.123.15:8080/getEventDetailByID/${EventID}'),
+      Uri.parse('http://34.101.123.15:8080/getEventDetailByID/$EventID'),
       headers: header);
 
   if (response.statusCode == 200) {
@@ -64,7 +63,7 @@ Future<List> getEventPicture(int EventID) async {
   };
 
   final response = await http.get(
-      Uri.parse('http://34.101.123.15:8080/getEventPictureByID/${EventID}'),
+      Uri.parse('http://34.101.123.15:8080/getEventPictureByID/$EventID'),
       headers: header);
 
   var imglist = [];

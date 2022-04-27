@@ -1,7 +1,5 @@
 import 'dart:convert';
-import 'package:diorama_id/main.dart';
 import 'package:http/http.dart' as http;
-import 'dart:developer' as developer;
 
 class Comments {
   final List<dynamic> list;
@@ -25,7 +23,7 @@ Future<dynamic> getUserData(String UserID) async {
   final response = await http.get(
       Uri.parse('http://34.101.123.15:8080/getUserByID/$UserID'),
       headers: header);
-  print(response.body);
+
   if (response.statusCode == 200) {
     return jsonDecode(response.body);
   } else {
@@ -69,7 +67,7 @@ Future<String> addComment(int userID, int EventID, String Text) async {
       Uri.parse("http://34.101.123.15:8080/addComment"),
       body: json.encode(data),
       headers: header);
-  print(response.body);
+
   if (response.statusCode == 200) {
     return "SUCCESS";
   }
