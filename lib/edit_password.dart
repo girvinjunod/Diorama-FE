@@ -1,6 +1,6 @@
-import 'package:diorama_id/Utils/edit_profile_api.dart';
+import 'package:diorama_id/main.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/gestures.dart';
+import 'model/edit_profile.dart';
 
 class EditPasswordPage extends StatefulWidget {
   const EditPasswordPage({Key? key}) : super(key: key);
@@ -17,25 +17,25 @@ class EditPasswordPageState extends State<EditPasswordPage> {
     bool _hidePassword = true;
     TextEditingController msgController = TextEditingController();
     //String msg = "aaaa";
-    String oldPassword = "old";
-    String newPassword = "new";
-    String valPassword = "val";
-    int userID = 1;
+    String oldPassword = "";
+    String newPassword = "";
+    String valPassword = "";
+    final _userID = Holder.userID;
 
     return Scaffold(
-        backgroundColor: Color.fromARGB(255, 255, 255, 255),
+        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
         appBar: AppBar(
           actions: <Widget>[
             TextButton(
               style: TextButton.styleFrom(
                 padding: const EdgeInsets.only(left: 30.0, right: 30.0),
-                primary: Color.fromARGB(255, 148, 3, 3),
+                primary: const Color.fromARGB(255, 148, 3, 3),
               ),
               onPressed: () {
                 // balik ke halaman edit profile
                 Navigator.pop(context);
               },
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
             ),
           ],
         ),
@@ -111,43 +111,47 @@ class EditPasswordPageState extends State<EditPasswordPage> {
                         valPassword = value!;
                       }),
                     ),
-                    // Container(
-                    //   margin: EdgeInsets.fromLTRB(0, 20, 0, 20),
-                    //   child: Text(msg),
-                    //   alignment: Alignment.centerRight,
-                    // ),
-                    SizedBox(height: 40),
+                    const SizedBox(height: 40),
                     ElevatedButton(
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
                           _formKey.currentState!.save();
                           String message = "";
                           if (newPassword == valPassword) {
-                            var response = EditProfile.ChangePassRequest(
-                                userID, oldPassword, newPassword);
-                            if (response == "SUCCESS") {
-                              message = "Password Changed Successfully";
-                            } else {
-                              message =
-                                  "Error occurred. Cannot change your password.";
-                            }
+                            EditProfile.ChangePassRequest(
+                                    _userID, oldPassword, newPassword)
+                                .then((response) {
+                              if (response == "SUCCESS") {
+                                message = "Password Changed Successfully";
+                              } else {
+                                message = response;
+                              }
+                              final snackBar = SnackBar(
+                                content: Text(
+                                  message,
+                                  style: const TextStyle(fontSize: 20),
+                                ),
+                              );
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackBar);
+                            });
                           } else {
                             message = "Confirm Password False";
-                          }
-
-                          final snackBar = SnackBar(
+                            final snackBar = SnackBar(
                             content: Text(
                               message,
-                              style: TextStyle(fontSize: 20),
+                              style: const TextStyle(fontSize: 20),
                             ),
                           );
                           ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                          }
+
                         }
                       },
                       child: const Text('Save'),
                       style: ElevatedButton.styleFrom(
                         primary: const Color(0xFF05445E),
-                        padding: EdgeInsets.symmetric(
+                        padding: const EdgeInsets.symmetric(
                             vertical: 20.0, horizontal: 50.0),
                       ),
                     ),

@@ -1,9 +1,11 @@
-import 'package:diorama_id/Utils/edit_profile_api.dart';
 import 'package:diorama_id/main.dart';
 import 'package:flutter/material.dart';
 import 'edit_password.dart';
-import 'package:http/http.dart';
-import 'dart:convert';
+import 'model/edit_profile.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'dart:io';
+import 'package:email_validator/email_validator.dart';
 
 class EditProfilePage extends StatefulWidget {
   const EditProfilePage({Key? key}) : super(key: key);
@@ -13,13 +15,34 @@ class EditProfilePage extends StatefulWidget {
 }
 
 class EditProfilePageState extends State<EditProfilePage> {
-  late Future<Map<String, dynamic>> data;
+  // String data = "";
+  // Future<Null> _fetchDataUser() async {
+  //   String url = "http://34.101.123.15:8080/getUserByID/1";
+  //   final response = await get(url as Uri);
 
+  //   data = response.body.toString();
+  // }
+  final _formKey = GlobalKey<FormState>();
   String? Uname = null;
   String? Name = null;
-  String? Email = null;
-  int userID = int.parse(Holder.userID);
-  String message = "";
+  final _userID = Holder.userID;
+  var _imageFile;
+  var _imagePath;
+  bool isNotPicked = true;
+  var message = "";
+  TextEditingController Email = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    getUserData(_userID.toString()).then((userdata) {
+      setState(() {
+        Uname = userdata["username"];
+        Name = userdata["name"];
+        Email.text = userdata["email"];
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,19 +51,19 @@ class EditProfilePageState extends State<EditProfilePage> {
     TextEditingController msgController = TextEditingController();
 
     return Scaffold(
-        backgroundColor: Color.fromARGB(255, 255, 255, 255),
+        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
         appBar: AppBar(
           actions: <Widget>[
             TextButton(
               style: TextButton.styleFrom(
-                padding: const EdgeInsets.only(left: 30.0, right: 30.0),
-                primary: Color.fromARGB(255, 148, 3, 3),
+                padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+                primary: const Color.fromARGB(255, 148, 3, 3),
               ),
               onPressed: () {
                 // balik ke halaman profile
                 Navigator.pop(context,true);
               },
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
             ),
             TextButton(
               style: TextButton.styleFrom(
@@ -51,19 +74,38 @@ class EditProfilePageState extends State<EditProfilePage> {
                 // save form
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
-                  var response = EditProfile.EditUserDetail(userID, Uname, Name, Email);
-                  if (response == "SUCCESS") {
-                    message = "Profile updated successfully";
-                  } else {
-                    message = "Error occurred. Cannot update profile.";
-                  }
-                  final snackBar = SnackBar(
-                    content: Text(
-                      message,
-                      style: TextStyle(fontSize: 20),
-                    ),
-                  );
-                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  var edit_succ = false;
+                  var pp_succ = true;
+                  EditProfile.EditUserDetail(_userID, Uname, Name, Email.text)
+                      .then((response) {
+                    if (response == "SUCCESS") {
+                      edit_succ = true;
+                    }
+                    EditProfile.ChangePPRequest(
+                            _userID, _imageFile, _imagePath, isNotPicked)
+                        .then((response) {
+                      if (!isNotPicked && _imageFile != null) {
+                        if (response == "SUCCESS") {
+                          pp_succ = true;
+                        } else {
+                          pp_succ = false;
+                        }
+                      }
+                      if (pp_succ && edit_succ) {
+                        message = "Profile updated";
+                      } else {
+                        message = "Unable to update profile";
+                      }
+                      final snackBar = SnackBar(
+                        content: Text(
+                          message,
+                          style: const TextStyle(fontSize: 20),
+                        ),
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    });
+                  });
+                
                 }
               },
               child: Text('Done'),
@@ -72,20 +114,36 @@ class EditProfilePageState extends State<EditProfilePage> {
         ),
         body: Center(
           child: ListView(shrinkWrap: true, children: <Widget>[
-            CircleAvatar(
+            Visibility(child: CircleAvatar(
               radius: 40, // Image radius
-              backgroundImage: AssetImage('images/blank_profile.png'),
-            ),
+              backgroundImage: NetworkImage(
+                "http://34.101.123.15:8080/getPPByID/$_userID",),
+              ),
+              visible: isNotPicked),
+            Visibility(
+              child: _imageFile != null
+              ? CircleAvatar(
+              radius: 40, // Image radius
+              backgroundImage: Image.file(_imageFile).image)
+              : CircleAvatar(
+              radius: 40, // Image radius
+              backgroundImage: NetworkImage(
+                        "http://34.101.123.15:8080/getPPByID/$_userID"),
+              ),
+              visible: _imageFile != null && isNotPicked == false),
             TextButton(
               style: TextButton.styleFrom(
                 padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
-                primary: Color.fromARGB(255, 60, 133, 125),
+                primary: const Color.fromARGB(255, 60, 133, 125),
               ),
               onPressed: () {
+                _getFromGallery();
+                isNotPicked = false;
                 // buka file manager untuk ambil foto
               },
-              child: Text('Change Picture'),
+              child: const Text('Change Picture'),
             ),
+
             //disini form
             Form(
               key: _formKey,
@@ -108,6 +166,7 @@ class EditProfilePageState extends State<EditProfilePage> {
                         }
                         return null;
                       },
+                      initialValue: Name,
                       onSaved: (value) => setState(() {
                         Name = value;
                       }),
@@ -127,6 +186,7 @@ class EditProfilePageState extends State<EditProfilePage> {
                         }
                         return null;
                       },
+                      initialValue: Uname,
                       onSaved: (value) => setState(() {
                         Uname = value;
                       }),
@@ -138,29 +198,31 @@ class EditProfilePageState extends State<EditProfilePage> {
                               TextStyle(height: 2, fontWeight: FontWeight.bold),
                           labelText: 'Email',
                           floatingLabelBehavior: FloatingLabelBehavior.always),
-                      validator: (String? value) {
+                      controller: Email,
+                      validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter an email';
+                          return 'Please enter an email address';
+                        }
+                        if (!EmailValidator.validate(value)) {
+                          return 'Please enter a valid email address';
                         }
                         return null;
                       },
+                      //initialValue: Email.text,
                       onSaved: (value) => setState(() {
-                        Email = value;
+                        if (value != null){
+                          Email.text = value.toString();
+                        }
                       }),
                     ),
                   ],
                 ),
               ),
             ),
-            // Container(
-            //   margin: EdgeInsets.fromLTRB(50, 10, 50, 10),
-            //   child: Text(msg),
-            //   alignment: Alignment.centerRight,
-            // ),
             TextButton(
               style: TextButton.styleFrom(
                   padding: const EdgeInsets.fromLTRB(50, 20, 0, 20),
-                  primary: Color.fromARGB(255, 60, 133, 125),
+                  primary: const Color.fromARGB(255, 60, 133, 125),
                   alignment: Alignment.centerLeft),
               onPressed: () {
                 // open change password page
@@ -174,5 +236,23 @@ class EditProfilePageState extends State<EditProfilePage> {
             ),
           ]),
         ));
+  }
+  _getFromGallery() async {
+    ImagePicker picker = ImagePicker();
+    XFile? pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      if (kIsWeb) {
+        var f = await pickedFile.readAsBytes();
+        setState(() {
+          _imagePath = pickedFile.path;
+          _imageFile = f;
+        });
+      } else {
+        setState(() {
+          _imageFile = File(pickedFile.path);
+          _imagePath = pickedFile.path;
+        });
+      }
+    }
   }
 }

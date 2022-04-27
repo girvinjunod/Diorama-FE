@@ -83,7 +83,7 @@ class _CommentDetailState extends State<CommentDetail> {
                             text: _commentsList.list[i]['username'],
                             style: const TextStyle(
                                 color: Colors.black,
-                                fontWeight: FontWeight.w400,
+                                fontWeight: FontWeight.w600,
                                 fontSize: 16.0),
                           ),
                         ),
@@ -133,24 +133,44 @@ class _CommentDetailState extends State<CommentDetail> {
                     )
                   ]),
                 ),),
-                Container(
-                  height: 50,
-                  width: double.infinity,
-                  alignment: Alignment.centerLeft,
-                  padding: const EdgeInsets.fromLTRB(20, 8, 4, 8),
-                  child: Align(
+                Row(children:<Widget> [
+                  Expanded(child:
+                    Container(
+                    height: 50,
                     alignment: Alignment.centerLeft,
-                    child: RichText(
-                      text: TextSpan(
-                        text: _commentsList.list[i]['text'],
-                        style: const TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w400,
-                            fontSize: 16.0),
+                    padding: const EdgeInsets.fromLTRB(20, 8, 4, 8),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: RichText(
+                        text: TextSpan(
+                          text: _commentsList.list[i]['text'],
+                          style: const TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w400,
+                              fontSize: 16.0),
+                        ),
                       ),
                     ),
                   ),
                 ),
+                Container(
+                  width: 100,
+                  alignment: Alignment.centerRight,
+                  padding: EdgeInsets.only(right: 20),
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: RichText(
+                      textAlign: TextAlign.right,
+                      text: TextSpan(
+                        text: _commentsList.list[i]['commentTime'],
+                        style: const TextStyle(
+                            color: Color.fromARGB(255, 104, 103, 103),
+                            fontWeight: FontWeight.w400,
+                            fontSize: 10.0),
+                      ),
+                    ),
+                  ),
+                  )])
               ]),
             ),
           ],
@@ -209,8 +229,8 @@ class _CommentDetailState extends State<CommentDetail> {
 
                           return Center(
                             child: Column(
-                               mainAxisAlignment: MainAxisAlignment.center,
-  crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                           children: children,
                         ));
                         }
