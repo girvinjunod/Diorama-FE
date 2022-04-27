@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:diorama_id/profile.dart';
 import 'package:flutter/material.dart';
 import 'model/follows_model.dart';
@@ -68,7 +70,7 @@ class _FollowPageState extends State<FollowPage>
                   MaterialPageRoute(
                       builder: (context) =>
                           ProfilePage(_followerList.list[i]["userId"])),
-                );
+                ).then(onGoBack);
               },
               child: Container(
                 height: 100,
@@ -127,6 +129,14 @@ class _FollowPageState extends State<FollowPage>
     ]);
   }
 
+  FutureOr onGoBack(dynamic value) {
+    refreshData();
+    setState(() {});
+  }
+
+  void refreshData() {
+  }
+
   Widget initFollowingList(int i) {
     return Stack(children: <Widget>[
       Container(
@@ -165,7 +175,7 @@ class _FollowPageState extends State<FollowPage>
                   MaterialPageRoute(
                       builder: (context) =>
                           ProfilePage(_followingList.list[i]["userId"])),
-                );
+                ).then(onGoBack);
               },
               child: Container(
                 height: 100,

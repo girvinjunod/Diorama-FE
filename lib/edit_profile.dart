@@ -93,6 +93,8 @@ class EditProfilePageState extends State<EditProfilePage> {
                       }
                       if (pp_succ && edit_succ) {
                         message = "Profile updated";
+                        Navigator.pop(context);
+                        
                       } else {
                         message = "Unable to update profile";
                       }
@@ -108,29 +110,24 @@ class EditProfilePageState extends State<EditProfilePage> {
                 
                 }
               },
-              child: Text('Done'),
+              child: const Text('Done'),
             ),
           ],
         ),
-        body: Center(
-          child: ListView(shrinkWrap: true, children: <Widget>[
-            Visibility(child: CircleAvatar(
-              radius: 40, // Image radius
-              backgroundImage: NetworkImage(
-                "http://34.101.123.15:8080/getPPByID/$_userID",),
-              ),
-              visible: isNotPicked),
-            Visibility(
-              child: _imageFile != null
+        body: SingleChildScrollView(
+          child: Column(children: <Widget>[
+            const SizedBox(height: 50),
+            Container(child: _imageFile != null
               ? CircleAvatar(
-              radius: 40, // Image radius
-              backgroundImage: Image.file(_imageFile).image)
+              radius: 100, // Image radius
+              backgroundImage: Image.file(_imageFile).image,
+              backgroundColor: Colors.transparent)
               : CircleAvatar(
-              radius: 40, // Image radius
+              radius: 100, // Image radius
               backgroundImage: NetworkImage(
-                        "http://34.101.123.15:8080/getPPByID/$_userID"),
+                        "http://34.101.123.15:8080/getPPByID/$_userID",),
+              backgroundColor: Colors.transparent),
               ),
-              visible: _imageFile != null && isNotPicked == false),
             TextButton(
               style: TextButton.styleFrom(
                 padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),

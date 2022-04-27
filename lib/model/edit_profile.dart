@@ -22,11 +22,11 @@ class EditProfile {
         'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZ2lydmluanVub2QifQ.uy_5_DzArTfCLZh5zgebUok27RwtmAykmTxXAu7-FdY',
         }
     );
-    print("reason: ");
-      print(response.statusCode);
-      print(response.reasonPhrase);
-      print(response.headers);
-      print(response.request?.headers);
+    // print("reason: ");
+    //   print(response.statusCode);
+    //   print(response.reasonPhrase);
+    //   print(response.headers);
+    //   print(response.request?.headers);
     if (response.statusCode == 200) {
       return "SUCCESS";
     }
@@ -51,11 +51,11 @@ class EditProfile {
 
       var res = await request.send();
 
-      print("reason: ");
-      print(res.reasonPhrase);
-      print(res.statusCode);
-      print(res.headers);
-      print(res.request?.headers);
+      // print("reason: ");
+      // print(res.reasonPhrase);
+      // print(res.statusCode);
+      // print(res.headers);
+      // print(res.request?.headers);
 
       if (res.statusCode == 200) {
         return "SUCCESS";
@@ -99,7 +99,7 @@ Future<dynamic> getUserData(String UserID) async {
     final response = await http.get(
         Uri.parse('http://34.101.123.15:8080/getUserByID/$UserID'),
         headers: header);
-    print(response.body);
+    // print(response.body);
     if (response.statusCode == 200) {
       return jsonDecode(response.body);
     } else {

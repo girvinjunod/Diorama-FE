@@ -104,7 +104,7 @@ class LoginPageState extends State<LoginPage> {
                                   context,
                                   MaterialPageRoute(
                                     settings: const RouteSettings(name: "/navbar"),
-                                    builder: (context) => const NavBar(),
+                                    builder: (context) => const NavBar(0),
                                   ),
                                   (r) => false);
                             } else {

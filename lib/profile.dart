@@ -34,9 +34,12 @@ class _ProfilePageState extends State<ProfilePage> {
       _isFollowed = result == "YES";
     });
     fetchFollowNum(_userID.toString()).then((result) {
-      followernum = result[0];
-      followingnum = result[1];
+      setState(() {
+         followernum = result[0];
+        followingnum = result[1];
+      });
     });
+    
   }
 
   // Apakah username berbeda dari name user?
@@ -77,7 +80,6 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Widget profileView(BuildContext context, AsyncSnapshot snapshot) {
     Profile _profile = snapshot.data[0];
-    var _profilepp = snapshot.data[1];
     if (_profile.name == _profile.username) {
       _isUsernameVisible = false;
     }
@@ -121,7 +123,8 @@ class _ProfilePageState extends State<ProfilePage> {
               const SizedBox(height: 20),
               CircleAvatar(
                 radius: 100,
-                backgroundImage: MemoryImage(_profilepp),
+                backgroundImage: NetworkImage(
+                          "http://34.101.123.15:8080/getPPByID/$_userID"),
                 backgroundColor: Colors.transparent,
               ),
               const SizedBox(
@@ -168,7 +171,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       context,
                       MaterialPageRoute(
                           builder: (context) => const EditProfilePage()),
-                    );
+                    ).then(onGoBack);
                   },
                   child: const Text(
                     'Edit Profile \u{1F58C}',
@@ -390,8 +393,10 @@ class _ProfilePageState extends State<ProfilePage> {
       _isFollowed = result == "YES";
     });
     fetchFollowNum(_userID.toString()).then((result) {
-      followernum = result[0];
-      followingnum = result[1];
+      setState(() {
+        followernum = result[0];
+        followingnum = result[1];
+      });
     });
   }
 

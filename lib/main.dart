@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Diorama',
-      home: jwt == null ? const LoginPage() : const NavBar(),
+      home: jwt == null ? const LoginPage() : const NavBar(0),
       theme: ThemeData(
         appBarTheme: AppBarTheme(
             backgroundColor: Colors.cyan.shade700,
@@ -51,14 +51,16 @@ class MyApp extends StatelessWidget {
 }
 
 class NavBar extends StatefulWidget {
-  const NavBar({Key? key}) : super(key: key);
+  final int _selectedIndex;
+  const NavBar(this._selectedIndex, {Key? key}) : super(key: key);
 
   @override
-  State<NavBar> createState() => _NavBarState();
+  State<NavBar> createState() => _NavBarState(_selectedIndex);
 }
 
 class _NavBarState extends State<NavBar> {
-  int _selectedIndex = 0;
+  int _selectedIndex;
+  _NavBarState(this._selectedIndex);
 
   final _pages = [const TripFeed(), const AddTripPage(), ProfilePage(int.parse(Holder.userID))];
 
