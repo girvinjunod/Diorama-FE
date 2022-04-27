@@ -15,7 +15,7 @@ class CommentDetail extends StatefulWidget {
 }
 
 class _CommentDetailState extends State<CommentDetail> {
-  final _userID = Holder.userID;
+  final _userID = 1;
   int _eventID;
   _CommentDetailState(this._eventID);
   late Comments _commentsList;

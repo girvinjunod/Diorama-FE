@@ -131,21 +131,3 @@ Future<dynamic> getTripFromUser(String UserID) async {
     throw Exception('Failed to load trips');
   }
 }
-
-Future<dynamic> getUserData(String UserID) async {
-  var header = {
-    'Content-Type': 'application/json',
-    'Accept': 'application/json',
-    'Authorization':
-        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZ2lydmluanVub2QifQ.uy_5_DzArTfCLZh5zgebUok27RwtmAykmTxXAu7-FdY',
-  };
-  final response = await http.get(
-      Uri.parse('http://34.101.123.15:8080/getUserByID/$UserID'),
-      headers: header);
-  print(response.body);
-  if (response.statusCode == 200) {
-    return jsonDecode(response.body);
-  } else {
-    throw Exception('Failed to load followed users');
-  }
-}

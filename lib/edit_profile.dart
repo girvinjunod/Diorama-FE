@@ -2,6 +2,12 @@ import 'package:flutter/material.dart';
 import 'edit_password.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
+import 'model/edit_profile.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:intl/intl.dart';
+import 'dart:io';
+import 'package:email_validator/email_validator.dart';
 
 class EditProfilePage extends StatefulWidget {
   const EditProfilePage({Key? key}) : super(key: key);
@@ -18,10 +24,27 @@ class EditProfilePageState extends State<EditProfilePage> {
 
   //   data = response.body.toString();
   // }
-
+  final _formKey = GlobalKey<FormState>();
   String? Uname = null;
   String? Name = null;
-  String? Email = null;
+  final _userID = 1;
+  var _imageFile;
+  var _imagePath;
+  bool isNotPicked = true;
+  var message = "";
+  TextEditingController Email = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    getUserData(_userID.toString()).then((userdata) {
+      setState(() {
+        Uname = userdata["username"];
+        Name = userdata["name"];
+        Email.text = userdata["email"];
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +59,7 @@ class EditProfilePageState extends State<EditProfilePage> {
           actions: <Widget>[
             TextButton(
               style: TextButton.styleFrom(
-                padding: const EdgeInsets.only(left: 30.0, right: 30.0),
+                padding: const EdgeInsets.only(left: 10.0, right: 250.0),
                 primary: Color.fromARGB(255, 148, 3, 3),
               ),
               onPressed: () {
@@ -53,15 +76,44 @@ class EditProfilePageState extends State<EditProfilePage> {
                 // save form
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
-
-                  final message = "Profile Changed Successfully";
-                  final snackBar = SnackBar(
-                    content: Text(
-                      message,
-                      style: TextStyle(fontSize: 20),
-                    ),
-                  );
-                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  var edit_succ = false;
+                  var pp_succ = true;
+                  print(Uname);
+                  print(Name);
+                  print(Email);
+                  EditProfile.EditUserDetail(_userID, Uname, Name, Email.text)
+                      .then((response) {
+                    if (response == "SUCCESS") {
+                      edit_succ = true;
+                    }
+                    EditProfile.ChangePPRequest(
+                            _userID, _imageFile, _imagePath, isNotPicked)
+                        .then((response) {
+                      if (!isNotPicked && _imageFile != null) {
+                        if (response == "SUCCESS") {
+                          pp_succ = true;
+                        } else {
+                          pp_succ = false;
+                        }
+                      }
+                      print(pp_succ);
+                      print(edit_succ);
+                      if (pp_succ && edit_succ) {
+                        print("MASUK");
+                        message = "Profile updated";
+                      } else {
+                        message = "Unable to update profile";
+                      }
+                      final snackBar = SnackBar(
+                        content: Text(
+                          message,
+                          style: TextStyle(fontSize: 20),
+                        ),
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    });
+                  });
+                
                 }
               },
               child: Text('Done'),
@@ -70,20 +122,42 @@ class EditProfilePageState extends State<EditProfilePage> {
         ),
         body: Center(
           child: ListView(shrinkWrap: true, children: <Widget>[
-            CircleAvatar(
+            Visibility(child: CircleAvatar(
               radius: 40, // Image radius
-              backgroundImage: AssetImage('images/blank_profile.png'),
-            ),
+              backgroundImage: NetworkImage(
+                        "http://34.101.123.15:8080/getPPByID/$_userID"),
+              ),
+              visible: isNotPicked,),
+            Visibility(
+              child: _imageFile != null
+              ? CircleAvatar(
+              radius: 40, // Image radius
+              backgroundImage: Image.file(_imageFile).image)
+              : CircleAvatar(
+              radius: 40, // Image radius
+              backgroundImage: NetworkImage(
+                        "http://34.101.123.15:8080/getPPByID/$_userID"),
+              ),
+              visible: _imageFile != null && isNotPicked == false),
             TextButton(
               style: TextButton.styleFrom(
                 padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
                 primary: Color.fromARGB(255, 60, 133, 125),
               ),
               onPressed: () {
+                _getFromGallery();
+                isNotPicked = false;
                 // buka file manager untuk ambil foto
               },
               child: Text('Change Picture'),
             ),
+            // Visibility(
+            //   child: _imageFile != null
+            //     ? (kIsWeb)
+            //       ? Image.memory(_imageFile)
+            //       : Image.file(_imageFile)
+            //     : SizedBox(height: 0),
+            //     visible: _imageFile!=null),
             //disini form
             Form(
               key: _formKey,
@@ -106,6 +180,7 @@ class EditProfilePageState extends State<EditProfilePage> {
                         }
                         return null;
                       },
+                      initialValue: Name,
                       onSaved: (value) => setState(() {
                         Name = value;
                       }),
@@ -125,25 +200,33 @@ class EditProfilePageState extends State<EditProfilePage> {
                         }
                         return null;
                       },
+                      initialValue: Uname,
                       onSaved: (value) => setState(() {
                         Uname = value;
                       }),
                     ),
                     TextFormField(
                       decoration: const InputDecoration(
-                          hintText: 'old username',
+                          hintText: 'old email',
                           hintStyle:
                               TextStyle(height: 2, fontWeight: FontWeight.bold),
                           labelText: 'Email',
                           floatingLabelBehavior: FloatingLabelBehavior.always),
-                      validator: (String? value) {
+                      controller: Email,
+                      validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter some text';
+                          return 'Please enter an email address';
+                        }
+                        if (!EmailValidator.validate(value)) {
+                          return 'Please enter a valid email address';
                         }
                         return null;
                       },
+                      //initialValue: Email.text,
                       onSaved: (value) => setState(() {
-                        Email = value;
+                        if (value != null){
+                          Email.text = value.toString();
+                        }
                       }),
                     ),
                   ],
@@ -172,5 +255,24 @@ class EditProfilePageState extends State<EditProfilePage> {
             ),
           ]),
         ));
+  }
+  _getFromGallery() async {
+    ImagePicker picker = ImagePicker();
+    XFile? pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      if (kIsWeb) {
+        var f = await pickedFile.readAsBytes();
+        setState(() {
+          _imagePath = pickedFile.path;
+          print(_imagePath);
+          _imageFile = f;
+        });
+      } else {
+        setState(() {
+          _imageFile = File(pickedFile.path);
+          _imagePath = pickedFile.path;
+        });
+      }
+    }
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
+import 'model/edit_profile.dart';
 
 class EditPasswordPage extends StatefulWidget {
   const EditPasswordPage({Key? key}) : super(key: key);
@@ -16,9 +17,10 @@ class EditPasswordPageState extends State<EditPasswordPage> {
     bool _hidePassword = true;
     TextEditingController msgController = TextEditingController();
     //String msg = "aaaa";
-    String oldPassword = "old";
-    String newPassword = "new";
-    String valPassword = "val";
+    String oldPassword = "";
+    String newPassword = "";
+    String valPassword = "";
+    final _userID = 1;
 
     return Scaffold(
         backgroundColor: Color.fromARGB(255, 255, 255, 255),
@@ -120,18 +122,34 @@ class EditPasswordPageState extends State<EditPasswordPage> {
                           _formKey.currentState!.save();
                           String message = "";
                           if (newPassword == valPassword) {
-                            message = "Password Changed Successfully";
+                            EditProfile.ChangePassRequest(
+                                    _userID, oldPassword, newPassword)
+                                .then((response) {
+                              if (response == "SUCCESS") {
+                                message = "Password Changed Successfully";
+                              } else {
+                                message = response;
+                              }
+                              final snackBar = SnackBar(
+                                content: Text(
+                                  message,
+                                  style: TextStyle(fontSize: 20),
+                                ),
+                              );
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackBar);
+                            });
                           } else {
                             message = "Confirm Password False";
-                          }
-
-                          final snackBar = SnackBar(
+                            final snackBar = SnackBar(
                             content: Text(
                               message,
                               style: TextStyle(fontSize: 20),
                             ),
                           );
                           ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                          }
+
                         }
                       },
                       child: const Text('Save'),
