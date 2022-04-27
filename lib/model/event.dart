@@ -4,7 +4,7 @@ import 'package:diorama_id/main.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 
-Future<String?> addEvent(String tripID, String userID, String caption,
+Future<List> addEvent(String tripID, String userID, String caption,
     String eventDate, String postTime, var file, String path) async {
   var request = http.MultipartRequest(
       'POST', Uri.parse('http://34.101.123.15:8080/addEvent'));
@@ -23,6 +23,7 @@ Future<String?> addEvent(String tripID, String userID, String caption,
   request.files.add(eventImage);
 
   var res = await request.send();
+  var response = await http.Response.fromStream(res);
 
   // print("reason: ");
   // print(res.reasonPhrase);
@@ -31,8 +32,8 @@ Future<String?> addEvent(String tripID, String userID, String caption,
   // print(res.request?.headers);
 
   if (res.statusCode == 200) {
-    return "SUCCESS";
+    return ["SUCCESS", jsonDecode(response.body)["EventID"]];
   } else {
-    return res.reasonPhrase;
+    return ["ERROR", null];
   }
 }

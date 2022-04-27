@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:diorama_id/add_event.dart';
 import 'package:diorama_id/main.dart';
 import 'package:flutter/material.dart';
@@ -92,6 +94,7 @@ class DetailTripPageState extends State<DetailTripPage> {
       child: const Text("OK"),
       onPressed: () {
         Navigator.pop(context);
+        Navigator.pop(context);
       },
     );
 
@@ -130,6 +133,12 @@ class DetailTripPageState extends State<DetailTripPage> {
     } else {
       throw Exception('Failed to delete trip.');
     }
+  }
+
+  FutureOr onGoBack(dynamic value) {
+    futureDetailTrip = getDetailTrip(tripID);
+    futureEvents = getAllEvent(tripID);
+    setState(() {});
   }
 
   @override
@@ -212,7 +221,7 @@ class DetailTripPageState extends State<DetailTripPage> {
                                             snapshot.data![0].EventID[i],
                                             tripID,
                                             userID)),
-                                  );
+                                  ).then(onGoBack);
                                 },
                                 child: Container(
                                   padding: const EdgeInsets.all(4),
@@ -244,7 +253,7 @@ class DetailTripPageState extends State<DetailTripPage> {
                                         MaterialPageRoute(
                                             builder: (context) =>
                                                 AddEventPage(tripID)),
-                                      );
+                                      ).then(onGoBack);
                                     },
                                     child: const Text('+ Event'),
                                   )),
@@ -274,7 +283,7 @@ class DetailTripPageState extends State<DetailTripPage> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) => AddEventPage(tripID)),
-                                      );
+                                      ).then(onGoBack);
                                     },
                                     child: const Text('+ Event'),
                                   )),

@@ -1,4 +1,8 @@
+import 'dart:async';
+
+import 'package:diorama_id/detail_event.dart';
 import 'package:diorama_id/main.dart';
+import 'package:diorama_id/model/detail_event_model.dart';
 import 'package:diorama_id/model/detail_trip_model.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -40,6 +44,10 @@ class _AddEventPageState extends State<AddEventPage> {
       enddate = result.EndDate;
       setState(() {});
     });
+  }
+
+  FutureOr onGoBack(dynamic value) {
+    setState(() {});
   }
 
   @override
@@ -202,17 +210,23 @@ class _AddEventPageState extends State<AddEventPage> {
                               addEvent(tripID.toString(), Holder.userID, _caption.text, _startDate.text,
                                       postTime, _imageFile, _imagePath)
                                   .then((status) {
-                                if (status == "SUCCESS") {
+                                if (status[0] == "SUCCESS") {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
                                         content:
                                             Text('Event successfully added')),
                                   );
                                   Navigator.pop(context,true);
+                                  // Navigator.push(
+                                  //   context,
+                                  //   MaterialPageRoute(
+                                  //       builder: (context) => DetailEventPage(status[1], tripID, int.parse(Holder.userID))
+                                  //   )
+                                  // ).then(onGoBack);
                                 } else {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
-                                        content: Text('Error adding trip')),
+                                        content: Text('Error adding event')),
                                   );
                                 }
                               });

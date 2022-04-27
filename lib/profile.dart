@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:diorama_id/detail_trip.dart';
 import 'package:diorama_id/edit_profile.dart';
 import 'package:diorama_id/follows.dart';
@@ -378,6 +380,21 @@ class _ProfilePageState extends State<ProfilePage> {
         ));
   }
 
+  FutureOr onGoBack(dynamic value) {
+    refreshData();
+    setState(() {});
+  }
+
+  void refreshData() {
+    fetchFollowStatus(Holder.userID, _userID.toString()).then((result) {
+      _isFollowed = result == "YES";
+    });
+    fetchFollowNum(_userID.toString()).then((result) {
+      followernum = result[0];
+      followingnum = result[1];
+    });
+  }
+
   Widget _tripText(BuildContext context, AsyncSnapshot snapshot, int index) {
     dynamic _tripName = snapshot.data[0][index].TripName;
     dynamic _tripStartDate = snapshot.data[0][index].StartDate;
@@ -403,9 +420,10 @@ class _ProfilePageState extends State<ProfilePage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
+                        settings: const RouteSettings(name: "/mytrip"),
                         builder: (context) => DetailTripPage(
                             snapshot.data[0][index].TripID, _userID)),
-                  );
+                  ).then(onGoBack);;
                 },
                 child: Container(
                     height: 150,
