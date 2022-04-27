@@ -49,7 +49,8 @@ Future<List> fetchFollowers(String UserID) async {
     // }
     return [json, imglist];
   } else {
-    return [[], []];
+    // return [[], []];
+    throw Exception('Failed to load followerlist');
   }
 }
 
@@ -72,7 +73,8 @@ Future<List> fetchFollowing(String UserID) async {
     // }
     return [json, imglist];
   } else {
-    return [[], []];
+    // return [[], []];
+    throw Exception('Failed to load followedlist');
   }
 }
 
@@ -92,7 +94,6 @@ Future<List> fetchFollowNum(String UserID) async {
   final response = await http.get(
       Uri.parse('http://34.101.123.15:8080/getCountFollowers/$UserID'),
       headers: header);
-  
 
   // final response2 = await http.get(
   //     Uri.parse('http://34.101.123.15:8080/getFollowedUsers/$UserID'),
@@ -107,7 +108,7 @@ Future<List> fetchFollowNum(String UserID) async {
     followernum = json["count"];
   }
 
-  if (response2.statusCode == 200){
+  if (response2.statusCode == 200) {
     // Followers following = Followers.fromJson(jsonDecode(response2.body));
     // followingnum = following.list.length;
     var json2 = jsonDecode(response2.body);

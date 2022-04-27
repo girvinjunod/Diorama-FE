@@ -168,7 +168,7 @@ class DetailEventPageState extends State<DetailEventPage> {
                                 children: [
                                   Container(
                                     width: double.infinity,
-                                    height: 350,
+                                    height: 500,
                                     decoration: BoxDecoration(
                                       image: DecorationImage(
                                         fit: BoxFit.cover,
