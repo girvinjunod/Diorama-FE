@@ -27,7 +27,7 @@ class Trip {
   }
 }
 
-Future<String> addTrip(int UserID, String StartDate, String EndDate,
+Future<List> addTrip(int UserID, String StartDate, String EndDate,
     String TripName, String LocationName) async {
   String body = jsonEncode(<String, dynamic>{
     'UserID': UserID,
@@ -50,9 +50,9 @@ Future<String> addTrip(int UserID, String StartDate, String EndDate,
   );
 
   if (response.statusCode == 200) {
-    return "SUCCESS";
+    return ["SUCCESS", jsonDecode(response.body)["TripID"]];
   } else {
     // Error
-    return "ERROR";
+    return ["ERROR", null];
   }
 }

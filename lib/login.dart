@@ -103,7 +103,8 @@ class LoginPageState extends State<LoginPage> {
                               Navigator.pushAndRemoveUntil(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => const NavBar(),
+                                    settings: const RouteSettings(name: "/navbar"),
+                                    builder: (context) => const NavBar(0),
                                   ),
                                   (r) => false);
                             } else {

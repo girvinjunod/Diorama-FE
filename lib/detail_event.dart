@@ -98,7 +98,7 @@ class DetailEventPageState extends State<DetailEventPage> {
     Widget okButton = TextButton(
       child: const Text("OK"),
       onPressed: () {
-        Navigator.pop(context);
+        Navigator.of(context).popUntil(ModalRoute.withName('/mytrip'));
       },
     );
 
@@ -168,7 +168,7 @@ class DetailEventPageState extends State<DetailEventPage> {
                                 children: [
                                   Container(
                                     width: double.infinity,
-                                    height: 350,
+                                    height: 500,
                                     decoration: BoxDecoration(
                                       image: DecorationImage(
                                         fit: BoxFit.cover,

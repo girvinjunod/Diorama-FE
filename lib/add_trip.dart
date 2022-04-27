@@ -1,3 +1,4 @@
+import 'package:diorama_id/detail_trip.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'main.dart';
@@ -161,10 +162,23 @@ class _AddTripPageState extends State<AddTripPage> {
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
                             addTrip(int.parse(Holder.userID), _startDate.text, _endDate.text, _tripName.text, _locationName.text).then((status){
-                              if(status != "ERROR"){
+                              if(status[0] != "ERROR"){
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(content: Text('Trip successfully added')),
                                 );
+
+                                _startDate.text = "";
+                                _endDate.text = "";
+                                _tripName.text = "";
+                                _locationName.text = "";
+
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => DetailTripPage(status[1], int.parse(Holder.userID))
+                                  )
+                                );
+
                               }
                               else
                               {

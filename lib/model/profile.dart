@@ -73,13 +73,13 @@ Future<dynamic> getUser(String UserID) async {
   
   final response =
       await http.get(Uri.parse('http://34.101.123.15:8080/getUserByID/$UserID'), headers: header);
-  final img =
-      await http.get(Uri.parse('http://34.101.123.15:8080/getPPByID/$UserID'), headers: header);
-  if (response.statusCode == 200 && img.statusCode == 200) {
+  // final img =
+  //     await http.get(Uri.parse('http://34.101.123.15:8080/getPPByID/$UserID'), headers: header);
+  if (response.statusCode == 200) {
     dynamic res = Profile.fromJson(jsonDecode(response.body));
     // print(res);
 
-    return [res, img.bodyBytes];
+    return [res, null];
   } else {
     throw Exception('Failed to load user data');
   }
