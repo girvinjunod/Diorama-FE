@@ -11,7 +11,6 @@ import 'login.dart';
 import 'search.dart';
 import 'add_trip.dart';
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   const storage = FlutterSecureStorage();
@@ -38,6 +37,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Diorama',
       home: jwt == null ? const LoginPage() : const NavBar(),
       theme: ThemeData(
@@ -60,7 +60,11 @@ class NavBar extends StatefulWidget {
 class _NavBarState extends State<NavBar> {
   int _selectedIndex = 0;
 
-  final _pages = [const TripFeed(), const AddTripPage(), ProfilePage(int.parse(Holder.userID))];
+  final _pages = [
+    const TripFeed(),
+    const AddTripPage(),
+    ProfilePage(int.parse(Holder.userID))
+  ];
 
   void _onItemTapped(int index) {
     setState(() {
