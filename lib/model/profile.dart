@@ -123,7 +123,7 @@ Future<dynamic> getTripFromUser(String UserID) async {
     for (var element in json.list) {
       final detail = await http
           .get(Uri.parse('http://34.101.123.15:8080/getTripDetailByID/$element'), headers: header);
-      tripList.add(TripDetail.fromJson(jsonDecode(detail.body)));
+      tripList.add(TripDetail.fromJson(jsonDecode(utf8.decode(detail.bodyBytes))));
     }
     return [tripList, ""];
   } else {

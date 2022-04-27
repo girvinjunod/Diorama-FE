@@ -30,7 +30,7 @@ Future<List> getAllEvent(int tripID) async {
   if (response.statusCode == 200) {
     // If the server did return a 200 OK response,
     // then parse the JSON.
-    AllEvent eventID = AllEvent.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
+    AllEvent eventID = AllEvent.fromJson(jsonDecode(response.body));
     for (int i = 0; i < eventID.EventID.length; i++) {
       final img = await http.get(Uri.parse(
           'http://34.101.123.15:8080/getEventPictureByID/${eventID.EventID[i]}'), headers: header);
@@ -87,7 +87,7 @@ Future<DetailTrip> getDetailTrip(int tripID) async {
   if (response.statusCode == 200) {
     // If the server did return a 200 OK response,
     // then parse the JSON.
-    return DetailTrip.fromJson(jsonDecode(response.body));
+    return DetailTrip.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
   } else {
     // If the server did not return a 200 OK response,
     // then throw an exception.
