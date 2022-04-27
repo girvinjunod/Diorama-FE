@@ -20,13 +20,12 @@ class Feed {
 
   factory Feed.fromJson(Map<String, dynamic> json) {
     return Feed(
-      userID: json['userID'],
-      username: json['username'],
-      eventID: json['eventID'],
-      caption: json['caption'],
-      tripname: json['tripname'],
-      tripID: json['tripID']
-    );
+        userID: json['userID'],
+        username: json['username'],
+        eventID: json['eventID'],
+        caption: json['caption'],
+        tripname: json['tripname'],
+        tripID: json['tripID']);
   }
 }
 
@@ -50,8 +49,8 @@ Future<dynamic> getUserData(String UserID) async {
     'Accept': 'application/json',
     'Authorization': 'Bearer ${Holder.token}',
   };
-  final response = await http
-      .get(Uri.parse('http://34.101.123.15:8080/getUserByID/$UserID'),
+  final response = await http.get(
+      Uri.parse('http://34.101.123.15:8080/getUserByID/$UserID'),
       headers: header);
   if (response.statusCode == 200) {
     return jsonDecode(response.body);
@@ -66,12 +65,13 @@ Future<dynamic> getTimeline(String UserID) async {
     'Accept': 'application/json',
     'Authorization': 'Bearer ${Holder.token}',
   };
-  final response = await http
-      .get(Uri.parse('http://34.101.123.15:8080/getTimeline/$UserID'),
+  final response = await http.get(
+      Uri.parse('http://34.101.123.15:8080/getTimeline/$UserID'),
       headers: header);
   var imglist = [];
   if (response.statusCode == 200) {
-    Timeline json = Timeline.fromJson(jsonDecode(response.body));
+    Timeline json =
+        Timeline.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
     return json;
   } else {
     return const Timeline(list: []);
