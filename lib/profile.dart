@@ -35,11 +35,10 @@ class _ProfilePageState extends State<ProfilePage> {
     });
     fetchFollowNum(_userID.toString()).then((result) {
       setState(() {
-         followernum = result[0];
+        followernum = result[0];
         followingnum = result[1];
       });
     });
-    
   }
 
   // Apakah username berbeda dari name user?
@@ -124,7 +123,8 @@ class _ProfilePageState extends State<ProfilePage> {
               CircleAvatar(
                 radius: 100,
                 backgroundImage: NetworkImage(
-                          "http://34.101.123.15:8080/getPPByID/$_userID"),
+                    "http://34.101.123.15:8080/getPPByID/$_userID" "?x=" +
+                        DateTime.now().millisecondsSinceEpoch.toString()),
                 backgroundColor: Colors.transparent,
               ),
               const SizedBox(
@@ -428,7 +428,8 @@ class _ProfilePageState extends State<ProfilePage> {
                         settings: const RouteSettings(name: "/mytrip"),
                         builder: (context) => DetailTripPage(
                             snapshot.data[0][index].TripID, _userID)),
-                  ).then(onGoBack);;
+                  ).then(onGoBack);
+                  ;
                 },
                 child: Container(
                     height: 150,

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:diorama_id/main.dart';
 
 class Comments {
   final List<dynamic> list;
@@ -17,8 +18,7 @@ Future<dynamic> getUserData(String UserID) async {
   var header = {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
-    'Authorization':
-        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZ2lydmluanVub2QifQ.uy_5_DzArTfCLZh5zgebUok27RwtmAykmTxXAu7-FdY',
+    'Authorization': 'Bearer ${Holder.token}',
   };
   final response = await http.get(
       Uri.parse('http://34.101.123.15:8080/getUserByID/$UserID'),
@@ -35,8 +35,7 @@ Future<dynamic> getComments(String UserID, String EventID) async {
   var header = {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
-    'Authorization':
-        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZ2lydmluanVub2QifQ.uy_5_DzArTfCLZh5zgebUok27RwtmAykmTxXAu7-FdY',
+    'Authorization': 'Bearer ${Holder.token}',
   };
   final response = await http.get(
       Uri.parse('http://34.101.123.15:8080/GetCommentsFromEvent/$EventID'),
@@ -55,8 +54,7 @@ Future<String> addComment(int userID, int EventID, String Text) async {
   var header = {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
-    'Authorization':
-        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZ2lydmluanVub2QifQ.uy_5_DzArTfCLZh5zgebUok27RwtmAykmTxXAu7-FdY',
+    'Authorization': 'Bearer ${Holder.token}',
   };
   var data = {
     "EventID": EventID,
@@ -78,8 +76,7 @@ Future<String> deleteComment(commentID) async {
   var header = {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
-    'Authorization':
-        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZ2lydmluanVub2QifQ.uy_5_DzArTfCLZh5zgebUok27RwtmAykmTxXAu7-FdY',
+    'Authorization': 'Bearer ${Holder.token}',
   };
   var data = {
     "id": commentID,

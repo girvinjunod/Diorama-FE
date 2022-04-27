@@ -20,7 +20,7 @@ class EditPasswordPageState extends State<EditPasswordPage> {
     String oldPassword = "";
     String newPassword = "";
     String valPassword = "";
-    final _userID = Holder.userID;
+    final _userID = int.parse(Holder.userID);
 
     return Scaffold(
         backgroundColor: const Color.fromARGB(255, 255, 255, 255),
@@ -138,14 +138,14 @@ class EditPasswordPageState extends State<EditPasswordPage> {
                           } else {
                             message = "Confirm Password False";
                             final snackBar = SnackBar(
-                            content: Text(
-                              message,
-                              style: const TextStyle(fontSize: 20),
-                            ),
-                          );
-                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                              content: Text(
+                                message,
+                                style: const TextStyle(fontSize: 20),
+                              ),
+                            );
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBar);
                           }
-
                         }
                       },
                       child: const Text('Save'),

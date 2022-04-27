@@ -54,13 +54,12 @@ class TripDetail {
 
   factory TripDetail.fromJson(Map<String, dynamic> json) {
     return TripDetail(
-      UserID: json['userId'],
-      StartDate: json['startDate'],
-      EndDate: json['endDate'],
-      TripName: json['tripName'],
-      LocationName: json['locationName'],
-      TripID: json['id']
-    );
+        UserID: json['userId'],
+        StartDate: json['startDate'],
+        EndDate: json['endDate'],
+        TripName: json['tripName'],
+        LocationName: json['locationName'],
+        TripID: json['id']);
   }
 }
 
@@ -70,9 +69,10 @@ Future<dynamic> getUser(String UserID) async {
     'Accept': 'application/json',
     'Authorization': 'Bearer ${Holder.token}',
   };
-  
-  final response =
-      await http.get(Uri.parse('http://34.101.123.15:8080/getUserByID/$UserID'), headers: header);
+
+  final response = await http.get(
+      Uri.parse('http://34.101.123.15:8080/getUserByID/$UserID'),
+      headers: header);
   // final img =
   //     await http.get(Uri.parse('http://34.101.123.15:8080/getPPByID/$UserID'), headers: header);
   if (response.statusCode == 200) {
@@ -92,8 +92,9 @@ Future<dynamic> getUserPP(String UserID) async {
     'Authorization': 'Bearer ${Holder.token}',
   };
 
-  final response =
-      await http.get(Uri.parse('http://34.101.123.15:8080/getPPByID/$UserID'), headers: header);
+  final response = await http.get(
+      Uri.parse('http://34.101.123.15:8080/getPPByID/$UserID'),
+      headers: header);
   if (response.statusCode == 200) {
     return jsonDecode(response.body);
   } else {
@@ -114,16 +115,19 @@ Future<dynamic> getTripFromUser(String UserID) async {
     'Authorization': 'Bearer ${Holder.token}',
   };
 
-  final response =
-      await http.get(Uri.parse('http://34.101.123.15:8080/getTripsByUser/$UserID'), headers: header);
+  final response = await http.get(
+      Uri.parse('http://34.101.123.15:8080/getTripsByUser/$UserID'),
+      headers: header);
   // print(response.body.runtimeType);
   var tripList = [];
   if (response.statusCode == 200) {
     Trips json = Trips.fromJson(jsonDecode(response.body));
     for (var element in json.list) {
-      final detail = await http
-          .get(Uri.parse('http://34.101.123.15:8080/getTripDetailByID/$element'), headers: header);
-      tripList.add(TripDetail.fromJson(jsonDecode(utf8.decode(detail.bodyBytes))));
+      final detail = await http.get(
+          Uri.parse('http://34.101.123.15:8080/getTripDetailByID/$element'),
+          headers: header);
+      tripList
+          .add(TripDetail.fromJson(jsonDecode(utf8.decode(detail.bodyBytes))));
     }
     return [tripList, ""];
   } else {
@@ -138,18 +142,16 @@ Future<String> fetchFollowStatus(String followerid, String followedid) async {
     'Authorization': 'Bearer ${Holder.token}',
   };
   final response = await http.get(
-      Uri.parse('http://34.101.123.15:8080/checkIfFollowed/$followerid/$followedid'),
+      Uri.parse(
+          'http://34.101.123.15:8080/checkIfFollowed/$followerid/$followedid'),
       headers: header);
 
   if (response.statusCode == 200) {
     var ans = jsonDecode(response.body);
     // print(response.body);
-    if(ans["is_followed"] == true)
-    {
+    if (ans["is_followed"] == true) {
       return "YES";
-    }
-    else
-    {
+    } else {
       return "NO";
     }
   } else {
@@ -169,12 +171,9 @@ Future<String> followUser(String followerid, String followedid) async {
 
   if (response.statusCode == 200) {
     var ans = jsonDecode(response.body);
-    if(ans["error"] == false)
-    {
+    if (ans["error"] == false) {
       return "SUCCESS";
-    }
-    else
-    {
+    } else {
       return "ERROR";
     }
   } else {
@@ -195,12 +194,9 @@ Future<String> unfollowUser(String followerid, String followedid) async {
   // print(response.body);
   if (response.statusCode == 200) {
     var ans = jsonDecode(response.body);
-    if(ans["error"] == false)
-    {
+    if (ans["error"] == false) {
       return "SUCCESS";
-    }
-    else
-    {
+    } else {
       return "ERROR";
     }
   } else {
