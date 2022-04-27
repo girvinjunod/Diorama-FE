@@ -28,14 +28,13 @@ class _ProfilePageState extends State<ProfilePage> {
   void initState() {
     super.initState();
     _isSelfProfile = int.parse(Holder.userID) == _userID;
-    fetchFollowStatus(Holder.userID, _userID.toString()).then((result){
+    fetchFollowStatus(Holder.userID, _userID.toString()).then((result) {
       _isFollowed = result == "YES";
     });
-   fetchFollowNum(_userID.toString()).then((result){
-     followernum = result[0];
-     followingnum = result[1];
-   });
-    
+    fetchFollowNum(_userID.toString()).then((result) {
+      followernum = result[0];
+      followingnum = result[1];
+    });
   }
 
   // Apakah username berbeda dari name user?
@@ -53,7 +52,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+        appBar: AppBar(
             title: const Text("Profile",
                 style: TextStyle(fontSize: 20, color: Colors.white))),
         backgroundColor: const Color(0xFFF1F1F1),
@@ -88,33 +87,34 @@ class _ProfilePageState extends State<ProfilePage> {
           color: const Color(0xFFD4F1F4),
           child: Column(
             children: [
-              Container(alignment: Alignment.topRight, child:
-              Visibility(
-                child: TextButton(
-                  style: TextButton.styleFrom(
-                    padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-                    primary: const Color.fromARGB(255, 148, 3, 3),
+              Container(
+                alignment: Alignment.topRight,
+                child: Visibility(
+                  child: TextButton(
+                    style: TextButton.styleFrom(
+                      padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+                      primary: const Color.fromARGB(255, 148, 3, 3),
+                    ),
+                    onPressed: () {
+                      Logout().then((response) {
+                        if (response == "SUCCESS") {
+                          Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const LoginPage(),
+                              ),
+                              (r) => false);
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Logout failed')),
+                          );
+                        }
+                      });
+                    },
+                    child: const Text('Logout'),
                   ),
-                  onPressed: () {
-                    Logout().then((response) {
-                      if (response == "SUCCESS") {
-                        Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const LoginPage(),
-                            ),
-                            (r) => false);
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Logout failed')),
-                        );
-                      }
-                    });
-                  },
-                  child: const Text('Logout'),
+                  visible: _isSelfProfile,
                 ),
-                visible: _isSelfProfile,
-              ),
               ),
               const SizedBox(height: 20),
               CircleAvatar(
@@ -142,22 +142,22 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               const SizedBox(height: 20),
               InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => FollowPage(_userID)),
-                    );
-                  },
-                  child: Text(
-                    '$followingnum Following | $followernum Follower',
-                    style: const TextStyle(
-                      fontSize: 20,
-                      color: Color(0xFF05445E),
-                      fontWeight: FontWeight.bold,
-                    ),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => FollowPage(_userID)),
+                  );
+                },
+                child: Text(
+                  '$followingnum Following | $followernum Follower',
+                  style: const TextStyle(
+                    fontSize: 20,
+                    color: Color(0xFF05445E),
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
+              ),
               const SizedBox(height: 20),
               Visibility(
                 child: InkWell(
@@ -182,14 +182,15 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: TextButton(
                     child: const Text(
                       'Follow',
-                      style: TextStyle(
-                          fontSize: 18.0, color: Color(0xFFFFFFFF)),
+                      style:
+                          TextStyle(fontSize: 18.0, color: Color(0xFFFFFFFF)),
                     ),
                     style: ButtonStyle(
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(50.0),
-                              side: const BorderSide(color: Colors.transparent))),
+                              side:
+                                  const BorderSide(color: Colors.transparent))),
                       backgroundColor: MaterialStateProperty.resolveWith<Color>(
                         (Set<MaterialState> states) {
                           if (states.contains(MaterialState.pressed) ||
@@ -204,21 +205,20 @@ class _ProfilePageState extends State<ProfilePage> {
                           const EdgeInsets.fromLTRB(30, 15, 30, 15)),
                     ),
                     onPressed: () {
-                      followUser(Holder.userID, _userID.toString()).then((result){
-                        if(result == "SUCCESS")
-                        {
+                      followUser(Holder.userID, _userID.toString())
+                          .then((result) {
+                        if (result == "SUCCESS") {
                           _isFollowed = true;
-                        }
-                        else
-                        {
+                          setState(() {
+                            followernum += 1;
+                          });
+                        } else {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(content: Text('Error following.')),
                           );
                         }
                       });
-                      setState(() {
-                        
-                      });
+                      setState(() {});
                     }),
                 visible: (!_isSelfProfile && !_isFollowed),
               ),
@@ -226,8 +226,8 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: TextButton(
                     child: const Text(
                       'Unfollow',
-                      style: TextStyle(
-                          fontSize: 18.0, color: Color(0xFF189AB4)),
+                      style:
+                          TextStyle(fontSize: 18.0, color: Color(0xFF189AB4)),
                     ),
                     style: ButtonStyle(
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -249,21 +249,20 @@ class _ProfilePageState extends State<ProfilePage> {
                           const EdgeInsets.fromLTRB(30, 15, 30, 15)),
                     ),
                     onPressed: () {
-                      unfollowUser(Holder.userID, _userID.toString()).then((result){
-                        if(result == "SUCCESS")
-                        {
+                      unfollowUser(Holder.userID, _userID.toString())
+                          .then((result) {
+                        if (result == "SUCCESS") {
                           _isFollowed = false;
-                        }
-                        else
-                        {
+                          setState(() {
+                            followernum -= 1;
+                          });
+                        } else {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(content: Text('Error unfollowing.')),
                           );
                         }
                       });
-                      setState(() {
-                        
-                      });
+                      setState(() {});
                     }),
                 visible: (!_isSelfProfile && _isFollowed),
               ),
@@ -371,12 +370,12 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Widget _tripPic(BuildContext context, AsyncSnapshot snapshot, int index) {
     return Container(
-          height: 150,
-          width: double.infinity,
-          child: Image.network(
-                "http://34.101.123.15:8080/getTripsImage/${snapshot.data[0][index].TripID}",
-                fit: BoxFit.cover,
-              ));
+        height: 150,
+        width: double.infinity,
+        child: Image.network(
+          "http://34.101.123.15:8080/getTripsImage/${snapshot.data[0][index].TripID}",
+          fit: BoxFit.cover,
+        ));
   }
 
   Widget _tripText(BuildContext context, AsyncSnapshot snapshot, int index) {
@@ -404,7 +403,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => DetailTripPage(snapshot.data[0][index].TripID, _userID)),
+                        builder: (context) => DetailTripPage(
+                            snapshot.data[0][index].TripID, _userID)),
                   );
                 },
                 child: Container(
@@ -415,7 +415,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: RichText(
                       text: TextSpan(
                         text: '$_tripName\n',
-                        style: const TextStyle(color: Colors.white, fontSize: 22),
+                        style:
+                            const TextStyle(color: Colors.white, fontSize: 22),
                         children: <TextSpan>[
                           TextSpan(
                               text: '$_tripStartDate - $_tripEndDate\n',
