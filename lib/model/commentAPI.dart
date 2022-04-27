@@ -45,13 +45,13 @@ Future<dynamic> getComments(String UserID, String EventID) async {
       headers: header);
   // developer.log(response.statusCode.toString());s
   if (response.statusCode == 200) {
-    Comments json = Comments.fromJson(jsonDecode(response.body));
+    Comments json =
+        Comments.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
     return json;
   } else {
     throw Exception('Failed to load comments data');
   }
 }
-
 
 Future<String> addComment(int userID, int EventID, String Text) async {
   var header = {
