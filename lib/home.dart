@@ -74,6 +74,7 @@ class _TripFeedState extends State<TripFeed>
                   children: <Widget>[
                     CircleAvatar(
                       radius: 20, // Image radius
+                      backgroundColor: Colors.transparent,
                       backgroundImage: NetworkImage(
                           "http://34.101.123.15:8080/getPPByID/${timeline.list[index]["userID"]}"),
                     ),
