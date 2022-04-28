@@ -61,8 +61,8 @@ class EditPasswordPageState extends State<EditPasswordPage> {
                       validator: (String? value) {
                         if (value == null ||
                             value.isEmpty ||
-                            value.length < 7) {
-                          return 'Please enter minimum 7 words';
+                            value.length < 6) {
+                          return 'Please enter a minimum of 6 characters';
                         }
                         return null;
                       },
@@ -81,8 +81,8 @@ class EditPasswordPageState extends State<EditPasswordPage> {
                       validator: (String? value) {
                         if (value == null ||
                             value.isEmpty ||
-                            value.length < 7) {
-                          return 'Please enter minimum 7 words';
+                            value.length < 6) {
+                          return 'Please enter a minimum of 6 characters';
                         }
                         return null;
                       },
@@ -101,8 +101,8 @@ class EditPasswordPageState extends State<EditPasswordPage> {
                       validator: (String? value) {
                         if (value == null ||
                             value.isEmpty ||
-                            value.length < 7) {
-                          return 'Please enter minimum 7 words';
+                            value.length < 6) {
+                          return 'Please enter a minimum of 6 characters';
                         }
 
                         return null;
@@ -122,21 +122,19 @@ class EditPasswordPageState extends State<EditPasswordPage> {
                                     _userID, oldPassword, newPassword)
                                 .then((response) {
                               if (response == "SUCCESS") {
-                                message = "Password Changed Successfully";
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(content: Text('Password Changed Successfully')),
+                                );
+                                Navigator.pop(context);
+                                Navigator.pop(context);
                               } else {
-                                message = response;
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text(response)),
+                                );
                               }
-                              final snackBar = SnackBar(
-                                content: Text(
-                                  message,
-                                  style: const TextStyle(fontSize: 20),
-                                ),
-                              );
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(snackBar);
                             });
                           } else {
-                            message = "Confirm Password False";
+                            message = "Confirm password does not match";
                             final snackBar = SnackBar(
                               content: Text(
                                 message,

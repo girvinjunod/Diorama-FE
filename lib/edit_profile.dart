@@ -125,7 +125,8 @@ class EditProfilePageState extends State<EditProfilePage> {
               : CircleAvatar(
               radius: 100, // Image radius
               backgroundImage: NetworkImage(
-                        "http://34.101.123.15:8080/getPPByID/$_userID",),
+                    "http://34.101.123.15:8080/getPPByID/$_userID" "?x=" +
+                        DateTime.now().millisecondsSinceEpoch.toString()),
               backgroundColor: Colors.transparent),
               ),
             TextButton(
@@ -177,8 +178,7 @@ class EditProfilePageState extends State<EditProfilePage> {
                           floatingLabelBehavior: FloatingLabelBehavior.always),
                       validator: (String? value) {
                         if (value == null ||
-                            value.isEmpty ||
-                            value.length < 6) {
+                            value.isEmpty) {
                           return 'Please enter a valid username';
                         }
                         return null;

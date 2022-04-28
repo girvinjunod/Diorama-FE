@@ -46,7 +46,7 @@ Future<dynamic> getComments(String UserID, String EventID) async {
         Comments.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
     return json;
   } else {
-    throw Exception('Failed to load comments data');
+    return const Comments(list: []);
   }
 }
 

@@ -48,7 +48,7 @@ class _SearchPageState extends State<SearchPage> {
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
             child: CircleAvatar(
-              radius: 40,
+              radius: 35,
               backgroundImage: NetworkImage("http://34.101.123.15:8080/getPPByID/${_searchList.list[i]['id']}"),
               backgroundColor: Colors.transparent,
             ),

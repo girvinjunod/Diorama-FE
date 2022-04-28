@@ -26,10 +26,10 @@ class NewUser {
 Future<String> register(
     String Username, String Email, String Fullname, String Password) async {
   String body = jsonEncode(<String, dynamic>{
-    'Username': Username,
-    'Email': Email,
-    'Fullname': Fullname,
-    'Password': Password,
+    'username': Username,
+    'email': Email,
+    'name': Fullname,
+    'password': Password,
   });
 
   //print(body);

@@ -108,15 +108,17 @@ class _CommentDetailState extends State<CommentDetail> {
                           deleteComment(_commentsList.list[i]['id'])
                             .then((response) {
                           if (response == "SUCCESS") {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Comment deleted')),
-                            );
                             getComments(_userID, _eventID.toString())
                                 .then((list) {
                               _commentsList = list;
                               sum_comments = _commentsList.list.length;
+                              print(list);
+                              print(sum_comments);
                               setState(() {});
                             });
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('Comment deleted')),
+                            );
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
@@ -156,7 +158,7 @@ class _CommentDetailState extends State<CommentDetail> {
                 Container(
                   width: 100,
                   alignment: Alignment.centerRight,
-                  padding: EdgeInsets.only(right: 20),
+                  padding: const EdgeInsets.only(right: 20),
                   child: Align(
                     alignment: Alignment.centerRight,
                     child: RichText(
@@ -191,7 +193,7 @@ class _CommentDetailState extends State<CommentDetail> {
                       builder: (BuildContext context,
                           AsyncSnapshot<dynamic> snapshot) {
                         List<Widget> children;
-                        if (snapshot.hasData) {
+                        if (snapshot.hasData && sum_comments > 0) {
                           _commentsList = snapshot.data;
                           return ListView.builder(
                                 shrinkWrap: true,
@@ -200,7 +202,7 @@ class _CommentDetailState extends State<CommentDetail> {
                                 itemBuilder: (context, int index) {
                                   return initCommentsList(index);
                                 });
-                        } else if (snapshot.hasError) {
+                        } else if (snapshot.hasError || sum_comments == 0) {
                           children = <Widget>[
                             Image.asset("images/notfound.png"),
                             const Padding(
