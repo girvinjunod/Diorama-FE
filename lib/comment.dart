@@ -63,6 +63,7 @@ class _CommentDetailState extends State<CommentDetail> {
                       child: InkWell(child:
                       CircleAvatar(
                         radius: 20, // Image radius
+                        backgroundColor: Colors.transparent,
                         backgroundImage: NetworkImage(
                         "http://34.101.123.15:8080/getPPByID/${_commentsList.list[i]["userID"]}"),
                         ),
@@ -254,6 +255,7 @@ class _CommentDetailState extends State<CommentDetail> {
                                 radius: 20, // Image radius
                                 backgroundImage: NetworkImage(
                                     "http://34.101.123.15:8080/getPPByID/$_userID"),
+                                backgroundColor: Colors.transparent,
                               ),
                               Expanded(
                                   child: TextField(
