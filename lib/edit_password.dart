@@ -15,7 +15,6 @@ class EditPasswordPageState extends State<EditPasswordPage> {
     // Build a Form widget using the _formKey created above.
     final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
     bool _hidePassword = true;
-    TextEditingController msgController = TextEditingController();
     //String msg = "aaaa";
     String oldPassword = "";
     String newPassword = "";

@@ -2,8 +2,6 @@ import 'package:diorama_id/profile.dart';
 import 'package:flutter/material.dart';
 import 'main.dart';
 import 'model/commentAPI.dart';
-import 'dart:developer' as developer;
-
 class CommentDetail extends StatefulWidget {
   final int _eventID;
   const CommentDetail(this._eventID, {Key? key}) : super(key: key);
@@ -113,8 +111,6 @@ class _CommentDetailState extends State<CommentDetail> {
                                 .then((list) {
                               _commentsList = list;
                               sum_comments = _commentsList.list.length;
-                              print(list);
-                              print(sum_comments);
                               setState(() {});
                             });
                             ScaffoldMessenger.of(context).showSnackBar(
